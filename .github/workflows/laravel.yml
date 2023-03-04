@@ -13,18 +13,44 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
       with:
         php-version: '8.2'
+    - name: Get Composer Cache Directory 2
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v2
+      id: actions-cache
+      with:
+        path: '${{ steps.composer-cache.outputs.dir }}'
+        key: '${{ runner.os }}-composer-${{ hashFiles(''**/composer.lock'') }}'
+        restore-keys: |
+          ${{ runner.os }}-composer-
+    - name: Cache PHP dependencies
+      uses: actions/cache@v2
+      id: vendor-cache
+      with:
+        path: vendor
+        key: '${{ runner.OS }}-build-${{ hashFiles(''**/composer.lock'') }}'
     - name: Copy .env
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     - name: Install Dependencies
+      if: steps.vendor-cache.outputs.cache-hit != 'true'
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     - name: Node.js Setup
       uses: actions/setup-node@v2
       with:
         node-version: 18.x
+    - name: Cache node_modules directory
+      uses: actions/cache@v2
+      id: node_modules-cache
+      with:
+        path: node_modules
+        key: ${{ runner.OS }}-build-${{ hashFiles('**/package.json') }}-${{ hashFiles('**/package-lock.json') }}
     - name: Install NPM packages
+      if: steps.node_modules-cache.outputs.cache-hit != 'true'
       run: npm ci
     - name: Build frontend
       run: npm run build
