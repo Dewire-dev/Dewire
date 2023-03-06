@@ -1,66 +1,179 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Installation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Linux : Containers avec Docker et Sail
 
-## About Laravel
+Prérequis :
+- Linux ou [WSL 2 sous Windows](https://learn.microsoft.com/fr-fr/windows/wsl/) ([+ d'infos](#mise-en-place-de-wsl-2-sous-windows))
+- Docker
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1. Cloner le projet dans le dossier du système Linux
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+```console
+$ git clone git@github.com:Dewire-dev/Dewire.git
+$ cd Dewire
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+2. Ajouter un alias pour sail
 
-## Learning Laravel
+```console
+$ nano ~/.bash_aliases
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Ajouter la ligne suivante :
+alias sail='[ -f sail ] && sh sail || sh vendor/bin/sail'
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+$ source ~/.bashrc
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Copier le fichier `.env.example` et le renommer `.env`
 
-## Laravel Sponsors
+2. Installer les dépendances composer (dont sail)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```sh
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
 
-### Premium Partners
+4. Lancer les containers en mode détaché
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```console
+$ sail up -d
+```
 
-## Contributing
+5. Générer une clé unique pour sécuriser l'application
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```console
+$ sail artisan key:generate
+```
 
-## Code of Conduct
+6. Installer les dépendances npm puis compiler les assets
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```console
+$ sail npm i && sail npm run dev
+```
 
-## Security Vulnerabilities
+7. Se rendre sur https://localhost
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Commandes utiles :
 
-## License
+- Arrêter et supprimer les containers : `sail down`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Arrêter les containers : `sail stop`
+
+- Partager le site : `sail share`
+
+- Autres commandes sail : [Documentation](https://laravel.com/docs/10.x/sail)
+
+### Mise en place de WSL 2 sous Windows
+
+Prérequis :
+- Version de build Windows > 19041+ (Windows + R > "winver")
+- [Windows Terminal](https://apps.microsoft.com/store/detail/windows-terminal/9N0DX20HK701)
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+1. Ouvrir Windows Terminal en mode administrateur
+
+2. Installer les dépendances nécessaires puis redémarrer le pc
+
+```console
+> wsl --install
+```
+
+3. Définir la version par défaut de WSL sur 2 et installer la distribution Ubuntu
+
+```console
+> wsl --set-default-version 2
+> wsl --install -d ubuntu 
+```
+
+4. Vérifier qu'Ubuntu soit en version 2, sinon le mettre à jour
+
+```console
+> wsl -l -v
+
+Si Ubuntu en version 1 :
+> wsl --set-version ubuntu 2
+```
+
+5. Ouvrir Docker Desktop et activer le support de WSL 2 dans Settings > Resources > WSL Integration : cocher Ubuntu puis enregistrer
+
+6. Ouvrir un terminal Ubuntu
+
+```console
+> wsl
+```
+
+7. Configuration SSH
+
+```console
+$ cp -r /mnt/c/Users/<username>/.ssh ~/.ssh
+$ chmod 600 ~/.ssh/id_rsa
+
+$ eval $(ssh-agent)
+$ ssh-add ~/.ssh/id_rsa
+```
+
+8. Configuration Git
+
+```console
+$ git config --global user.name "<github_name>"
+$ git config --global user.email "<github_email>"
+$ git config --global credential.helper "/mnt/c/Program\ Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe"
+```
+
+## Windows : Serveur web avec Laragon ou WAMP
+
+Prérequis :
+- Laragon ou WAMP
+- PHP 8.1+
+- Node 18+
+- MySQL 8+
+
+1. Cloner le projet dans le dossier `C:\laragon\www` (ou `C:\wamp\www`)
+
+```console
+> git clone git@github.com:Dewire-dev/Dewire.git
+> cd Dewire
+```
+
+2. Installer les dépendances composer et npm puis compiler les assets
+
+```console
+> composer install
+> npm install && npm run dev
+```
+
+3. Créer une base de données MySQL nommée `'dewire'`
+
+4. Copier le fichier `.env.example` et le renommer `.env`
+
+5. Générer une clé unique pour sécuriser l'application
+
+```console
+> php artisan key:generate
+```
+
+6. Lancer les migrations et ajouter les données de base
+
+```console
+> php artisan migrate --seed
+```
+
+7. Recharger le serveur Apache/Nginx et se rendre sur https://dewire.test
+
+Commandes utiles :
+
+- Créer les comptes admins pour accéder au back-office : `php artisan db:seed --class=AdminsSeeder`
+
+- Relancer les migrations et rafraîchir les données : `php artisan migrate:fresh --seed`
+
+- Lancer le serveur web via ligne de commande : `php artisan serve`
+
+- Autres commandes artisan : [Documentation](https://laravel.com/docs/10.x/artisan)
+
+## Mac : Boîte Vagrant avec Homestead ou Valet
+
+> Prochainement...
