@@ -22,3 +22,5 @@ _ide_helper_models.php
 /.fleet
 /.idea
 /.vscode
+auto-imports.d.ts
+components.d.ts
