@@ -8,6 +8,8 @@ import Icons from 'unplugin-icons/vite';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 
+import { PrimeVueResolver } from 'unplugin-vue-components/resolvers';
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -36,6 +38,7 @@ export default defineConfig({
             dts: 'resources/js/auto-imports.d.ts',
         }),
         Components({
+            resolvers: [PrimeVueResolver()],
             dirs: ['resources/js/Components', 'resources/js/Layouts'],
             dts: 'resources/js/components.d.ts',
         }),
