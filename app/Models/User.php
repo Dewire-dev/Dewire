@@ -30,7 +30,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','firstname','lastname',
     ];
 
     /**
@@ -77,11 +77,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Task::class);
     }
-
-    //Set the password for the user.
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
-
 }
