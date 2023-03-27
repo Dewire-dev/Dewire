@@ -9,7 +9,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
 const form = useForm({
-    name: '',
+    firstname: '',
+    lastname: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -33,15 +34,29 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="firstname" value="Firstname" />
                 <TextInput
-                    id="name"
-                    v-model="form.name"
+                    id="firstname"
+                    v-model="form.firstname"
                     type="text"
                     class="mt-1 block w-full"
                     required
                     autofocus
-                    autocomplete="name"
+                    autocomplete="firstname"
+                />
+                <InputError class="mt-2" :message="form.errors.name" />
+            </div>
+
+            <div>
+                <InputLabel for="lastname" value="lastname" />
+                <TextInput
+                    id="lastname"
+                    v-model="form.firstname"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="firstname"
                 />
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>

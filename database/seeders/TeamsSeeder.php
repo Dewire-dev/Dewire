@@ -28,5 +28,9 @@ class TeamsSeeder extends Seeder
 
         $team->users()->detach();
         $team->users()->attach(User::all(), ['role'=> 'editor']);
+
+        foreach (User::all() as $user) {
+            $user->switchTeam($team);
+        }
     }
 }
