@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     use HasUlids;
     use HasApiTokens;
@@ -76,5 +77,15 @@ class User extends Authenticatable
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
+    }
+
+    public function canAccessFilament(): bool
+    {
+        return in_array($this->email, [
+            'mathieu.neyret@ynov.com',
+            'anael.bonnafous@ynov.com',
+            'logan.lesaux@ynov.com',
+            'theonicolas19@outlook.com',
+        ]);
     }
 }

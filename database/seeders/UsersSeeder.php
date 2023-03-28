@@ -17,17 +17,31 @@ class UsersSeeder extends Seeder
     {
         $users = [
             [
-                'name' => 'TheoN',
-                'firstname' => 'Théo',
-                'lastname' => 'NICOLAS',
-                'email' => 'theonicolas19@outlook.com',
-                'password' => Hash::make('password'),
-            ],
-            [
                 'name' => 'MathieuN',
                 'firstname' => 'Mathieu',
                 'lastname' => 'NEYRET',
                 'email' => 'mathieuneyret@ynov.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'name' => 'AnaelB',
+                'firstname' => 'Anaël',
+                'lastname' => 'BONNAFOUS',
+                'email' => 'anael.bonnafous@ynov.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'name' => 'LoganLS',
+                'firstname' => 'Logan',
+                'lastname' => 'LESAUX',
+                'email' => 'logan.lesaux@ynov.com',
+                'password' => Hash::make('password'),
+            ],
+            [
+                'name' => 'TheoN',
+                'firstname' => 'Théo',
+                'lastname' => 'NICOLAS',
+                'email' => 'theonicolas19@outlook.com',
                 'password' => Hash::make('password'),
             ],
         ];
