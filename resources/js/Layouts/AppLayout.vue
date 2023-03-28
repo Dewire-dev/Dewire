@@ -57,7 +57,12 @@ const logout = () => {
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
-                            <Button @click="isDark = !isDark" :label="isDark ? 'light': 'dark'" size="small" />
+                            <Button
+                                @click="isDark = !isDark"
+                                :label="isDark ? 'light': 'dark'"
+                                :icon="isDark ? 'pi pi-sun' : 'pi pi-moon'"
+                                size="small"
+                            />
                             <div class="ml-3 relative">
                                 <!-- Teams Dropdown -->
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
