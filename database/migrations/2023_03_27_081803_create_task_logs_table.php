@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('task_logs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->index();
-            $table->foreignId('user_id')->index();
+            $table->foreignUlid('user_id')->index();
             $table->text('log');
             $table->timestamps();
         });
