@@ -50,6 +50,10 @@ Route::middleware([
         ->names('chats');
 });
 
+Route::get('/time', function () {
+    return Inertia::render('Time/Time');
+})->name('time');
+
 Route::get('/connect/{name}', function (Request $request, string $name) {
     if (config('app.env') !== 'local') return redirect()->back();
 

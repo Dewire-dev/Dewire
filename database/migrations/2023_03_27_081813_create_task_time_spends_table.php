@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->index();
             $table->float('time');
             $table->text('description');
+            $table->dateTime('date');
             $table->timestamps();
         });
     }

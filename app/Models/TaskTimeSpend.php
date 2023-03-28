@@ -13,6 +13,7 @@ class TaskTimeSpend extends Model
     protected $fillable = [
         'time',
         'description',
+        'date',
     ];
 
     public function user(): BelongsTo
