@@ -20,7 +20,7 @@ class UsersSeeder extends Seeder
                 'name' => 'MathieuN',
                 'firstname' => 'Mathieu',
                 'lastname' => 'NEYRET',
-                'email' => 'mathieuneyret@ynov.com',
+                'email' => 'mathieu.neyret@ynov.com',
                 'password' => Hash::make('password'),
             ],
             [

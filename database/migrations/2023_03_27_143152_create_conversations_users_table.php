@@ -15,6 +15,8 @@ return new class extends Migration
             $table->increments('id');
             $table->foreignUlid('user_id');
             $table->foreignId('conversation_id');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 
