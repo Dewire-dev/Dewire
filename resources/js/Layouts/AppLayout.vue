@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { Head, Link, router } from '@inertiajs/vue3';
+import { useDark } from "@vueuse/core";
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -12,6 +13,7 @@ defineProps({
     title: String,
 });
 
+const isDark = useDark();
 const showingNavigationDropdown = ref(false);
 
 const switchToTeam = (team) => {
@@ -55,6 +57,7 @@ const logout = () => {
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ml-6">
+                            <Button @click="isDark = !isDark" :label="isDark" size="small" />
                             <div class="ml-3 relative">
                                 <!-- Teams Dropdown -->
                                 <Dropdown v-if="$page.props.jetstream.hasTeamFeatures" align="right" width="60">
