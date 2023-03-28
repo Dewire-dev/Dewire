@@ -18,13 +18,15 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('firstname'),
+                Forms\Components\TextInput::make('lastname'),
                 Forms\Components\TextInput::make('email')->email()->required(),
                 Forms\Components\TextInput::make('password')->password()->required(),
             ]);
