@@ -1,5 +1,6 @@
 import './bootstrap';
-import '../css/app.css';
+import '../css/app.scss';
+import 'flowbite';
 
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 import "primevue/resources/primevue.min.css";
@@ -10,8 +11,10 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import PrimeVue from 'primevue/config';
+import {useDark} from "@vueuse/core";
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const isDark = useDark();
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
