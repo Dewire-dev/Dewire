@@ -87,11 +87,6 @@ function getTimeSpendOnOneTask (taskTimeSpends: Array<any>): number {
     return timeSpend
 }
 
-const user = {
-    firstName: 'Logan',
-    lastName: 'LE SAUX',
-}
-
 defineProps<{
     tasks: Array<Task>;
 }>();
@@ -101,7 +96,7 @@ defineProps<{
     <AppLayout title="Time">
         <template #header>
             <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
-                Dashboard
+                Time
             </h2>
         </template>
 
