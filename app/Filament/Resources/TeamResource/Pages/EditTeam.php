@@ -4,16 +4,16 @@ namespace App\Filament\Resources\TeamResource\Pages;
 
 use App\Filament\Resources\TeamResource;
 use Filament\Pages\Actions;
-use Filament\Resources\Pages\ManageRecords;
+use Filament\Resources\Pages\EditRecord;
 
-class ManageTeams extends ManageRecords
+class EditTeam extends EditRecord
 {
     protected static string $resource = TeamResource::class;
 
     protected function getActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }
