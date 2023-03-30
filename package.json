@@ -1,4 +1,5 @@
 {
+    "name": "dewire",
     "private": true,
     "scripts": {
         "dev": "vite",
