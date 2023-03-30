@@ -1,0 +1,27 @@
+.dark .dark\:nav-item-active {
+    --tw-bg-opacity: 1;
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+    .icon-projects path {
+        stroke: none;
+        fill: #FFC107;
+    }
+}
+.nav-item-active {
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.toggler-theme.pi {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 30px;
+}
+.icon-home path {
+    fill: currentColor;
+}
+
+.icon-projects path {
+    fill: none;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+}

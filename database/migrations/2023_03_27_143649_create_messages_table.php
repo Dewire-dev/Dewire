@@ -20,6 +20,8 @@ return new class extends Migration
             $table->text('content');
             $table->timestamp('sent_at');
             $table->timestamp('received_at');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 

@@ -15,14 +15,14 @@ class ProjectsSeeder extends Seeder
     {
         $projects = [
             [
-                'title' => 'Projet 1',
-                'subtitle' => 'Sous-projet 1',
-                'description' => 'Description du premier projet',
+                'title' => 'Island crossing',
+                'subtitle' => "Sous-titre d'island crossing",
+                'description' => "Description du magnifique projet d'island crossing",
             ],
             [
-                'title' => 'Projet 2',
-                'subtitle' => 'Sous-projet 2',
-                'description' => 'Description du deuxième projet',
+                'title' => 'Malton',
+                'subtitle' => 'Sous-titre de Malton',
+                'description' => "Description du magnifique projet de Malton",
             ],
         ];
 

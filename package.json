@@ -1,4 +1,5 @@
 {
+    "name": "dewire",
     "private": true,
     "scripts": {
         "dev": "vite",
@@ -13,6 +14,7 @@
         "@vitejs/plugin-vue": "^4.0.0",
         "autoprefixer": "^10.4.7",
         "axios": "^1.1.2",
+        "flowbite": "^1.6.4",
         "laravel-vite-plugin": "^0.7.2",
         "postcss": "^8.4.14",
         "sass": "^1.60.0",
@@ -26,6 +28,7 @@
         "ziggy-js": "^1.5.0"
     },
     "dependencies": {
+        "@vueuse/core": "^9.13.0",
         "primeicons": "^6.0.1",
         "primevue": "^3.26.0"
     }

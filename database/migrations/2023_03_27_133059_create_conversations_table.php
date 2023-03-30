@@ -16,6 +16,8 @@ return new class extends Migration
             $table->string('subject');
             $table->string('name');
             $table->foreignUlid('project_id');
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 
