@@ -14,7 +14,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return to_route('dashboard');
+        $projects = \App\Models\Project::all();
+        return Inertia::render('Projects/Index', compact('projects'));
     }
 
     /**
