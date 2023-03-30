@@ -1,27 +1,38 @@
 <script setup lang="ts">
-interface Props {
+import { Link } from "@inertiajs/vue3";
+import route from "ziggy-js";
+
+const { project } = defineProps<{
     project: {
+        id: number;
         title: string;
         subtitle: string;
         description: string;
     };
-}
+}>();
 
-const { project } = defineProps<Props>();
-
-const { title, subtitle, description } = project;
+const deleteProject = () => {
+    router.delete(route("projects.destroy", { project }));
+};
 </script>
 
 <template>
     <Card class="card">
-        <template #title>{{ title }}</template>
-        <template #subtitle>{{ subtitle }}</template>
+        <template #title>{{ project.title }}</template>
+        <template #subtitle>{{ project.subtitle }}</template>
         <template #content>
-            <p>{{ description }}</p>
+            <p>{{ project.description }}</p>
         </template>
         <template #footer>
-            <Button icon="pi pi-eye" label="Voir" />
-            <Button icon="pi pi-folder" label="Archiver" severity="secondary" />
+            <Link :href="route('projects.show', { project })">
+                <Button icon="pi pi-eye" label="Voir" />
+            </Link>
+            <Button icon="pi pi-wrench" label="Modifier" severity="secondary" />
+            <Button
+                @click="deleteProject"
+                icon="pi pi-trash"
+                severity="danger"
+            />
         </template>
     </Card>
 </template>
