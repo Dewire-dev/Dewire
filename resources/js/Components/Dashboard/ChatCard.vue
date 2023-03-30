@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
 
 defineProps<{
-    conversation: {
+    chat: {
         id: number;
         subject: string;
         name: string;
@@ -18,12 +18,12 @@ defineProps<{
 </script>
 <template>
     <Card class="card">
-        <template #title>{{ conversation.name }}</template>
+        <template #title>{{ chat.name }}</template>
         <template #content>
-            <p>{{ conversation.subject }}</p>
+            <p>{{ chat.subject }}</p>
         </template>
         <template #footer>
-            <Link :href="route('chat.show', { chat: conversation, project })">
+            <Link :href="route('chats.show', { project, chat })">
                 <Button icon="pi pi-eye" label="Voir" />
             </Link>
         </template>

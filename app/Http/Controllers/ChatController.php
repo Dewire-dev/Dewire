@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Conversation;
+use App\Models\Chat;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ConversationsController extends Controller
+class ChatController extends Controller
 {
     public function index()
     {
         return to_route('dashboard');
     }
 
-    public function show(Conversation $conversation)
+    public function show(Project $project, Chat $chat)
     {
-        return Inertia::render('Conversations/Show', compact('conversation'));
+        return Inertia::render('Chats/Show', compact('chat'));
     }
 }

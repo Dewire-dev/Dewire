@@ -30,8 +30,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        $conversations = \App\Models\Conversation::all();
-        return Inertia::render('Projects/Show', compact('project', 'conversations'));
+        $chats = \App\Models\Chat::all();
+        return Inertia::render('Projects/Show', compact('project', 'chats'));
     }
 
     /**

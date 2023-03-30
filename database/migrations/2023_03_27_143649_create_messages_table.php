@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUlid('sender_id')
                 ->references('id')
                 ->on('users');
-            $table->foreignId('conversation_id');
+            $table->foreignId('chat_id');
             $table->text('content');
             $table->timestamp('created_at')->useCurrent();
             $table->dateTime('read_at')->nullable();

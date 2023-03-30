@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ConversationCard from "../../Components/Dashboard/ConversationCard.vue";
+import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 defineProps<{
@@ -9,7 +9,7 @@ defineProps<{
         subtitle: string;
         description: string;
     };
-    conversations: Array<{
+    chats: Array<{
         id: number;
         subject: string;
         name: string;
@@ -35,7 +35,7 @@ defineProps<{
                     Liste des conversations
                 </h3>
                 <div class="grid grid-cols-3 gap-6 mx-6 mt-12">
-                    <ConversationCard v-for="conversation in conversations" :conversation="conversation" :project="project" />
+                    <ChatCard v-for="chat in chats" :chat="chat" :project="project" />
                 </div>
             </div>
         </div>
