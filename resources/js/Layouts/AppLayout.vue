@@ -45,7 +45,7 @@ const logout = () => {
                             <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
                                     aria-controls="logo-sidebar" type="button"
                                     class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-                                <span class="sr-only">Open sidebar</span>
+                                <span class="sr-only">Ouvrir le menu</span>
                                 <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
                                     <path clip-rule="evenodd" fill-rule="evenodd"
@@ -71,7 +71,6 @@ const logout = () => {
                                     <button type="button"
                                             class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                             aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                        <span class="sr-only">Open user menu</span>
                                         <img class="w-8 h-8 rounded-full"
                                              src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
                                              alt="user photo">
@@ -82,33 +81,29 @@ const logout = () => {
                                     id="dropdown-user">
                                     <div class="px-4 py-3" role="none">
                                         <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                            Neil Sims
+                                            {{ $page.props.auth.user.firstname }} {{ $page.props.auth.user.lastname }}
                                         </p>
                                         <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
                                            role="none">
-                                            neil.sims@flowbite.com
+                                            {{ $page.props.auth.user.email }}
                                         </p>
                                     </div>
                                     <ul class="py-1" role="none">
                                         <li>
-                                            <a href="#"
+                                            <Link :href="route('profile.show')"
                                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">Dashboard</a>
+                                               role="menuitem">Profil</Link>
+                                        </li>
+                                        <li v-if="$page.props.jetstream.hasApiFeatures">
+                                            <Link :href="route('api-tokens.index')"
+                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                               role="menuitem">API Tokens</Link>
                                         </li>
                                         <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">Settings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">Earnings</a>
-                                        </li>
-                                        <li>
-                                            <a href="#"
-                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">Sign out</a>
+                                            <form @submit.prevent="logout">
+                                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                               role="menuitem">Déconnexion</button>
+                                            </form>
                                         </li>
                                     </ul>
                                 </div>
