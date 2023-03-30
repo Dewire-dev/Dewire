@@ -24,3 +24,4 @@ _ide_helper_models.php
 /.vscode
 auto-imports.d.ts
 components.d.ts
+docker-compose.yml

@@ -1,5 +1,6 @@
 import './bootstrap';
-import '../css/app.css';
+import '../css/app.scss';
+import 'flowbite';
 
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 import "primevue/resources/primevue.min.css";
