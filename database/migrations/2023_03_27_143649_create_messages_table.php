@@ -18,9 +18,8 @@ return new class extends Migration
                 ->on('users');
             $table->foreignId('conversation_id');
             $table->text('content');
-            $table->timestamp('sent_at');
-            $table->timestamp('received_at');
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->useCurrent();
+            $table->dateTime('read_at')->nullable();
             $table->timestamp('updated_at');
         });
     }

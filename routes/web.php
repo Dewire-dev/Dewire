@@ -35,4 +35,6 @@ Route::middleware([
     })->name('dashboard');
 
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class);
+
+    Route::apiResource('projects.chat', \App\Http\Controllers\ConversationsController::class)->except(['update', 'destroy'])->names('chat');
 });

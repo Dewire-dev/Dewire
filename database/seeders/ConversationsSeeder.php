@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Conversations;
+use App\Models\Conversation;
 use App\Models\Project;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,7 +28,7 @@ class ConversationsSeeder extends Seeder
         ];
 
         foreach ($conversations as $conversation) {
-            Conversations::updateOrCreate($conversation);
+            Conversation::updateOrCreate($conversation);
         }
     }
 }

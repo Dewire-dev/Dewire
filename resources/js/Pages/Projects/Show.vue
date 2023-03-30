@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import ConversationCard from "../../Components/Dashboard/ConversationCard.vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+
 defineProps<{
     project: {
         id: number;
@@ -6,6 +9,11 @@ defineProps<{
         subtitle: string;
         description: string;
     };
+    conversations: Array<{
+        id: number;
+        subject: string;
+        name: string;
+    }>;
 }>();
 </script>
 
@@ -21,6 +29,14 @@ defineProps<{
             <div class="text-gray-800 dark:text-gray-200">
                 <p>{{ project.subtitle }}</p>
                 <p>{{ project.description }}</p>
+            </div>
+            <div class="py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <h3 class="text-lg text-gray-800 dark:text-gray-200">
+                    Liste des conversations
+                </h3>
+                <div class="grid grid-cols-3 gap-6 mx-6 mt-12">
+                    <ConversationCard v-for="conversation in conversations" :conversation="conversation" :project="project" />
+                </div>
             </div>
         </div>
     </AppLayout>
