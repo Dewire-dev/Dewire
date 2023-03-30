@@ -30,8 +30,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        $projects = \App\Models\Project::all();
-        return Inertia::render('Dashboard', compact('projects'));
+        return Inertia::render('Dashboard');
     })->name('dashboard');
 
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class);
