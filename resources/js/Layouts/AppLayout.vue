@@ -1,15 +1,15 @@
 <script setup>
 import {ref} from 'vue';
 import {Head, Link, router} from '@inertiajs/vue3';
+import {useDark} from "@vueuse/core";
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
-
-const isDark = useDark();
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import {useDark} from "@vueuse/core";
+
+const isDark = useDark();
 
 defineProps({
     title: String,
