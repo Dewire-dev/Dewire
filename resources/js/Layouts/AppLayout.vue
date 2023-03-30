@@ -36,9 +36,9 @@ const logout = () => {
 
         <Banner/>
 
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="min-h-screen bg-gray-100 dark:bg-body">
             <nav
-                class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                class="fixed top-0 z-50 w-full border-b border-gray-200 dark:bg-sidebar bg-white dark:border-white-018">
                 <div class="px-3 py-3 lg:px-5 lg:pl-3">
                     <div class="flex items-center justify-between">
                         <div class="flex items-center justify-start">
@@ -91,18 +91,22 @@ const logout = () => {
                                     <ul class="py-1" role="none">
                                         <li>
                                             <Link :href="route('profile.show')"
-                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">Profil</Link>
+                                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                  role="menuitem">Profil
+                                            </Link>
                                         </li>
                                         <li v-if="$page.props.jetstream.hasApiFeatures">
                                             <Link :href="route('api-tokens.index')"
-                                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">API Tokens</Link>
+                                                  class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                  role="menuitem">API Tokens
+                                            </Link>
                                         </li>
                                         <li>
                                             <form @submit.prevent="logout">
-                                            <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                               role="menuitem">Déconnexion</button>
+                                                <button
+                                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                    role="menuitem">Déconnexion
+                                                </button>
                                             </form>
                                         </li>
                                     </ul>
@@ -114,27 +118,13 @@ const logout = () => {
             </nav>
 
             <aside id="logo-sidebar"
-                   class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+                   class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-sidebar dark:border-white-018"
                    aria-label="Sidebar">
-                <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+                <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-sidebar">
                     <ul class="space-y-2 font-medium">
                         <li>
-                            <Link :class="route().current('dashboard') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('dashboard')"
-                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <svg
-                                    class="icon-home flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                    id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 22.04 18.91">
-                                    <path id="Tracé_15" data-name="Tracé 15"
-                                          d="M228-47.9,218-56.14a.94.94,0,0,0-1.33,0l0,0-2.38,2s-.07.1-.15.06V-55c0-.43-.15-.58-.58-.58h-2.2c-.48,0-.63.15-.63.62v3.55a.32.32,0,0,1-.14.29l-2.83,2.32a12,12,0,0,0-1.43,1.22v.3c.31.36.48.37.87.06l1.9-1.56s.07-.1.15-.06V-38a.42.42,0,0,0,.38.47h5v0h5.35v0H225a.41.41,0,0,0,.36-.37,2.17,2.17,0,0,0,0-.26v-10.5a.37.37,0,0,1,0-.23l.86.7,1.29,1.05a.42.42,0,0,0,.61,0,.37.37,0,0,0,.12-.2C228.33-47.61,228.19-47.76,228-47.9ZM211.7-54.74c.45,0,.89,0,1.33,0,.12,0,.17,0,.16.15,0,.37,0,.74,0,1.11a.23.23,0,0,1-.1.22L211.54-52v-2.57c0-.13,0-.18.16-.18Zm7.46,16.33h-3.78v-4.91a.58.58,0,0,1,.58-.58h2.62a.58.58,0,0,1,.58.58Zm5.13,0H220v-4.91a1.36,1.36,0,0,0-1.37-1.36H216a1.36,1.36,0,0,0-1.37,1.36v4.92h-4.34c-.18,0-.22,0-.22-.22,0-3.61,0-7.21,0-10.82a.39.39,0,0,1,.15-.33l6.62-5.4a.62.62,0,0,1,.89,0l.05,0,6.6,5.39a.39.39,0,0,1,.16.34v10.82c0,.19,0,.22-.22.22Z"
-                                          transform="translate(-206.25 56.42)"/>
-                                </svg>
-                                <span class="ml-3">Accueil</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link :class="route().current('projects.index') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.index')"
-                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                            <Link :class="route().current('projects.*') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.index')"
+                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
                                 <svg class="icon-projects flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 17.79 34.56">
                                     <g id="Composant_2_1" data-name="Composant 2 1">
@@ -147,34 +137,24 @@ const logout = () => {
                             </Link>
                         </li>
                         <li>
-                            <a href="#"
-                               class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <svg aria-hidden="true"
-                                     class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                     fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M8.707 7.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l2-2a1 1 0 00-1.414-1.414L11 7.586V3a1 1 0 10-2 0v4.586l-.293-.293z"></path>
-                                    <path
-                                        d="M3 5a2 2 0 012-2h1a1 1 0 010 2H5v7h2l1 2h4l1-2h2V5h-1a1 1 0 110-2h1a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"></path>
-                                </svg>
+                            <Link
+                                :class="route().current('profile.show') ? 'dark:nav-item-active nav-item-active' : ''"
+                                :href="route('profile.show')"
+                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <i-carbon-user class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                               fill="currentColor"></i-carbon-user>
                                 <span class="flex-1 ml-3 whitespace-nowrap">Mon compte</span>
-                                <span
-                                    class="inline-flex items-center justify-center w-3 h-3 p-3 ml-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
-                            </a>
+                            </Link>
                         </li>
                         <li>
                             <form @submit.prevent="logout">
-                                <button
-                                    class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <svg aria-hidden="true"
-                                         class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                                         fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                              d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z"
-                                              clip-rule="evenodd"></path>
-                                    </svg>
-                                    <span class="flex-1 ml-3 whitespace-nowrap">Déconnexion</span>
-                                </button>
+                                <Link  as="button"
+                                    class="w-100 flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <i-carbon-logout
+                                        class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                                        fill="currentColor"></i-carbon-logout>
+                                    <span class="flex-1 ml-3 whitespace-nowrap text-left">Déconnexion</span>
+                                </Link>
                             </form>
                         </li>
                     </ul>
@@ -182,14 +162,14 @@ const logout = () => {
             </aside>
 
             <!-- Page Heading -->
-            <header v-if="$slots.header" class="bg-white dark:bg-gray-800 shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <header v-if="$slots.header" class="bg-white shadow dark:bg-body">
+                <div class="sm:ml-64 py-6 px-4 sm:px-6 lg:px-8">
                     <slot name="header"/>
                 </div>
             </header>
 
-            <div class="p-4 sm:ml-64">
-                <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div class="p-4 sm:ml-64 dark:bg-body">
+                <div class="p-4">
                     <!-- Page Content -->
                     <main>
                         <slot/>
@@ -199,3 +179,46 @@ const logout = () => {
         </div>
     </div>
 </template>
+<style scoped>
+.dark .dark\:bg-sidebar {
+    background-color: #2E2E30;
+}
+
+.dark .dark\:nav-item-active {
+    --tw-bg-opacity: 0.18;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+}
+
+.nav-item-active {
+    --tw-bg-opacity: 1;
+    background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.toggler-theme.pi {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 30px;
+}
+
+.icon-home path {
+    fill: currentColor;
+}
+
+.icon-projects path {
+    fill: none;
+    stroke: currentColor;
+    stroke-miterlimit: 10;
+}
+.tab-projects:hover .icon-projects path {
+    stroke: #FFC107;
+    fill: #FFC107;
+}
+.nav-item-active.tab-projects .icon-projects path {
+    stroke: #FFC107;
+    fill: #FFC107;
+}
+
+header {
+    margin-top: 3.8rem;
+}
+</style>

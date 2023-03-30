@@ -15,6 +15,8 @@ const props = defineProps({
 
 const form = useForm({
     _method: 'PUT',
+    firstname: props.user.firstname,
+    lastname: props.user.lastname,
     name: props.user.name,
     email: props.user.email,
     photo: null,
@@ -78,11 +80,7 @@ const clearPhotoFileInput = () => {
 <template>
     <FormSection @submitted="updateProfileInformation">
         <template #title>
-            Profile Information
-        </template>
-
-        <template #description>
-            Update your account's profile information and email address.
+            Informations personnelles
         </template>
 
         <template #form>
@@ -127,9 +125,35 @@ const clearPhotoFileInput = () => {
                 <InputError :message="form.errors.photo" class="mt-2" />
             </div>
 
-            <!-- Name -->
+            <!-- Prénom -->
             <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="firstname" value="Prénom" />
+                <TextInput
+                    id="firstname"
+                    v-model="form.firstname"
+                    type="text"
+                    class="mt-1 block w-full"
+                    autocomplete="firstname"
+                />
+                <InputError :message="form.errors.firstname" class="mt-2" />
+            </div>
+
+            <!-- Nom -->
+            <div class="col-span-6 sm:col-span-4">
+                <InputLabel for="lastname" value="Nom" />
+                <TextInput
+                    id="lastname"
+                    v-model="form.lastname"
+                    type="text"
+                    class="mt-1 block w-full"
+                    autocomplete="lastname"
+                />
+                <InputError :message="form.errors.lastname" class="mt-2" />
+            </div>
+
+            <!-- Login -->
+            <div class="col-span-6 sm:col-span-4">
+                <InputLabel for="name" value="Identifiant" />
                 <TextInput
                     id="name"
                     v-model="form.name"
@@ -154,7 +178,7 @@ const clearPhotoFileInput = () => {
 
                 <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
                     <p class="text-sm mt-2 dark:text-white">
-                        Your email address is unverified.
+                        Votre email n'a pas été vérifié
 
                         <Link
                             :href="route('verification.send')"
@@ -163,24 +187,20 @@ const clearPhotoFileInput = () => {
                             class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                             @click.prevent="sendEmailVerification"
                         >
-                            Click here to re-send the verification email.
+                            Cliquer ici pour renvoyer le mail de vérification.
                         </Link>
                     </p>
 
                     <div v-show="verificationLinkSent" class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                        A new verification link has been sent to your email address.
+                        Un nouveau lien de vérification vous a été envoyé sur votre adresse mail
                     </div>
                 </div>
             </div>
         </template>
 
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="mr-3">
-                Saved.
-            </ActionMessage>
-
             <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                Save
+                Enregistrer
             </PrimaryButton>
         </template>
     </FormSection>
