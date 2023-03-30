@@ -3,7 +3,7 @@ import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import route from "ziggy-js";
 
-const props = defineProps<{
+defineProps<{
     project: {
         id: number;
         title: string;
