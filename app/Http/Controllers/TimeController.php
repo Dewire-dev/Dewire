@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,15 @@ class TimeController extends Controller
             ])
             ->get()
         ;
-        return Inertia::render('Time/Time', compact('tasks'));
+
+        $users = User::All();
+
+        return Inertia::render(
+            'Time/Time',
+            compact(
+                'tasks',
+                'users',
+            )
+        );
     }
 }

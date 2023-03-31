@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { datesAreOnSameDay, formatDate } from '@/Services/date'
+import { datesAreOnSameDay, useFormatDate } from '@/Composables/date'
 import {Task} from "@/Interfaces/Task";
 
 const currentDate = ref(new Date())
@@ -9,6 +9,9 @@ const tuesday = ref();
 const wednesday = ref();
 const thursday = ref();
 const friday = ref();
+
+const currentUserSelected = ref();
+const users = ref();
 
 onBeforeMount(() => {
     monday.value = currentDate.value.getDate() - currentDate.value.getDay() + 1;
@@ -28,23 +31,23 @@ const dates = computed(() => [monday.value, friday.value])
 const days = computed(() => {
     return [
         {
-            label: formatDate(monday.value, 'dddd DD MMMM').toUpperCase(),
+            label: useFormatDate(monday.value, 'dddd DD MMMM').toUpperCase(),
             date: monday.value,
         },
         {
-            label: formatDate(tuesday.value, 'dddd DD MMMM').toUpperCase(),
+            label: useFormatDate(tuesday.value, 'dddd DD MMMM').toUpperCase(),
             date: tuesday.value,
         },
         {
-            label: formatDate(wednesday.value, 'dddd DD MMMM').toUpperCase(),
+            label: useFormatDate(wednesday.value, 'dddd DD MMMM').toUpperCase(),
             date: wednesday.value,
         },
         {
-            label: formatDate(thursday.value, 'dddd DD MMMM').toUpperCase(),
+            label: useFormatDate(thursday.value, 'dddd DD MMMM').toUpperCase(),
             date: thursday.value
         },
         {
-            label: formatDate(friday.value, 'dddd DD MMMM').toUpperCase(),
+            label: useFormatDate(friday.value, 'dddd DD MMMM').toUpperCase(),
             date: friday.value,
         },
     ]
@@ -53,7 +56,6 @@ const days = computed(() => {
 function getTimeSpendOnOneTaskPerDay (taskTimeSpends: Array<any>, date: Date): number {
     let timeSpend = 0
 
-    console.log(taskTimeSpends)
     taskTimeSpends.forEach((taskTimeSpend) => {
         if (datesAreOnSameDay(taskTimeSpend.date, date)) {
             timeSpend += taskTimeSpend.time
@@ -89,6 +91,7 @@ function getTimeSpendOnOneTask (taskTimeSpends: Array<any>): number {
 
 defineProps<{
     tasks: Array<Task>;
+    users: Array<User>;
 }>();
 </script>
 
