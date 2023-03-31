@@ -20,6 +20,8 @@ const breadcrumb = [
         route: route("projects.notes.index", { project }),
     },
 ];
+
+const content = ref("<p>I'm running Tiptap with Vue.js. 🎉</p>");
 </script>
 
 <template>
@@ -35,8 +37,8 @@ const breadcrumb = [
             </div>
         </template>
 
-        <pre class="text-white">
-            {{ note }}
-        </pre>
+        <NoteEditor v-model="content" />
+
+        <textarea v-model="content"></textarea>
     </AppLayout>
 </template>
