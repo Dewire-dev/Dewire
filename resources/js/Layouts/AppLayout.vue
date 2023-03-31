@@ -123,6 +123,13 @@ const logout = () => {
                 <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-sidebar">
                     <ul class="space-y-2 font-medium">
                         <li>
+                            <Link :class="route().current('dashboard') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.index')"
+                                  class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
+                                <i-carbon-home class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-home>
+                                <span class="flex-1 ml-3 whitespace-nowrap">Accueil</span>
+                            </Link>
+                        </li>
+                        <li>
                             <Link :class="route().current('projects.*') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.index')"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
                                 <svg class="icon-projects flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg"
@@ -148,13 +155,13 @@ const logout = () => {
                         </li>
                         <li>
                             <form @submit.prevent="logout">
-                                <Link  as="button"
+                                <button type="submit"
                                     class="w-100 flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <i-carbon-logout
                                         class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                         fill="currentColor"></i-carbon-logout>
                                     <span class="flex-1 ml-3 whitespace-nowrap text-left">Déconnexion</span>
-                                </Link>
+                                </button>
                             </form>
                         </li>
                     </ul>
@@ -198,10 +205,6 @@ const logout = () => {
     right: 20px;
     bottom: 20px;
     font-size: 30px;
-}
-
-.icon-home path {
-    fill: currentColor;
 }
 
 .icon-projects path {
