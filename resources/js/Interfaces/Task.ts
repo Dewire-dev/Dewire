@@ -11,4 +11,6 @@ export interface Task {
     start_at: Date,
     updated_at: Date,
     task_time_spends: Array<TaskTimeSpend>,
+    state: string,
+    type: string,
 }

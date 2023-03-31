@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue'
 import { datesAreOnSameDay, useFormatDate } from '@/Composables/date'
-import {Task} from "@/Interfaces/Task";
+import { Task } from '@/Interfaces/Task'
+import { TaskTimeSpend } from '@/Interfaces/TaskTimeSpend'
+import ItemHeader from '@/Interfaces/ItemHeader'
+import Item from "@/Interfaces/Item";
 
 const currentDate = ref(new Date())
 const monday = ref();
@@ -12,6 +15,11 @@ const friday = ref();
 
 const currentUserSelected = ref();
 const users = ref();
+
+const props = defineProps<{
+    tasks: Array<Task>;
+    // users: Array<User>;
+}>();
 
 onBeforeMount(() => {
     monday.value = currentDate.value.getDate() - currentDate.value.getDay() + 1;
@@ -31,29 +39,104 @@ const dates = computed(() => [monday.value, friday.value])
 const days = computed(() => {
     return [
         {
-            label: useFormatDate(monday.value, 'dddd DD MMMM').toUpperCase(),
+            label: 'monday',
             date: monday.value,
         },
         {
-            label: useFormatDate(tuesday.value, 'dddd DD MMMM').toUpperCase(),
+            label: 'tuesday',
             date: tuesday.value,
         },
         {
-            label: useFormatDate(wednesday.value, 'dddd DD MMMM').toUpperCase(),
+            label: 'wednesday',
             date: wednesday.value,
         },
         {
-            label: useFormatDate(thursday.value, 'dddd DD MMMM').toUpperCase(),
+            label: 'thursday',
             date: thursday.value
         },
         {
-            label: useFormatDate(friday.value, 'dddd DD MMMM').toUpperCase(),
+            label: 'friday',
             date: friday.value,
         },
     ]
 });
 
-function getTimeSpendOnOneTaskPerDay (taskTimeSpends: Array<any>, date: Date): number {
+const headers = computed((): Array<ItemHeader> => [
+    {
+        text: 'Tâches',
+        value: 'task',
+    },
+    {
+        text: 'Catégorie',
+        value: 'category',
+    },
+    {
+        text: getFormatDateByLabel('monday'),
+        value: 'monday',
+    },
+    {
+        text: getFormatDateByLabel('tuesday'),
+        value: 'tuesday',
+    },
+    {
+        text: getFormatDateByLabel('wednesday'),
+        value: 'wednesday',
+    },
+    {
+        text: getFormatDateByLabel('thursday'),
+        value: 'thursday',
+    },
+    {
+        text: getFormatDateByLabel('friday'),
+        value: 'friday',
+    },
+    {
+        text: 'Total',
+        value: 'total',
+    },
+]);
+
+const items = computed((): Array<Array<Item>> => {
+    return props.tasks.map((task: Task) => {
+        return [
+            {
+                text: task.label,
+                value: 'task',
+                bold: true,
+            },
+            {
+                text: task.type,
+                value: 'category',
+            },
+            {
+                text: formatTimeSpend(getTimeSpendOnOneTask(task.task_time_spends)),
+                value: 'total'
+            },
+            {
+                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('monday').date)),
+                value: 'monday',
+            },
+            {
+                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('tuesday').date)),
+                value: 'tuesday',
+            },
+            {
+                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('wednesday').date)),
+                value: 'wednesday',
+            },
+            {
+                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('thursday').date)),
+                value: 'thursday',
+            },
+            {
+                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('friday').date)),
+                value: 'friday',
+            },
+        ]
+    })
+});
+
+function getTimeSpendOnOneTaskPerDay (taskTimeSpends: Array<TaskTimeSpend>, date: Date): number {
     let timeSpend = 0
 
     taskTimeSpends.forEach((taskTimeSpend) => {
@@ -65,7 +148,7 @@ function getTimeSpendOnOneTaskPerDay (taskTimeSpends: Array<any>, date: Date): n
     return timeSpend
 }
 
-function showTimeSpend (timeSpend: number): string {
+function formatTimeSpend (timeSpend: number): string {
     let hours: number = 0
     let minutes: number = 0
 
@@ -79,7 +162,7 @@ function showTimeSpend (timeSpend: number): string {
     return hours + 'h' + ((minutes < 10) ? '0' : '') + minutes + 'm'
 }
 
-function getTimeSpendOnOneTask (taskTimeSpends: Array<any>): number {
+function getTimeSpendOnOneTask (taskTimeSpends: Array<TaskTimeSpend>): number {
     let timeSpend = 0
 
     taskTimeSpends.forEach((taskTimeSpend) => {
@@ -89,10 +172,18 @@ function getTimeSpendOnOneTask (taskTimeSpends: Array<any>): number {
     return timeSpend
 }
 
-defineProps<{
-    tasks: Array<Task>;
-    users: Array<User>;
-}>();
+function getDayByLabel (label: string): any {
+    return days.value.find((day: any) => {
+        if (day.label === label) {
+            return day
+        }
+    })
+}
+
+function getFormatDateByLabel (label: string): string {
+    const day = getDayByLabel(label)
+    return day ? useFormatDate(day.date, 'dddd DD MMMM').toUpperCase() : ''
+}
 </script>
 
 <template>
@@ -108,21 +199,11 @@ defineProps<{
                 Mes tâches et temps saisis
             </h3>
             <div class="mx-6 mt-12">
-                <Calendar v-model="dates" selectionMode="range" readonly/>
-                <DataTable :value="tasks">
-                    <Column field="label" header="Label"></Column>
-                    <Column field="type" header="Type"></Column>
-                    <Column v-for="day in days" :header="day.label">
-                        <template #body="slotProps">
-                            {{ showTimeSpend(getTimeSpendOnOneTaskPerDay(slotProps.data.task_time_spends, day.date)) }}
-                        </template>
-                    </Column>
-                    <Column field="userTimeSpend" header="Total">
-                        <template #body="slotProps">
-                            {{ showTimeSpend(getTimeSpendOnOneTask(slotProps.data.task_time_spends)) }}
-                        </template>
-                    </Column>
-                </DataTable>
+                <!--<Calendar v-model="dates" selectionMode="range" readonly/>-->
+                <Table
+                    :headers="headers"
+                    :items="items"
+                />
             </div>
         </div>
     </AppLayout>
