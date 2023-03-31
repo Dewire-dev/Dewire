@@ -79,6 +79,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Task::class);
     }
 
+    public  function chats()
+    {
+        return $this->belongsToMany(Chat::class, 'chats_users');
+    }
+
     public function canAccessFilament(): bool
     {
         return in_array($this->email, [

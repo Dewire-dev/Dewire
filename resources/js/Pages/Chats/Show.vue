@@ -7,6 +7,10 @@ defineProps<{
         subject: string;
         name: string;
     };
+    messages: Array<{
+        id: number;
+        content: string;
+    }>
 }>();
 
 </script>
@@ -21,6 +25,9 @@ defineProps<{
         <div class="py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
             <div class="text-gray-800 dark:text-gray-200">
                 <p>{{ chat.subject }}</p>
+                <div v-for="message in messages">
+                    <p>{{ message.content }}</p>
+                </div>
             </div>
         </div>
     </AppLayout>

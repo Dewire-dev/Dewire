@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import route from "ziggy-js";
 
 defineProps<{
     project: {

@@ -31,6 +31,38 @@ class ChatsUsersSeeder extends Seeder
             [
                 'user_id' => User::where('email', 'theonicolas19@outlook.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Island crossing Retour client')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'mathieu.neyret@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'anael.bonnafous@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'logan.lesaux@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'theonicolas19@outlook.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'mathieu.neyret@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'anael.bonnafous@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'logan.lesaux@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
+            ],
+            [
+                'user_id' => User::where('email', 'theonicolas19@outlook.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
             ]
         ];
 
