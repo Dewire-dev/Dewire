@@ -21,7 +21,7 @@ const breadcrumb = [
     {
         label: 'Mes projets',
         route: route('projects.index')
-    }
+    },
 ];
 </script>
 
