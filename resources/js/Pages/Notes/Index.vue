@@ -19,10 +19,32 @@ const storeNote = () => {
 const destroyNote = (note: any) => {
     router.delete(route("projects.notes.destroy", { project, note }));
 };
+
+const breadcrumb = [
+    {
+        label: "Mes projets",
+        route: route("projects.index"),
+    },
+    {
+        label: project.title,
+        route: route("projects.show", { project }),
+    },
+];
 </script>
 
 <template>
     <AppLayout title="Notes">
+        <template #header>
+            <BreadCrumb :breadcrumb="breadcrumb" />
+            <div class="">
+                <h2
+                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center"
+                >
+                    Notes
+                </h2>
+            </div>
+        </template>
+
         <div class="grid grid-cols-2 gap-10">
             <div class="flex flex-col gap-6">
                 <div>

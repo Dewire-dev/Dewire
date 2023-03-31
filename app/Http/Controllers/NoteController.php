@@ -44,7 +44,7 @@ class NoteController extends Controller
      */
     public function show(Project $project, Note $note)
     {
-        return Inertia::render('Notes/Show', compact('note'));
+        return Inertia::render('Notes/Show', compact('project', 'note'));
     }
 
     /**

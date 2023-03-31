@@ -2,6 +2,7 @@
 import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import route from "ziggy-js";
+import { Button } from "flowbite-vue";
 
 defineProps<{
     project: {
@@ -43,6 +44,10 @@ const breadcrumb = [
             <p>{{ project.subtitle }}</p>
             <p>{{ project.description }}</p>
         </div>
+
+        <Link :href="route('projects.notes.index', { project })">
+            <Button color="yellow">Notes</Button>
+        </Link>
 
         <div class="mt-10">
             <h3 class="text-lg text-gray-800 dark:text-gray-200">
