@@ -9,7 +9,6 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 
 import IconsResolver from 'unplugin-icons/resolver';
-import { PrimeVueResolver } from 'unplugin-vue-components/resolvers';
 
 export default defineConfig({
     plugins: [
@@ -39,7 +38,7 @@ export default defineConfig({
             dts: 'resources/js/auto-imports.d.ts',
         }),
         Components({
-            resolvers: [IconsResolver(), PrimeVueResolver()],
+            resolvers: [IconsResolver()],
             dirs: ['resources/js/Components', 'resources/js/Layouts'],
             dts: 'resources/js/components.d.ts',
         }),
