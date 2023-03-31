@@ -148,13 +148,14 @@ const logout = () => {
                         </li>
                         <li>
                             <form @submit.prevent="logout">
-                                <Link  as="button"
+                                <button
+                                    type="submit"
                                     class="w-100 flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                                     <i-carbon-logout
                                         class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                                         fill="currentColor"></i-carbon-logout>
                                     <span class="flex-1 ml-3 whitespace-nowrap text-left">Déconnexion</span>
-                                </Link>
+                                </button>
                             </form>
                         </li>
                     </ul>
