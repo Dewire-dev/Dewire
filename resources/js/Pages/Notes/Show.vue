@@ -21,7 +21,7 @@ const breadcrumb = [
     },
 ];
 
-const content = ref("<p>I'm running Tiptap with Vue.js. 🎉</p>");
+const content = ref("");
 </script>
 
 <template>
@@ -38,7 +38,5 @@ const content = ref("<p>I'm running Tiptap with Vue.js. 🎉</p>");
         </template>
 
         <NoteEditor v-model="content" />
-
-        <textarea v-model="content"></textarea>
     </AppLayout>
 </template>

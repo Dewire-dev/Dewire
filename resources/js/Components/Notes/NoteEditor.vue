@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { useEditor, EditorContent, FloatingMenu } from "@tiptap/vue-3";
+import { useEditor, EditorContent, FloatingMenu, type JSONContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import { Button } from "flowbite-vue";
 
 const props = withDefaults(
     defineProps<{
-        modelValue: string;
+        modelValue?: JSONContent | string;
     }>(),
     { modelValue: "" }
 );
 
 const emit = defineEmits<{
-    (e: "update:modelValue", html: string | undefined): void;
+    (e: "update:modelValue", json?: JSONContent): void;
 }>();
 
 const editor = useEditor({
@@ -23,14 +23,15 @@ const editor = useEditor({
     },
     content: props.modelValue,
     onUpdate: () => {
-        emit("update:modelValue", editor.value?.getHTML());
+        emit("update:modelValue", editor.value?.getJSON());
     },
 });
 
 watch(
     () => props.modelValue,
     (value) => {
-        if (editor.value?.getHTML() === value) return;
+        if (JSON.stringify(editor.value?.getJSON()) === JSON.stringify(value))
+            return;
         editor.value?.commands.setContent(value, false);
     }
 );
