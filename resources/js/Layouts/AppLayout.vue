@@ -1,6 +1,6 @@
-<script setup>
-import {ref} from 'vue';
+<script setup lang="ts">
 import {Head, Link, router} from '@inertiajs/vue3';
+import route from 'ziggy-js';
 import {useDark} from "@vueuse/core";
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
@@ -9,6 +9,8 @@ const isDark = useDark();
 defineProps({
     title: String,
 });
+
+const projects = computed<App.Models.Project[]>(() => usePage().props.layout?.projects || [])
 
 const showingNavigationDropdown = ref(false);
 
