@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
+import { Button, TheCard } from "flowbite-vue";
 
 defineProps<{
     chat: {
@@ -17,15 +18,13 @@ defineProps<{
 }>();
 </script>
 <template>
-    <Card class="card">
-        <template #title>{{ chat.name }}</template>
-        <template #content>
-            <p>{{ chat.subject }}</p>
-        </template>
-        <template #footer>
-            <Link :href="route('chats.show', { project, chat })">
-                <Button icon="pi pi-eye" label="Voir" />
-            </Link>
-        </template>
-    </Card>
+    <TheCard class="card">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ chat.name }}</h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">
+            {{ chat.subject }}
+        </p>
+        <Link :href="route('chats.show', { project, chat })">
+            <Button>Voir</Button>
+        </Link>
+    </TheCard>
 </template>
