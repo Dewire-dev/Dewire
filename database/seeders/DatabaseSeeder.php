@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersSeeder::class);
         $this->call(TeamsSeeder::class);
         $this->call(ProjectsSeeder::class);
-        $this->call(ConversationsSeeder::class);
-        $this->call(ConversationsUsersSeeder::class);
+        $this->call(ChatsSeeder::class);
+        $this->call(ChatsUsersSeeder::class);
         $this->call(MessagesSeeder::class);
     }
 }
