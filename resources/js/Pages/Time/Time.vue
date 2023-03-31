@@ -1,62 +1,61 @@
 <script setup lang="ts">
 import AppLayout from '@/Layouts/AppLayout.vue'
-import { datesAreOnSameDay, useFormatDate } from '@/Composables/date'
 import { Task } from '@/Interfaces/Task'
 import { TaskTimeSpend } from '@/Interfaces/TaskTimeSpend'
 import ItemHeader from '@/Interfaces/ItemHeader'
 import Item from "@/Interfaces/Item";
-
-const currentDate = ref(new Date())
-const monday = ref();
-const tuesday = ref();
-const wednesday = ref();
-const thursday = ref();
-const friday = ref();
+import {useDate} from "@/Composables/date";
+import route from "ziggy-js";
+import axios from "axios";
 
 const currentUserSelected = ref();
-const users = ref();
+const tasks = ref<Array<Task>>([]);
+const firstDayOfWeek = ref();
+const lastDayOfWeek = ref();
+const users = ref([]);
+
+const waitingBeforeSendingRequest = ref(false)
 
 const props = defineProps<{
+    firstDayOfWeek: string,
+    lastDayOfWeek: string,
     tasks: Array<Task>;
     // users: Array<User>;
 }>();
 
 onBeforeMount(() => {
-    monday.value = currentDate.value.getDate() - currentDate.value.getDay() + 1;
-    tuesday.value = monday.value + 1;
-    wednesday.value = monday.value + 2;
-    thursday.value = monday.value + 3;
-    friday.value = monday.value + 4;
-    monday.value = new Date(currentDate.value.setDate(monday.value));
-    tuesday.value = new Date(currentDate.value.setDate(tuesday.value));
-    wednesday.value = new Date(currentDate.value.setDate(wednesday.value));
-    thursday.value = new Date(currentDate.value.setDate(thursday.value));
-    friday.value = new Date(currentDate.value.setDate(friday.value));
+    tasks.value = props.tasks
+    firstDayOfWeek.value = props.firstDayOfWeek
+    lastDayOfWeek.value = props.lastDayOfWeek
 })
 
-const dates = computed(() => [monday.value, friday.value])
-
 const days = computed(() => {
+    const date = new Date(firstDayOfWeek.value)
+    const monday = new Date(date)
+    const tuesday = new Date(date.setDate(date.getDate() + 1))
+    const wednesday = new Date(date.setDate(date.getDate() + 1))
+    const thursday = new Date(date.setDate(date.getDate() + 1))
+    const friday = new Date(date.setDate(date.getDate() + 1))
     return [
         {
             label: 'monday',
-            date: monday.value,
+            date: monday,
         },
         {
             label: 'tuesday',
-            date: tuesday.value,
+            date: tuesday,
         },
         {
             label: 'wednesday',
-            date: wednesday.value,
+            date: wednesday,
         },
         {
             label: 'thursday',
-            date: thursday.value
+            date: thursday,
         },
         {
             label: 'friday',
-            date: friday.value,
+            date: friday,
         },
     ]
 });
@@ -97,7 +96,7 @@ const headers = computed((): Array<ItemHeader> => [
 ]);
 
 const items = computed((): Array<Array<Item>> => {
-    return props.tasks.map((task: Task) => {
+    return tasks.value.map((task: Task) => {
         return [
             {
                 text: task.label,
@@ -140,7 +139,7 @@ function getTimeSpendOnOneTaskPerDay (taskTimeSpends: Array<TaskTimeSpend>, date
     let timeSpend = 0
 
     taskTimeSpends.forEach((taskTimeSpend) => {
-        if (datesAreOnSameDay(taskTimeSpend.date, date)) {
+        if (useDate().datesAreOnSameDay(taskTimeSpend.date, date)) {
             timeSpend += taskTimeSpend.time
         }
     });
@@ -182,7 +181,45 @@ function getDayByLabel (label: string): any {
 
 function getFormatDateByLabel (label: string): string {
     const day = getDayByLabel(label)
-    return day ? useFormatDate(day.date, 'dddd DD MMMM').toUpperCase() : ''
+    return day ? useDate().formatDate(day.date, 'dddd DD MMMM').toUpperCase() : ''
+}
+
+async function getPreviousWeek () {
+    if (waitingBeforeSendingRequest.value === true) {
+        return
+    }
+
+    waitingBeforeSendingRequest.value = true
+    const response = await axios.get(
+        route('time.getPreviousWeek', {
+            date: firstDayOfWeek.value,
+            previous: true,
+        }),
+    )
+
+    tasks.value = response.data.tasks
+    firstDayOfWeek.value = response.data.firstDay
+    lastDayOfWeek.value = response.data.lastDay
+    waitingBeforeSendingRequest.value = false
+}
+
+async function getNextWeek () {
+    if (waitingBeforeSendingRequest.value === true) {
+        return
+    }
+
+    waitingBeforeSendingRequest.value = true
+    const response = await axios.get(
+        route('time.getNextWeek', {
+            date: firstDayOfWeek.value,
+            next: true,
+        }),
+    )
+
+    tasks.value = response.data.tasks
+    firstDayOfWeek.value = response.data.firstDay
+    lastDayOfWeek.value = response.data.lastDay
+    waitingBeforeSendingRequest.value = false
 }
 </script>
 
@@ -199,7 +236,11 @@ function getFormatDateByLabel (label: string): string {
                 Mes tâches et temps saisis
             </h3>
             <div class="mx-6 mt-12">
-                <!--<Calendar v-model="dates" selectionMode="range" readonly/>-->
+                <div class="flex">
+                    <i-carbon-chevron-left class="cursor-pointer" @click="getPreviousWeek" />
+                    <span>{{ useDate().formatDate(firstDayOfWeek, 'DD/MM/YYYY') }} - {{ useDate().formatDate(lastDayOfWeek, 'DD/MM/YYYY') }}</span>
+                    <i-carbon-chevron-right class="cursor-pointer" @click="getNextWeek" />
+                </div>
                 <Table
                     :headers="headers"
                     :items="items"
