@@ -2,7 +2,7 @@
 import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 
-defineProps<{
+const props = defineProps<{
     project: {
         id: number;
         title: string;
@@ -20,7 +20,11 @@ const breadcrumb = [
     {
         label: 'Mes projets',
         route: route('projects.index')
-    }
+    },
+    {
+        label: props.project.title,
+        route: null
+    },
 ];
 </script>
 

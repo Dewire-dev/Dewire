@@ -127,7 +127,7 @@ const logout = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link :class="route().current('projects.*') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.index')"
+                            <Link :class="route().current('projects.index') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.index')"
                                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
                                 <svg class="icon-projects flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" id="Calque_2" data-name="Calque 2" xmlns="http://www.w3.org/2000/svg"
                                      viewBox="0 0 17.79 34.56">
@@ -160,6 +160,16 @@ const logout = () => {
                                     <span class="flex-1 ml-3 whitespace-nowrap text-left">Déconnexion</span>
                                 </button>
                             </form>
+                        </li>
+                    </ul>
+                    <hr class="h-px my-8 bg-gray-200 border-0 dark:border-white-018">
+                    <ul class="space-y-2 font-medium mt-5">
+                        <li v-for="project in projects">
+                            <Link :class="route().current('projects.show', { project }) ? 'dark:nav-item-active nav-item-active' : ''" :href="route('projects.show', { project })"
+                                  class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
+                                <i-carbon-circle-solid style="color: #368E6A;" class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-circle-solid>
+                                <span class="flex-1 ml-3 whitespace-nowrap">{{ project.title }}</span>
+                            </Link>
                         </li>
                     </ul>
                 </div>
