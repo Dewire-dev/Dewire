@@ -28,6 +28,8 @@ class ChatController extends Controller
     public function show(Project $project, Chat $chat)
     {
         $messages = $this->chatRepo->getMessage($chat->id);
+        $messages->load('sender');
+
         return Inertia::render('Chats/Show', compact('chat', 'messages', 'project'));
     }
 
