@@ -5,9 +5,9 @@ import { Button } from "flowbite-vue";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: JSONContent | string;
+        modelValue?: JSONContent;
     }>(),
-    { modelValue: "" }
+    { modelValue: undefined }
 );
 
 const emit = defineEmits<{
@@ -30,7 +30,7 @@ const editor = useEditor({
 watch(
     () => props.modelValue,
     (value) => {
-        if (JSON.stringify(editor.value?.getJSON()) === JSON.stringify(value))
+        if (!value || JSON.stringify(editor.value?.getJSON()) === JSON.stringify(value))
             return;
         editor.value?.commands.setContent(value, false);
     }
