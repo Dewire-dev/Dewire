@@ -6,6 +6,7 @@ use App\Http\Requests\StoreNoteRequest;
 use App\Http\Requests\UpdateNoteRequest;
 use App\Models\Note;
 use App\Models\Project;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class NoteController extends Controller
@@ -69,5 +70,14 @@ class NoteController extends Controller
     public function destroy(Project $project, Note $note)
     {
         $note->delete();
+    }
+
+    /**
+     * Save the specified resource.
+     */
+    public function save(Request $request, Note $note)
+    {
+        $note->content = $request['content'];
+        $note->save();
     }
 }

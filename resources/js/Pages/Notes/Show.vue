@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import route from "ziggy-js";
 
-const { project } = defineProps<{
+const { project, note } = defineProps<{
     project: any;
     note: any;
 }>();
@@ -21,7 +21,13 @@ const breadcrumb = [
     },
 ];
 
-const content = ref("");
+const content = useDebouncedRef(JSON.parse(note.content), 1000);
+
+watch(content, (value) => {
+    router.patch(route("notes.save", { project, note }), {
+        content: value,
+    });
+});
 </script>
 
 <template>
