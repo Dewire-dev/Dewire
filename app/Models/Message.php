@@ -16,7 +16,6 @@ class Message extends Model
       'chat_id',
       'content',
       'created_at',
-      'read_at',
       'updated_at'
     ];
 
