@@ -28,4 +28,11 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
+
+    public function readByUsers()
+    {
+        return $this->belongsToMany(User::class, 'message_read_users')
+            ->withPivot('read_at')
+            ->withTimestamps();
+    }
 }

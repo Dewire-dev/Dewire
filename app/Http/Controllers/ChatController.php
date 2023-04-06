@@ -30,7 +30,10 @@ class ChatController extends Controller
         $messages = $this->chatRepo->getMessage($chat->id);
         $messages->load('sender');
 
-        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project'));
+        $unReadMessages = $this->chatRepo->getUnreadMessagesChat(auth()->user()->id, $chat->id);
+        $countUnreadMessages = count($unReadMessages);
+
+        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'countUnreadMessages'));
     }
 
     public function store(Request $request): RedirectResponse

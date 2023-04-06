@@ -18,7 +18,8 @@ const {chat, project} = defineProps<{
         title: string;
         subtitle: string;
         description: string;
-    }
+    },
+    countUnreadMessages: number;
 }>();
 
 const breadcrumb = [
@@ -45,11 +46,14 @@ const form = useForm({
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {{ chat.name }}
                 </h2>
+                <div v-if="countUnreadMessages">
+                    <p>{{ countUnreadMessages }} messages non lus</p>
+                </div>
             </div>
         </template>
 
         <ul role="list" class="max-w-none divide-y divide-gray-200 dark:divide-gray-700">
-            <li class="py-3 sm:py-4" v-for="message in messages">
+            <li class="py-3 sm:py-4" v-for="message in messages" :key="message.id">
                 <div class="flex items-center space-x-3">
                     <div class="flex-shrink-0">
                         <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Neil image">
