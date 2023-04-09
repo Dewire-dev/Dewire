@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\ChatRepository;
 use App\Models\Chat;
+use App\Models\ChatsUser;
 use App\Models\Message;
+use App\Models\MessageReadUser;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,17 +35,31 @@ class ChatController extends Controller
         $unReadMessages = $this->chatRepo->getUnreadMessagesChat(auth()->user()->id, $chat->id);
         $countUnreadMessages = count($unReadMessages);
 
-        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'countUnreadMessages'));
+        $chatsUsers = $this->chatRepo->getUserInChat($chat->id);
+
+        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages'));
     }
 
     public function store(Request $request): RedirectResponse
     {
 
-        Message::create([
+        $message = Message::create([
             'sender_id' => auth()->user()->id,
             'chat_id' => $request->get('chat')['id'],
             'content' => $request->get('form')['content'],
         ]);
+
+        foreach ($request->get('chatsUsers') as $chatsUsers)
+        {
+            if ($chatsUsers['user_id'] !== auth()->user()->id)
+            {
+                MessageReadUser::create([
+                    'message_id' => $message->id,
+                    'user_id' => $chatsUsers['user_id'],
+                    'read_at' => null,
+                ]);
+            }
+        }
 
         return response()->redirectToRoute('chats.show', ['project' => $request->get('chat')['project_id'], 'chat' => $request->get('chat')['id']]);
     }

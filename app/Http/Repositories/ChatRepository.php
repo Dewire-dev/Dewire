@@ -2,6 +2,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Chat;
+use App\Models\ChatsUser;
 use App\Models\Message;
 
 class ChatRepository {
@@ -23,6 +24,11 @@ class ChatRepository {
     public function getChat(string $projectId): \Illuminate\Database\Eloquent\Collection|array
     {
         return auth()->user()->chats()->where('project_id', $projectId)->get();
+    }
+
+    public function getUserInChat(int $chatId): \Illuminate\Database\Eloquent\Collection|array
+    {
+        return ChatsUser::where('chat_id', $chatId)->get();
     }
 
     public function getUnreadMessagesAllChats($userId)
