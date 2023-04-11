@@ -14,6 +14,7 @@ defineProps<{
         id: number;
         subject: string;
         name: string;
+        countUnreadMessages: number;
     }>;
 }>();
 

@@ -31,6 +31,24 @@ class ChatRepository {
         return ChatsUser::where('chat_id', $chatId)->get();
     }
 
+    public function getUnreadMessagesAllChatsProject($projectId, $userId)
+    {
+        $chats = $this->getChat($projectId);
+
+        $unreadMessages = [];
+
+        foreach ($chats as $chat) {
+            $messages = $this->getUnreadMessagesChat($userId, $chat->id);
+
+            if (!empty($messages)) {
+                $unreadMessages[$chat->id] = $messages;
+            }
+        }
+
+        return $unreadMessages;
+
+    }
+
     public function getUnreadMessagesAllChats($userId)
     {
         $chats = auth()->user()->chats()->get();

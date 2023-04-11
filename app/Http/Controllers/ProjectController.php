@@ -41,6 +41,15 @@ class ProjectController extends Controller
     public function show(Project $project)
     {
         $chats = $this->chatRepo->getChat($project->id);
+        $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
+
+        foreach ($unReadMessages as $count) {
+            $chats = $chats->map(function ($chat) use ($count) {
+                $chat->countUnreadMessages = $count->count();
+                return $chat;
+            });
+        }
+
         return Inertia::render('Projects/Show', compact('project', 'chats'));
     }
 
