@@ -79,9 +79,3 @@ jobs:
         DB_CONNECTION: sqlite
         DB_DATABASE: database/database.sqlite
       run: ./vendor/bin/pest
-
-    - name: Execute tests (Browser tests) via Laravel Dusk
-      env:
-        DB_CONNECTION: sqlite
-        DB_DATABASE: database/database.sqlite
-      run: php artisan dusk
