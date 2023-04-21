@@ -182,8 +182,8 @@ const disableTwoFactorAuthentication = () => {
                         </p>
                     </div>
 
-                    <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 dark:bg-gray-900 rounded-lg">
-                        <div v-for="code in recoveryCodes" :key="code">
+                    <div class="grid gap-1 max-w-xl mt-4 px-4 py-4 font-mono text-sm bg-gray-100 dark:bg-body rounded-lg">
+                        <div class="dark:text-white" v-for="code in recoveryCodes" :key="code">
                             {{ code }}
                         </div>
                     </div>
@@ -213,31 +213,31 @@ const disableTwoFactorAuthentication = () => {
                     </ConfirmsPassword>
 
                     <ConfirmsPassword @confirmed="regenerateRecoveryCodes">
-                        <SecondaryButton
+                        <PrimaryButton
                             v-if="recoveryCodes.length > 0 && ! confirming"
                             class="mr-3"
                         >
                             Régénérer les codes de récupération
-                        </SecondaryButton>
+                        </PrimaryButton>
                     </ConfirmsPassword>
 
                     <ConfirmsPassword @confirmed="showRecoveryCodes">
-                        <SecondaryButton
+                        <PrimaryButton
                             v-if="recoveryCodes.length === 0 && ! confirming"
                             class="mr-3"
                         >
                             Afficher les codes de récupération
-                        </SecondaryButton>
+                        </PrimaryButton>
                     </ConfirmsPassword>
 
                     <ConfirmsPassword @confirmed="disableTwoFactorAuthentication">
-                        <SecondaryButton
+                        <PrimaryButton
                             v-if="confirming"
                             :class="{ 'opacity-25': disabling }"
                             :disabled="disabling"
                         >
                             Annuler
-                        </SecondaryButton>
+                        </PrimaryButton>
                     </ConfirmsPassword>
 
                     <ConfirmsPassword @confirmed="disableTwoFactorAuthentication">
