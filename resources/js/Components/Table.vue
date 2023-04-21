@@ -46,6 +46,7 @@ function findItemInItems (items: Array<Item>, headerValue: string): Item | undef
                         </template>
                     </td>
                 </tr>
+                <slot name="customLine" />
             </tbody>
         </table>
     </div>

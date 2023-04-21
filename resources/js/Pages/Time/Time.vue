@@ -8,7 +8,8 @@ import {useDate} from "@/Composables/date";
 import route from "ziggy-js";
 import axios from "axios";
 import { User } from "@/Interfaces/User";
-import test from "node:test";
+import TableTime from "@/Components/TableTime.vue";
+import {useFormatTime} from "@/Composables/time";
 
 const currentUserSelected = ref<User>();
 const tasks = ref<Array<Task>>([]);
@@ -114,27 +115,27 @@ const items = computed((): Array<Array<Item>> => {
                 value: 'category',
             },
             {
-                text: formatTimeSpend(getTimeSpendOnOneTask(task.task_time_spends)),
+                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTask(task.task_time_spends)),
                 value: 'total'
             },
             {
-                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('monday').date)),
+                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('monday').date)),
                 value: 'monday',
             },
             {
-                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('tuesday').date)),
+                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('tuesday').date)),
                 value: 'tuesday',
             },
             {
-                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('wednesday').date)),
+                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('wednesday').date)),
                 value: 'wednesday',
             },
             {
-                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('thursday').date)),
+                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('thursday').date)),
                 value: 'thursday',
             },
             {
-                text: formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('friday').date)),
+                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('friday').date)),
                 value: 'friday',
             },
         ]
@@ -151,20 +152,6 @@ function getTimeSpendOnOneTaskPerDay (taskTimeSpends: Array<TaskTimeSpend>, date
     });
 
     return timeSpend
-}
-
-function formatTimeSpend (timeSpend: number): string {
-    let hours: number = 0
-    let minutes: number = 0
-
-    if (timeSpend < 60) {
-        return timeSpend + 'm'
-    }
-
-    minutes = timeSpend % 60
-    hours = (timeSpend - minutes) / 60
-
-    return hours + 'h' + ((minutes < 10) ? '0' : '') + minutes + 'm'
 }
 
 function getTimeSpendOnOneTask (taskTimeSpends: Array<TaskTimeSpend>): number {
@@ -276,11 +263,14 @@ async function changeUser (userSelected: User) {
 
                     <SelectUser :items="users" :value="currentUserSelected" content-classes="mt-5 lg:mt-0" @change="changeUser"/>
                 </div>
-                <Table
-                    v-if="!waitingBeforeSendingRequest && !waitingChangingUserBeforeSendingRequest"
-                    :headers="headers"
-                    :items="items"
-                />
+                <template v-if="!waitingBeforeSendingRequest && !waitingChangingUserBeforeSendingRequest">
+                    <TableTime
+                        :headers="headers"
+                        :items="items"
+                        :days="days"
+                        :tasks="tasks"
+                    />
+                </template>
                 <Loader v-else/>
             </div>
         </div>
