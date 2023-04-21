@@ -18,12 +18,12 @@ class Chat extends Model
       'updated_at'
     ];
 
-    public  function users()
+    public  function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'chats_users');
     }
 
-    public function messages()
+    public function messages(): HasMany
     {
         return $this->hasMany(Message::class);
     }
