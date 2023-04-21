@@ -7,6 +7,8 @@ test('profile information can be updated', function () {
 
     $response = $this->put('/user/profile-information', [
         'name' => 'Test Name',
+        'firstname' => 'John',
+        'lastname' => 'Doe',
         'email' => 'test@example.com',
     ]);
 
