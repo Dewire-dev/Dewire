@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import ChatCard from "../../Components/Dashboard/ChatCard.vue";
-import AppLayout from "@/Layouts/AppLayout.vue";
 import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
 import { Button } from "flowbite-vue";
+import AppLayout from "@/Layouts/AppLayout.vue";
+import ChatCard from "@/Components/Dashboard/ChatCard.vue";
 
 const { can } = useRole();
 
@@ -14,12 +14,12 @@ const props = defineProps<{
 
 const breadcrumb = [
     {
-        label: 'Mes projets',
-        route: route('projects.index')
+        label: "Mes projets",
+        route: route("projects.index"),
     },
     {
         label: props.project.title,
-        route: null
+        route: null,
     },
 ];
 </script>
@@ -27,9 +27,13 @@ const breadcrumb = [
 <template>
     <AppLayout :title="'Projet ' + project.title">
         <template #header>
-            <BreadCrumb :breadcrumb="breadcrumb"/>
+            <BreadCrumb :breadcrumb="breadcrumb" />
             <div class="">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center">Mes projets</h2>
+                <h2
+                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center"
+                >
+                    Mes projets
+                </h2>
             </div>
         </template>
 
@@ -50,7 +54,11 @@ const breadcrumb = [
                 Liste des conversations
             </h3>
             <div class="grid grid-cols-3 gap-6 mx-6 mt-12">
-                <ChatCard v-for="chat in chats" :chat="chat" :project="project" />
+                <ChatCard
+                    v-for="chat in chats"
+                    :chat="chat"
+                    :project="project"
+                />
             </div>
         </div>
     </AppLayout>

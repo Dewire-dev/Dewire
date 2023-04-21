@@ -41,6 +41,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
+        $project->load('modules');
+
         if (Project::canAccessModule($project, 'Chat')) {
             $chats = $this->chatRepo->getChat($project->id);
             $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
