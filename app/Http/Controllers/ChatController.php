@@ -29,6 +29,8 @@ class ChatController extends Controller
 
     public function show(Project $project, Chat $chat)
     {
+        abort_if(!Project::canAccessModule($project, 'Chat'), 403);
+
         $messages = $this->chatRepo->getMessage($chat->id);
         $messages->load('sender');
 
@@ -42,6 +44,7 @@ class ChatController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        abort_if(!Project::canAccessModule(Project::find($request->get('chat')['project_id']), 'Chat'), 403);
 
         $message = Message::create([
             'sender_id' => auth()->user()->id,
