@@ -2,6 +2,8 @@
 import Item from '@/Interfaces/Item'
 import ItemHeader from '@/Interfaces/ItemHeader'
 
+const emit = defineEmits();
+
 const props = defineProps({
     headers: {
         type: Array<ItemHeader>,
@@ -17,6 +19,18 @@ function findItemInItems (items: Array<Item>, headerValue: string): Item | undef
     return items.find((item) => {
         return item.value === headerValue
     })
+}
+
+function eventToEmit (items, eventName: string) {
+    let idToEmit = null
+    items.forEach((item: Item) => {
+        if (item && item.eventToEmit && item.eventToEmit === eventName) {
+            idToEmit = item.id;
+            return;
+        }
+    })
+
+    emit(eventName, idToEmit)
 }
 </script>
 
@@ -42,7 +56,9 @@ function findItemInItems (items: Array<Item>, headerValue: string): Item | undef
                         :class="findItemInItems(arrayItems, header.value).bold ? 'font-black' : ''"
                     >
                         <template v-if="findItemInItems(arrayItems, header.value)">
-                            {{ findItemInItems(arrayItems, header.value).text }}
+                            <span @click="findItemInItems(arrayItems, header.value).clickable ? eventToEmit(arrayItems, findItemInItems(arrayItems, header.value).eventToEmit) : null">
+                                {{ findItemInItems(arrayItems, header.value).text }}
+                            </span>
                         </template>
                     </td>
                 </tr>

@@ -106,9 +106,12 @@ const items = computed((): Array<Array<Item>> => {
     return tasks.value.map((task: Task) => {
         return [
             {
+                id: task.id,
                 text: task.label,
                 value: 'task',
                 bold: true,
+                clickable: true,
+                eventToEmit: 'openTask',
             },
             {
                 text: task.type,
