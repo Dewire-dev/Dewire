@@ -16,13 +16,13 @@ class TasksSeeder extends Seeder
      */
     public function run(): void
     {
-        $project1 = Project::where(['title' => 'Projet 1'])->first();
-        $project2 = Project::where(['title' => 'Projet 2'])->first();
+        $project1 = Project::where(['title' => 'Island crossing'])->first();
+        $project2 = Project::where(['title' => 'Malton'])->first();
 
         $user1 = User::where(['email' => 'logan.lesaux@ynov.com'])->first();
         $user2 = User::where(['email' => 'theonicolas19@outlook.com'])->first();
         $user3 = User::where(['email' => 'anael.bonnafous@ynov.com'])->first();
-        $user4 = User::where(['email' => 'mathieuneyret@ynov.com'])->first();
+        $user4 = User::where(['email' => 'mathieu.neyret@ynov.com'])->first();
 
         $tasks = [
             [
@@ -30,8 +30,8 @@ class TasksSeeder extends Seeder
                 'description' => "Voir le lien figma : https://www.figma.com/file/StmXWxkTj1IkIHCGwCKNh9/CyberMind?node-id=0-1\n\nSi besoin de plus d'informations : contacter le webdesigner de l'équipe : Côme",
                 'project_id' => $project1->id,
                 'scheduled_time' => 180,
-                'start_at' => new \DateTime('2023-03-28'),
-                'end_at' => new \DateTime('2023-03-30'),
+                'start_at' => new \DateTime('2023-04-20'),
+                'end_at' => new \DateTime('2023-04-21'),
                 'state' => TaskState::IN_PROGRESS,
                 'type' => TaskType::CLIENT_PROJECT,
                 'user_creator_id' => $user2->id,
@@ -41,8 +41,8 @@ class TasksSeeder extends Seeder
                 'description' => "Champs nécessaires:\n- Email\n- Mot de passe\n- Confirmation mot de passe",
                 'project_id' => $project1->id,
                 'scheduled_time' => 300,
-                'start_at' => new \DateTime('2023-03-22'),
-                'end_at' => new \DateTime('2023-03-27'),
+                'start_at' => new \DateTime('2023-04-22'),
+                'end_at' => new \DateTime('2023-04-27'),
                 'state' => TaskState::IN_MERGE_REQUEST,
                 'type' => TaskType::CLIENT_PROJECT,
                 'user_creator_id' => $user2->id,
@@ -52,8 +52,8 @@ class TasksSeeder extends Seeder
                 'description' => null,
                 'project_id' => $project2->id,
                 'scheduled_time' => 300,
-                'start_at' => new \DateTime('2023-04-03'),
-                'end_at' => new \DateTime('2023-04-03'),
+                'start_at' => new \DateTime('2023-04-28'),
+                'end_at' => new \DateTime('2023-04-28'),
                 'state' => TaskState::TO_DO,
                 'type' => TaskType::CLIENT_PROJECT,
                 'user_creator_id' => $user2->id,
@@ -63,8 +63,8 @@ class TasksSeeder extends Seeder
                 'description' => null,
                 'project_id' => null,
                 'scheduled_time' => 300,
-                'start_at' => new \DateTime('2023-04-03'),
-                'end_at' => new \DateTime('2023-04-03'),
+                'start_at' => new \DateTime('2023-04-28'),
+                'end_at' => new \DateTime('2023-04-28'),
                 'state' => TaskState::TO_DO,
                 'type' => TaskType::INTERNAL,
                 'user_creator_id' => $user2->id,

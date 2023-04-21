@@ -171,7 +171,9 @@ function getTimeSpendOnOneTask (taskTimeSpends: Array<TaskTimeSpend>): number {
     let timeSpend = 0
 
     taskTimeSpends.forEach((taskTimeSpend) => {
-        timeSpend += taskTimeSpend.time
+        if (taskTimeSpend.date >= firstDayOfWeek.value && taskTimeSpend.date <= lastDayOfWeek.value) {
+            timeSpend += taskTimeSpend.time
+        }
     });
 
     return timeSpend
