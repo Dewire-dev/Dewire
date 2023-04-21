@@ -19,17 +19,17 @@ class Message extends Model
       'updated_at'
     ];
 
-    public function chats()
+    public function chats(): HasMany
     {
         return $this->hasMany(Chat::class);
     }
 
-    public function sender()
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function readByUsers()
+    public function readByUsers(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'message_read_users')
             ->withPivot('read_at')
