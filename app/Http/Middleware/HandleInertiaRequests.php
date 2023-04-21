@@ -37,7 +37,10 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'layout' => [
+                // TODO : filtrer les projets de l'utilisateur
+                'projects' => \App\Models\Project::all(),
+            ],
         ]);
     }
 }

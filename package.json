@@ -30,7 +30,6 @@
     },
     "dependencies": {
         "@vueuse/core": "^9.13.0",
-        "primeicons": "^6.0.1",
-        "primevue": "^3.26.0"
+        "flowbite-vue": "^0.0.10"
     }
 }
