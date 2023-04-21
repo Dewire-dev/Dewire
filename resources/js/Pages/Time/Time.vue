@@ -7,26 +7,32 @@ import Item from "@/Interfaces/Item";
 import {useDate} from "@/Composables/date";
 import route from "ziggy-js";
 import axios from "axios";
+import { User } from "@/Interfaces/User";
+import test from "node:test";
 
-const currentUserSelected = ref();
+const currentUserSelected = ref<User>();
 const tasks = ref<Array<Task>>([]);
 const firstDayOfWeek = ref();
 const lastDayOfWeek = ref();
-const users = ref([]);
+const users = ref<Array<User>>([]);
 
 const waitingBeforeSendingRequest = ref(false)
+const waitingChangingUserBeforeSendingRequest = ref(false)
 
 const props = defineProps<{
+    currentUserSelected: User,
     firstDayOfWeek: string,
     lastDayOfWeek: string,
     tasks: Array<Task>;
-    // users: Array<User>;
+    users: Array<User>;
 }>();
 
 onBeforeMount(() => {
+    currentUserSelected.value = props.currentUserSelected
     tasks.value = props.tasks
     firstDayOfWeek.value = props.firstDayOfWeek
     lastDayOfWeek.value = props.lastDayOfWeek
+    users.value = props.users
 })
 
 const days = computed(() => {
@@ -193,6 +199,7 @@ async function getPreviousWeek () {
     const response = await axios.get(
         route('time.getPreviousWeek', {
             date: firstDayOfWeek.value,
+            user: currentUserSelected.value ? currentUserSelected.value.id : '',
             previous: true,
         }),
     )
@@ -212,6 +219,7 @@ async function getNextWeek () {
     const response = await axios.get(
         route('time.getNextWeek', {
             date: firstDayOfWeek.value,
+            user: currentUserSelected.value ? currentUserSelected.value.id : '',
             next: true,
         }),
     )
@@ -220,6 +228,25 @@ async function getNextWeek () {
     firstDayOfWeek.value = response.data.firstDay
     lastDayOfWeek.value = response.data.lastDay
     waitingBeforeSendingRequest.value = false
+}
+
+async function changeUser (userSelected: User) {
+    if (waitingChangingUserBeforeSendingRequest.value === true) {
+        return
+    }
+    currentUserSelected.value = userSelected
+
+    waitingChangingUserBeforeSendingRequest.value = true
+    const response = await axios.get(
+        route('time.getTasksByUser', {
+            date: firstDayOfWeek.value,
+            user: currentUserSelected.value ? currentUserSelected.value.id : '',
+            next: true,
+        }),
+    )
+
+    tasks.value = response.data.tasks
+    waitingChangingUserBeforeSendingRequest.value = false
 }
 </script>
 
@@ -236,16 +263,27 @@ async function getNextWeek () {
                 Mes tâches et temps saisis
             </h3>
             <div class="mx-6 mt-12">
-                <div class="flex">
-                    <i-carbon-chevron-left class="cursor-pointer" @click="getPreviousWeek" />
-                    <span>{{ useDate().formatDate(firstDayOfWeek, 'DD/MM/YYYY') }} - {{ useDate().formatDate(lastDayOfWeek, 'DD/MM/YYYY') }}</span>
-                    <i-carbon-chevron-right class="cursor-pointer" @click="getNextWeek" />
+                <div class="flex flex-col lg:flex-row items-center mb-3 lg:justify-between">
+                    <div class="flex lg:items-center">
+                        <i-carbon-chevron-left class="cursor-pointer dark:text-white text-3xl" @click="getPreviousWeek" />
+                        <div class="bg-gray-100 dark:bg-gray-900 rounded py-3 px-8 text-gray-900 dark:text-white">
+                            {{ useDate().formatDate(firstDayOfWeek, 'DD/MM/YYYY') }} - {{ useDate().formatDate(lastDayOfWeek, 'DD/MM/YYYY') }}
+                        </div>
+                        <i-carbon-chevron-right class="cursor-pointer dark:text-white text-3xl" @click="getNextWeek" />
+                    </div>
+
+                    <SelectUser :items="users" :value="currentUserSelected" content-classes="mt-5 lg:mt-0" @change="changeUser"/>
                 </div>
                 <Table
+                    v-if="!waitingBeforeSendingRequest && !waitingChangingUserBeforeSendingRequest"
                     :headers="headers"
                     :items="items"
                 />
+                <Loader v-else/>
             </div>
         </div>
     </AppLayout>
 </template>
+
+<style scoped>
+</style>

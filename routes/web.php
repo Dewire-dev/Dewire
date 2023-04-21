@@ -47,6 +47,7 @@ Route::middleware([
     Route::get('/time', [\App\Http\Controllers\TimeController::class, 'index'])->name('time');
     Route::get('/time/get-previous-week', [\App\Http\Controllers\TimeController::class, 'getPreviousWeek'])->name('time.getPreviousWeek');
     Route::get('/time/get-next-week', [\App\Http\Controllers\TimeController::class, 'getNextWeek'])->name('time.getNextWeek');
+    Route::get('/time/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');
 
     Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
