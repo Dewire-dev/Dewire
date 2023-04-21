@@ -15,7 +15,7 @@ const projects = computed(() => usePage().props.layout?.projects)
 
 const showingNavigationDropdown = ref(false);
 
-const switchToTeam = (team) => {
+const switchToTeam = (team: App.Models.Team) => {
     router.put(route('current-team.update'), {
         team_id: team.id,
     }, {

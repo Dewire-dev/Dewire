@@ -81,9 +81,13 @@ declare namespace App.Models {
         task_logs?: Array<App.Models.TaskLog> | null;
         task_time_spends?: Array<App.Models.TaskTimeSpend> | null;
         tasks?: Array<App.Models.Task> | null;
+        chats?: Array<App.Models.Chat> | null;
+        read_messages?: Array<App.Models.Message> | null;
         task_logs_count?: number | null;
         task_time_spends_count?: number | null;
         tasks_count?: number | null;
+        chats_count?: number | null;
+        read_messages_count?: number | null;
     }
 
     export interface TaskTimeSpend {
@@ -98,14 +102,38 @@ declare namespace App.Models {
         task?: App.Models.Task | null;
     }
 
-    export interface Messages {
+    export interface Message {
         id: number;
         sender_id: string;
         chat_id: number;
         content: string;
         created_at: string;
-        read_at: string | null;
         updated_at: string;
+        chats?: Array<App.Models.Chat> | null;
+        sender?: App.Models.User | null;
+        read_by_users?: Array<App.Models.User> | null;
+        chats_count?: number | null;
+        read_by_users_count?: number | null;
+    }
+
+    export interface MessageReadUser {
+        id: number;
+        message_id: number;
+        user_id: string;
+        read_at: string | null;
+        created_at: string | null;
+        updated_at: string | null;
+    }
+
+    export interface Module {
+        id: string;
+        name: string;
+        description: string;
+        color: string;
+        created_at: string | null;
+        updated_at: string | null;
+        projects?: Array<App.Models.Project> | null;
+        projects_count?: number | null;
     }
 
     export interface TeamInvitation {
@@ -131,10 +159,13 @@ declare namespace App.Models {
         title: string;
         subtitle: string;
         description: string;
+        color: string;
         created_at: string | null;
         updated_at: string | null;
         tasks?: Array<App.Models.Task> | null;
+        modules?: Array<App.Models.Module> | null;
         tasks_count?: number | null;
+        modules_count?: number | null;
     }
 
     export interface Chat {
@@ -144,6 +175,10 @@ declare namespace App.Models {
         project_id: string;
         created_at: string;
         updated_at: string;
+        users?: Array<App.Models.User> | null;
+        messages?: Array<App.Models.Message> | null;
+        users_count?: number | null;
+        messages_count?: number | null;
     }
 
 }

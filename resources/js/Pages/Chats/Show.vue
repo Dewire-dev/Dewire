@@ -4,32 +4,11 @@ import route from "ziggy-js";
 import { useForm } from '@inertiajs/vue3';
 
 const {chat, project} = defineProps<{
-    chat: {
-        id: number;
-        subject: string;
-        name: string;
-    };
-    messages: Array<{
-        id: number;
-        content: string;
-    }>;
-    unReadMessages: Array<{
-        id: number;
-        message_id: number;
-        content: string;
-        user_id: string;
-    }>;
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    },
-    chatsUsers: Array<{
-        id: number;
-        user_id: string;
-        chat_id: number;
-    }>;
+    chat: App.Models.Chat;
+    messages: Array<App.Models.Message>;
+    unReadMessages: Array<App.Models.Message>;
+    project: App.Models.Project,
+    chatsUsers: Array<App.Models.ChatsUser>;
     countUnreadMessages: number;
 }>();
 
@@ -47,7 +26,7 @@ const breadcrumb = [
 ];
 
 const form = useForm({
-    content: null,
+    content: "",
 })
 
 function changeValueBoolean() {
@@ -82,7 +61,7 @@ function changeValueBoolean() {
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-1xl font-semibold text-green-500">
-                            {{ message.sender.name }}
+                            {{ message.sender?.name }}
                         </p>
                         <p class="text-2xl text-black-500 dark:text-white">
                             {{ message.content }}
