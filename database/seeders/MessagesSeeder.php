@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Chat;
-use App\Models\Messages;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -45,11 +45,31 @@ class MessagesSeeder extends Seeder
                 'sender_id' => User::where('email', 'logan.lesaux@ynov.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Island crossing Retour client')->first()->id,
                 'content' => 'Super merci de ton aide...',
+            ],
+            [
+                'sender_id' => User::where('email', 'mathieu.neyret@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
+                'content' => 'Yo la team, premier message pour Malton en privé',
+            ],
+            [
+                'sender_id' => User::where('email', 'anael.bonnafous@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
+                'content' => 'Coucou',
+            ],
+            [
+                'sender_id' => User::where('email', 'mathieu.neyret@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
+                'content' => 'Yo la team, premier message pour Island crossing en privé',
+            ],
+            [
+                'sender_id' => User::where('email', 'anael.bonnafous@ynov.com')->first()->id,
+                'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
+                'content' => 'Coucou',
             ]
         ];
 
         foreach ($messages as $message) {
-            Messages::updateOrCreate($message);
+            Message::updateOrCreate($message);
         }
     }
 }

@@ -24,6 +24,16 @@ class ChatsSeeder extends Seeder
                 'subject' => 'La conversation Island crossing destiné aux retours client',
                 'name' => 'Chat Island crossing Retour client',
                 'project_id' => Project::where('title', 'Island crossing')->first()->id,
+            ],
+            [
+                'subject' => 'La conversation Malton privé entre nous',
+                'name' => 'Chat Malton privé',
+                'project_id' => Project::where('title', 'Malton')->first()->id,
+            ],
+            [
+                'subject' => 'La conversation Island crossing privé entre nous',
+                'name' => 'Chat Island crossing privé',
+                'project_id' => Project::where('title', 'Island crossing')->first()->id,
             ]
         ];
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import route from "ziggy-js";
 
 const props = defineProps<{
     project: {
@@ -13,6 +14,7 @@ const props = defineProps<{
         id: number;
         subject: string;
         name: string;
+        countUnreadMessages: number;
     }>;
 }>();
 
