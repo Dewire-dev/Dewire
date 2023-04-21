@@ -79,12 +79,12 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Task::class);
     }
 
-    public  function chats()
+    public  function chats(): BelongsToMany
     {
         return $this->belongsToMany(Chat::class, 'chats_users');
     }
 
-    public function readMessages()
+    public function readMessages(): BelongsToMany
     {
         return $this->belongsToMany(Message::class, 'message_read_users')
             ->withPivot('read_at')
