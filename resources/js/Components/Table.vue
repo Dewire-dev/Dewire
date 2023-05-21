@@ -2,7 +2,9 @@
 import Item from '@/Interfaces/Item'
 import ItemHeader from '@/Interfaces/ItemHeader'
 
-const emit = defineEmits();
+const emit = defineEmits([
+    'openTask',
+]);
 
 const props = defineProps({
     headers: {
@@ -56,7 +58,10 @@ function eventToEmit (items, eventName: string) {
                         :class="findItemInItems(arrayItems, header.value).bold ? 'font-black' : ''"
                     >
                         <template v-if="findItemInItems(arrayItems, header.value)">
-                            <span @click="findItemInItems(arrayItems, header.value).clickable ? eventToEmit(arrayItems, findItemInItems(arrayItems, header.value).eventToEmit) : null">
+                            <span
+                                :class="findItemInItems(arrayItems, header.value).clickable ? 'cursor-pointer hover:text-gray-900 dark:hover:text-gray-100' : ''"
+                                @click="findItemInItems(arrayItems, header.value).clickable ? eventToEmit(arrayItems, findItemInItems(arrayItems, header.value).eventToEmit) : null"
+                            >
                                 {{ findItemInItems(arrayItems, header.value).text }}
                             </span>
                         </template>

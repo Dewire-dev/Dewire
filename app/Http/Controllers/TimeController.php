@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enum\TaskState;
+use App\Models\Task;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -28,6 +30,7 @@ class TimeController extends Controller
             [
                 'currentUserSelected' => $user,
                 'tasks' => $tasks,
+                'states' => array_column(TaskState::cases(), 'value'),
                 'users' => $users,
                 'firstDayOfWeek' => $firstDayOfWeek,
                 'lastDayOfWeek' => $lastDayOfWeek,

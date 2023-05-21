@@ -16,6 +16,7 @@ const tasks = ref<Array<Task>>([]);
 const firstDayOfWeek = ref();
 const lastDayOfWeek = ref();
 const users = ref<Array<User>>([]);
+const states = ref<Array<string>>([]);
 
 const waitingBeforeSendingRequest = ref(false)
 const waitingChangingUserBeforeSendingRequest = ref(false)
@@ -26,6 +27,7 @@ const props = defineProps<{
     lastDayOfWeek: string,
     tasks: Array<Task>;
     users: Array<User>;
+    states: Array<string>;
 }>();
 
 onBeforeMount(() => {
@@ -34,6 +36,8 @@ onBeforeMount(() => {
     firstDayOfWeek.value = props.firstDayOfWeek
     lastDayOfWeek.value = props.lastDayOfWeek
     users.value = props.users
+    console.log(props)
+    states.value = props.states
 })
 
 const days = computed(() => {
@@ -118,27 +122,27 @@ const items = computed((): Array<Array<Item>> => {
                 value: 'category',
             },
             {
-                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTask(task.task_time_spends)),
+                text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTask(task.task_time_spends)),
                 value: 'total'
             },
             {
-                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('monday').date)),
+                text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('monday').date)),
                 value: 'monday',
             },
             {
-                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('tuesday').date)),
+                text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('tuesday').date)),
                 value: 'tuesday',
             },
             {
-                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('wednesday').date)),
+                text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('wednesday').date)),
                 value: 'wednesday',
             },
             {
-                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('thursday').date)),
+                text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('thursday').date)),
                 value: 'thursday',
             },
             {
-                text: useFormatTime().formatTimeSpend(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('friday').date)),
+                text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('friday').date)),
                 value: 'friday',
             },
         ]
@@ -272,6 +276,7 @@ async function changeUser (userSelected: User) {
                         :items="items"
                         :days="days"
                         :tasks="tasks"
+                        :states="states"
                     />
                 </template>
                 <Loader v-else/>

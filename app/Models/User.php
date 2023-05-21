@@ -76,9 +76,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->teamPermissions($this->currentTeam);
     }
 
-    public function taskLogs(): HasMany
+    public function taskComments(): HasMany
     {
-        return $this->hasMany(TaskLog::class);
+        return $this->hasMany(TaskComment::class);
     }
 
     public function taskTimeSpends(): HasMany

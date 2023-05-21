@@ -49,6 +49,8 @@ Route::middleware([
     Route::get('/time/get-next-week', [\App\Http\Controllers\TimeController::class, 'getNextWeek'])->name('time.getNextWeek');
     Route::get('/time/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');
 
+    Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
+
     Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
         ->except(['update', 'destroy'])

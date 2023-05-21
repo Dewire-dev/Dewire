@@ -32,9 +32,9 @@ class Task extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function taskLogs(): HasMany
+    public function taskComments(): HasMany
     {
-        return $this->hasMany(TaskLog::class);
+        return $this->hasMany(TaskComment::class);
     }
 
     public function taskTimeSpends(): HasMany

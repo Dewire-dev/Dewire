@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Task } from '@/Interfaces/Task'
 import { useDate } from "@/Composables/date";
-import { useFormatTime } from "../Composables/time";
+import { useFormatTime } from '@/Composables/time'
 
 interface Day {
     label: String,
@@ -77,8 +77,8 @@ function getTotalTimeSpend () {
     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
         <td colspan="2" class="px-6 py-4 font-bold">Total: {{ tasks.length }} {{ (tasks.length > 1) ? 'tâches' : 'tâche' }}</td>
         <td v-for="day in days" class="px-6 py-4 text-center font-bold">
-            {{ useFormatTime().formatTimeSpend(getTotalTimeSpendOnOneDay(day.date)) }}
+            {{ useFormatTime().formatTimeHoursMinutes(getTotalTimeSpendOnOneDay(day.date)) }}
         </td>
-        <td class="px-6 py-4 text-center font-bold">{{ useFormatTime().formatTimeSpend(getTotalTimeSpend()) }}</td>
+        <td class="px-6 py-4 text-center font-bold">{{ useFormatTime().formatTimeHoursMinutes(getTotalTimeSpend()) }}</td>
     </tr>
 </template>
