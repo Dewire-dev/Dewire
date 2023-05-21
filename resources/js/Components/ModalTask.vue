@@ -28,7 +28,10 @@ const taskForm: Task = reactive({
 
 function convertLinksToAnchorTags(text: string) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, '<a class="dark:text-white italic" href="$1" target="_blank">$1</a>');
+    const newLineRegex = /(?:\r\n|\r|\n)/g;
+    return text
+        .replace(urlRegex, '<a class="dark:text-white italic" href="$1" target="_blank">$1</a>')
+        .replace(newLineRegex, '<br />');
 }
 </script>
 
