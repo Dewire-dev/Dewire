@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
 import { Button } from "flowbite-vue";
 
