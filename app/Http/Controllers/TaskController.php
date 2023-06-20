@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -68,5 +69,17 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         $task->delete();
+    }
+
+    public function taskTimeSpends(Task $task, string $date, User $user)
+    {
+        $task->load(['project']);
+        return response()->json([
+            'task' => $task,
+            'taskTimeSpends' => $task->taskTimeSpends()
+                ->whereDate('date', $date)
+                ->where('user_id', $user->id)
+                ->get(),
+        ]);
     }
 }

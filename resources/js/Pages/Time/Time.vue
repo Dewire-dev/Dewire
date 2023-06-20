@@ -114,36 +114,63 @@ const items = computed((): Array<Array<Item>> => {
                 text: task.label,
                 value: 'task',
                 bold: true,
-                clickable: true,
+                clickableText: true,
                 eventToEmit: 'openTask',
             },
             {
+                id: task.id,
                 text: task.type,
                 value: 'category',
             },
             {
+                id: task.id,
                 text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTask(task.task_time_spends)),
                 value: 'total'
             },
             {
+                id: task.id,
                 text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('monday').date)),
+                date: useDate().formatDate(getDayByLabel('monday').date, 'YYYY-MM-DD'),
                 value: 'monday',
+                clickableItem: true,
+                eventToEmit: 'openTime',
+                iconHoverAdd: true,
             },
             {
+                id: task.id,
                 text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('tuesday').date)),
+                date: useDate().formatDate(getDayByLabel('tuesday').date, 'YYYY-MM-DD'),
                 value: 'tuesday',
+                clickableItem: true,
+                eventToEmit: 'openTime',
+                iconHoverAdd: true,
             },
             {
+                id: task.id,
                 text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('wednesday').date)),
+                date: useDate().formatDate(getDayByLabel('wednesday').date, 'YYYY-MM-DD'),
                 value: 'wednesday',
+                clickableItem: true,
+                eventToEmit: 'openTime',
+                iconHoverAdd: true,
             },
             {
+                id: task.id,
                 text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('thursday').date)),
+                date: useDate().formatDate(getDayByLabel('thursday').date, 'YYYY-MM-DD'),
                 value: 'thursday',
+                clickableItem: true,
+                eventToEmit: 'openTime',
+                iconHoverAdd: true,
             },
             {
+                id: task.id,
                 text: useFormatTime().formatTimeHoursMinutes(getTimeSpendOnOneTaskPerDay(task.task_time_spends, getDayByLabel('friday').date)),
+                date: useDate().formatDate(getDayByLabel('friday').date, 'YYYY-MM-DD'),
                 value: 'friday',
+                clickableItem: true,
+                eventToEmit: 'openTime',
+                iconHoverAdd: true,
             },
         ]
     })
@@ -277,6 +304,7 @@ async function changeUser (userSelected: User) {
                         :days="days"
                         :tasks="tasks"
                         :states="states"
+                        :current-user-selected="currentUserSelected"
                     />
                 </template>
                 <Loader v-else/>

@@ -2,12 +2,15 @@
 import Item from '@/Interfaces/Item'
 import ItemHeader from '@/Interfaces/ItemHeader'
 import { Task } from "@/Interfaces/Task"
+import { TaskTimeSpend } from "@/Interfaces/TaskTimeSpend"
 import axios from "axios"
 import route from "ziggy-js";
 
-const showModal = ref(false)
+const showModalTask = ref(false)
+const showModalTaskTimeSpend = ref(false)
 
-const taskSelected = ref<Task>(null);
+const taskSelected = ref<Task|null>(null);
+const taskTimeSpends = ref<Array<TaskTimeSpend>>([]);
 
 const props = defineProps({
     headers: {
@@ -30,17 +33,36 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    currentUserSelected: {
+        type: Object,
+        required: true,
+    },
 });
 
-async function openTask(idTask) {
+async function openTask(item: Item) {
     const response = await axios.get(
         route('tasks.show', {
-            id: idTask,
+            id: item.id as number,
         }),
     )
 
     taskSelected.value = response.data.task;
-    showModal.value = true
+    showModalTask.value = true
+}
+
+async function openTime(item: Item) {
+    console.log(props.currentUserSelected)
+    const response = await axios.get(
+        route('tasks.taskTimeSpends', {
+            task: (item.id as number),
+            date: (item.date as string),
+            user: props.currentUserSelected.id,
+        }),
+    )
+
+    taskSelected.value = response.data.task;
+    taskTimeSpends.value = response.data.taskTimeSpends;
+    showModalTaskTimeSpend.value = true
 }
 
 </script>
@@ -50,6 +72,7 @@ async function openTask(idTask) {
         :headers="headers"
         :items="items"
         @openTask="openTask"
+        @openTime="openTime"
     >
         <template #customLine>
             <TableLigneTotalTimeSpendPerDay
@@ -61,8 +84,17 @@ async function openTask(idTask) {
 
     <ModalTask
         :task="taskSelected"
-        :show="showModal"
+        :show="showModalTask"
         :states="states"
-        @close="showModal = false"
+        @close="showModalTask = false"
     />
+
+    <ModalTaskTimeSpent
+        :task-time-spends="taskTimeSpends"
+        :task="taskSelected"
+        :show="showModalTaskTimeSpend"
+        @close="showModalTaskTimeSpend = false"
+    />
+
+
 </template>

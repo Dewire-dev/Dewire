@@ -23,16 +23,8 @@ function findItemInItems (items: Array<Item>, headerValue: string): Item | undef
     })
 }
 
-function eventToEmit (items, eventName: string) {
-    let idToEmit = null
-    items.forEach((item: Item) => {
-        if (item && item.eventToEmit && item.eventToEmit === eventName) {
-            idToEmit = item.id;
-            return;
-        }
-    })
-
-    emit(eventName, idToEmit)
+function emitEvent (item: Item) {
+    emit(item.eventToEmit, item)
 }
 </script>
 
@@ -54,13 +46,21 @@ function eventToEmit (items, eventName: string) {
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                 >
                     <td
-                        v-for="header in headers" class="px-6 py-4 text-center"
-                        :class="findItemInItems(arrayItems, header.value).bold ? 'font-black' : ''"
+                        v-for="header in headers"
+                        class="px-6 py-4 text-center group"
+                        :class="
+                            findItemInItems(arrayItems, header.value).bold ? 'font-black ' : ' ' &&
+                            findItemInItems(arrayItems, header.value).clickableItem ? 'cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600' : ''
+                        "
+                        @click="findItemInItems(arrayItems, header.value).clickableItem ? emitEvent(findItemInItems(arrayItems, header.value)) : null"
                     >
                         <template v-if="findItemInItems(arrayItems, header.value)">
+                            <template v-if="findItemInItems(arrayItems, header.value).iconHoverAdd">
+                                <i-carbon-add class="absolute hidden group-hover:block dark:text-white"/>
+                            </template>
                             <span
-                                :class="findItemInItems(arrayItems, header.value).clickable ? 'cursor-pointer hover:text-gray-900 dark:hover:text-gray-100' : ''"
-                                @click="findItemInItems(arrayItems, header.value).clickable ? eventToEmit(arrayItems, findItemInItems(arrayItems, header.value).eventToEmit) : null"
+                                :class="findItemInItems(arrayItems, header.value).clickableText ? 'cursor-pointer hover:text-gray-900 dark:hover:text-gray-100' : ''"
+                                @click="findItemInItems(arrayItems, header.value).clickableText ? emitEvent(findItemInItems(arrayItems, header.value)) : null"
                             >
                                 {{ findItemInItems(arrayItems, header.value).text }}
                             </span>

@@ -22,9 +22,9 @@ const props = defineProps({
     },
 })
 
-const taskForm: Task = reactive({
+/*const taskForm: Task = reactive({
     task: props.task,
-});
+});*/
 
 function convertLinksToAnchorTags(text: string) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -59,12 +59,7 @@ function convertLinksToAnchorTags(text: string) {
                 </div>
                 <div class="col-span-9 flex">
                     <div v-for="user in task.users" :key="user.id" class="flex items-center mr-2">
-                        <div class="w-10 h-10 rounded-3xl dark:bg-gray-700 border-gray-400 flex items-center justify-center">
-                        <span class="text-lg font-bold dark:text-white">
-                            {{ user.firstname[0].toUpperCase() }}
-                            {{ user.lastname[0].toUpperCase() }}
-                        </span>
-                        </div>
+                        <img class="w-10 h-10 rounded-full object-cover" :src="user.profile_photo_url" :alt="user.firstname"/>
                         <span class="ml-2 font-bold">{{ user.firstname }} {{ user.lastname.slice(0, 1) }}.</span>
                     </div>
                 </div>

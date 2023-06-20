@@ -4,6 +4,9 @@ export default interface Item {
     value: string,
     bold?: boolean,
     italic?: boolean,
-    clickable?: boolean,
+    clickableText?: boolean,
+    clickableItem?: boolean,
     eventToEmit?: string,
+    iconHoverAdd?: boolean,
+    date?: string,
 }
