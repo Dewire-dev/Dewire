@@ -38,7 +38,7 @@ watch(content, (value) => {
                 <h2
                     class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center"
                 >
-                    {{ note.title }}
+                    {{ note.name }}
                 </h2>
             </div>
         </template>
