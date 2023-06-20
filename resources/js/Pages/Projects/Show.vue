@@ -4,7 +4,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import route from "ziggy-js";
 import { Button } from "flowbite-vue";
 
-defineProps<{
+const props = defineProps<{
     project: {
         id: number;
         title: string;
