@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveNoteRequest;
 use App\Http\Requests\StoreNoteRequest;
 use App\Http\Requests\UpdateNoteRequest;
 use App\Models\Note;
 use App\Models\Project;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class NoteController extends Controller
@@ -18,14 +18,6 @@ class NoteController extends Controller
     {
         $notes = Note::where('project_id', $project->id)->get();
         return Inertia::render('Notes/Index')->with(compact('project', 'notes'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -49,19 +41,12 @@ class NoteController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Note $note)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateNoteRequest $request, Note $note)
     {
-        //
+        $note->update($request->validated());
+        return back();
     }
 
     /**
@@ -75,9 +60,9 @@ class NoteController extends Controller
     /**
      * Save the specified resource.
      */
-    public function save(Request $request, Note $note)
+    public function save(SaveNoteRequest $request, Note $note)
     {
-        $note->content = $request['content'];
+        $note->content = $request->input('content');
         $note->save();
     }
 }
