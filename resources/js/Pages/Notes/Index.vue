@@ -29,6 +29,10 @@ const breadcrumb = [
         label: project.title,
         route: route("projects.show", { project }),
     },
+    {
+        label: "Notes",
+        route: route("projects.notes.index", { project }),
+    },
 ];
 </script>
 

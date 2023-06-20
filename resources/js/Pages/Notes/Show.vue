@@ -19,6 +19,10 @@ const breadcrumb = [
         label: "Notes",
         route: route("projects.notes.index", { project }),
     },
+    {
+        label: note.name,
+        route: route('projects.notes.show', { project, note }),
+    },
 ];
 
 const content = useDebouncedRef(JSON.parse(note.content), 1000);
