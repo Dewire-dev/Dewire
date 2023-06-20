@@ -34,9 +34,13 @@ const props = defineProps({
 
         <template #content>
             <section>
-                <div v-for="taskTimeSpend in taskTimeSpends">
-                    <input :value="taskTimeSpend.time" name="time"/>
-                    <input :value="taskTimeSpend.description" name="description"/>
+                <div v-for="taskTimeSpend in taskTimeSpends" class="grid grid-cols-12 flex justify-around">
+                    <div class="col-span-2 mx-2">
+                        <TextInput :value="useFormatTime().formatTimeHoursMinutes(taskTimeSpend.time)" name="time" class="p-1 w-100"/>
+                    </div>
+                    <div class="col-span-10 mx-2">
+                        <TextInput :value="taskTimeSpend.description" name="description" class="p-1 w-100"/>
+                    </div>
                 </div>
             </section>
         </template>
