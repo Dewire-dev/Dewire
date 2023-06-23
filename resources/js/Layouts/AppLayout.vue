@@ -11,7 +11,7 @@ defineProps({
     title: String,
 });
 
-const projects = computed<App.Models.Project[]>(() => usePage().props.layout?.projects || [])
+const projects = computed(() => usePage().props.layout?.projects)
 
 const showingNavigationDropdown = ref(false);
 
