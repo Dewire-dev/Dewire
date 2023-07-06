@@ -23,10 +23,10 @@ defineProps<{
 
         <Link :href="route('chats.show', { project, chat })" class="flex">
             <h5
-                class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white flex-1">
                 {{ chat.name }}
             </h5>
-            <div v-if="chat.countUnreadMessages > 0" class="inline-flex items-center justify-center w-14 h-10 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ chat.countUnreadMessages }}</div>
+            <div v-if="chat.countUnreadMessages > 0" class="inline-flex items-center justify-center w-9 h-10 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ chat.countUnreadMessages }}</div>
         </Link>
         <p class="my-3 font-normal text-gray-700 dark:text-gray-400">
             {{ chat.subject }}

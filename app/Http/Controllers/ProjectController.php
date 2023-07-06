@@ -41,22 +41,8 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        if (Project::canAccessModule($project, 'Chat')) {
-            $chats = $this->chatRepo->getChat($project->id);
-            $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
-        } else {
-            $chats = null;
-        }
-        if($chats != null) {
-            foreach ($unReadMessages as $count) {
-                $chats = $chats->map(function ($chat) use ($count) {
-                    $chat->countUnreadMessages = $count->count();
-                    return $chat;
-                });
-            }
-        }
 
-        return Inertia::render('Projects/Show', compact('project', 'chats'));
+        return Inertia::render('Projects/Show', compact('project'));
     }
 
     /**

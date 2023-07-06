@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\ChatRepository;
 use App\Models\Chat;
-use App\Models\ChatsUser;
 use App\Models\Message;
 use App\Models\MessageReadUser;
 use App\Models\Project;
@@ -26,6 +25,26 @@ class ChatController extends Controller
     public function index()
     {
         return to_route('dashboard');
+    }
+
+    public function showProjects(Project $project, Chat $chat, Request $request)
+    {
+        if (Project::canAccessModule($project, 'Chat')) {
+            $chats = $this->chatRepo->getChat($project->id);
+            $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
+        } else {
+            $chats = null;
+        }
+        if ($chats != null) {
+            foreach ($unReadMessages as $count) {
+                $chats = $chats->map(function ($chat) use ($count) {
+                    $chat->countUnreadMessages = $count->count();
+                    return $chat;
+                });
+            }
+        }
+
+        return Inertia::render('Chats/ChatsProject', compact('project', 'chats'));
     }
 
     public function show(Project $project, Chat $chat, Request $request)
@@ -53,10 +72,8 @@ class ChatController extends Controller
             'content' => $request->get('form')['content'],
         ]);
 
-        foreach ($request->get('chatsUsers') as $chatsUsers)
-        {
-            if ($chatsUsers['user_id'] !== auth()->user()->id)
-            {
+        foreach ($request->get('chatsUsers') as $chatsUsers) {
+            if ($chatsUsers['user_id'] !== auth()->user()->id) {
                 MessageReadUser::create([
                     'message_id' => $message->id,
                     'user_id' => $chatsUsers['user_id'],
@@ -71,8 +88,7 @@ class ChatController extends Controller
     public function markReadMessages(Request $request)
     {
 
-        foreach ($request->get('unReadMessages') as $MessagesRead)
-        {
+        foreach ($request->get('unReadMessages') as $MessagesRead) {
             MessageReadUser::whereId($MessagesRead['id'])->update([
                 'read_at' => Carbon::now()
             ]);
