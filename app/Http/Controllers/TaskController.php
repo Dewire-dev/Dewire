@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+use App\Models\TaskComment;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -98,6 +99,13 @@ class TaskController extends Controller
             'task_id' => $task->id,
             'comment' => $request->get('comment'),
         ]);
+
+        return $this->show($task);
+    }
+
+    public function deleteComment(Task $task, TaskComment $taskComment)
+    {
+        $taskComment->delete();
 
         return $this->show($task);
     }

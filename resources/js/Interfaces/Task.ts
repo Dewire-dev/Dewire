@@ -1,5 +1,6 @@
 import { Project } from '@/Interfaces/Project'
 import { TaskTimeSpend } from '@/Interfaces/TaskTimeSpend'
+import { TaskComment } from '@/Interfaces/TaskComment'
 
 export interface Task {
     id: number,
@@ -11,6 +12,7 @@ export interface Task {
     start_at: Date,
     updated_at: Date,
     task_time_spends: Array<TaskTimeSpend>,
+    task_comments: Array<TaskComment>,
     state: string,
     type: string,
 }

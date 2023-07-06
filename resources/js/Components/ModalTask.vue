@@ -20,10 +20,6 @@ const props = defineProps({
     },
 })
 
-/*const taskForm: Task = reactive({
-    task: props.task,
-});*/
-
 function convertLinksToAnchorTags(text: string) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const newLineRegex = /(?:\r\n|\r|\n)/g;
@@ -97,7 +93,7 @@ function convertLinksToAnchorTags(text: string) {
 
             <!-- COMMENTS -->
             <section class="mt-5">
-                <div v-for="task_comment in task.task_comments" class="grid grid-cols-12 mb-3">
+                <div v-for="task_comment in task.task_comments" class="grid grid-cols-12 mb-3 relative bloc-comment">
                     <div class="col-span-1">
                         <img class="w-12 h-12 rounded-full object-cover" :src="task_comment.user.profile_photo_url" :alt="task_comment.user.firstname">
                     </div>
@@ -108,6 +104,7 @@ function convertLinksToAnchorTags(text: string) {
                         </div>
                         <span v-html="convertLinksToAnchorTags(task_comment.comment)" />
                     </div>
+                    <i-carbon-close class="hidden cursor-pointer close-icon absolute right-0 dark:text-white" @click="emit('deleteComment', task_comment)" />
                 </div>
 
                 <div class="my-3">
@@ -129,3 +126,9 @@ function convertLinksToAnchorTags(text: string) {
         </template>
     </DialogModal>
 </template>
+
+<style>
+.bloc-comment:hover .close-icon {
+    display:block;
+}
+</style>

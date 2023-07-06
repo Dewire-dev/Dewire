@@ -5,6 +5,7 @@ import { Task } from "@/Interfaces/Task"
 import { TaskTimeSpend } from "@/Interfaces/TaskTimeSpend"
 import axios from "axios"
 import route from "ziggy-js";
+import {TaskComment} from "@/Interfaces/TaskComment";
 
 const showModalTask = ref(false)
 const showModalTaskTimeSpend = ref(false)
@@ -65,12 +66,26 @@ async function openTime(item: Item) {
 }
 
 async function sendComment(comment: string) {
+    if (comment.length === 0) {
+        return
+    }
     const response = await axios.post(
         route('tasks.addComment', {
             task: (taskSelected.value as Task).id,
         }), {
             comment: comment,
         },
+    )
+
+    taskSelected.value = response.data.task
+}
+
+async function deleteComment(taskComment: TaskComment) {
+    const response = await axios.delete(
+        route('tasks.deleteComment', {
+            task: (taskSelected.value as Task).id,
+            taskComment: taskComment.id,
+        }),
     )
 
     taskSelected.value = response.data.task
@@ -113,6 +128,7 @@ async function saveTask() {
         :states="states"
         @close="showModalTask = false"
         @sendComment="sendComment"
+        @deleteComment="deleteComment"
         @saveTask="saveTask"
     />
 
@@ -122,6 +138,4 @@ async function saveTask() {
         :show="showModalTaskTimeSpend"
         @close="showModalTaskTimeSpend = false"
     />
-
-
 </template>

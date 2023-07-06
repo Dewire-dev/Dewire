@@ -54,6 +54,7 @@ Route::middleware([
 
         Route::get('/task-time-spends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
         Route::post('/{task}/add-comment', [\App\Http\Controllers\TaskController::class, 'addComment'])->name('tasks.addComment');
+        Route::delete('/{task}/delete-comment/{taskComment}', [\App\Http\Controllers\TaskController::class, 'deleteComment'])->name('tasks.deleteComment');
     });
 
     Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);

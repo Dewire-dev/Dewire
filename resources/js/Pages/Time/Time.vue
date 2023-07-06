@@ -76,6 +76,10 @@ const headers = computed((): Array<ItemHeader> => [
         value: 'task',
     },
     {
+        text: 'Projets',
+        value: 'project',
+    },
+    {
         text: 'Catégorie',
         value: 'category',
     },
@@ -115,6 +119,12 @@ const items = computed((): Array<Array<Item>> => {
                 bold: true,
                 clickableText: true,
                 eventToEmit: 'openTask',
+            },
+            {
+                id: task.id,
+                text: task.project ? task.project.title : '',
+                value: 'project',
+                bold: true,
             },
             {
                 id: task.id,
