@@ -44,15 +44,17 @@ Route::middleware([
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
 
-    Route::get('/time', [\App\Http\Controllers\TimeController::class, 'index'])->name('time');
-    Route::get('/time/get-previous-week', [\App\Http\Controllers\TimeController::class, 'getPreviousWeek'])->name('time.getPreviousWeek');
-    Route::get('/time/get-next-week', [\App\Http\Controllers\TimeController::class, 'getNextWeek'])->name('time.getNextWeek');
-    Route::get('/time/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');
-
     Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
-    Route::get('/time/task-time-spends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
-    Route::post('/time/{task}/add-comment', [\App\Http\Controllers\TaskController::class, 'addComment'])->name('tasks.addComment');
-    Route::get('/time/taskTimeSpends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
+
+    Route::prefix('time')->controller(\App\Http\Controllers\TimeController::class)->group(function () {
+        Route::get('/', [\App\Http\Controllers\TimeController::class, 'index'])->name('time');
+        Route::get('/get-previous-week', [\App\Http\Controllers\TimeController::class, 'getPreviousWeek'])->name('time.getPreviousWeek');
+        Route::get('/get-next-week', [\App\Http\Controllers\TimeController::class, 'getNextWeek'])->name('time.getNextWeek');
+        Route::get('/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');
+
+        Route::get('/task-time-spends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
+        Route::post('/{task}/add-comment', [\App\Http\Controllers\TaskController::class, 'addComment'])->name('tasks.addComment');
+    });
 
     Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
