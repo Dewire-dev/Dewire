@@ -41,7 +41,7 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task->load(['project', 'userCreator', 'users', 'taskComments', 'taskComments.user']);
+        $task->load(['project', 'userCreator', 'users', 'taskComments', 'taskComments.user', 'taskTimeSpends']);
         return response()->json([
             'task' => $task,
         ]);

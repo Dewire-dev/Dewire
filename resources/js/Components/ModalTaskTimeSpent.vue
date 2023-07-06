@@ -36,10 +36,10 @@ const props = defineProps({
             <section>
                 <div v-for="taskTimeSpend in taskTimeSpends" class="grid grid-cols-12 flex justify-around">
                     <div class="col-span-2 mx-2">
-                        <TextInput :value="useFormatTime().formatTimeHoursMinutes(taskTimeSpend.time)" name="time" class="p-1 w-100"/>
+                        <TextInput :value="useFormatTime().formatTimeHoursMinutes(taskTimeSpend.time)" name="time" classes="p-1 w-100"/>
                     </div>
                     <div class="col-span-10 mx-2">
-                        <TextInput :value="taskTimeSpend.description" name="description" class="p-1 w-100"/>
+                        <TextInput :value="taskTimeSpend.description" name="description" classes="p-1 w-100"/>
                     </div>
                 </div>
             </section>

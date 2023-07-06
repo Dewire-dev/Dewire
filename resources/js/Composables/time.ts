@@ -1,3 +1,5 @@
+import { Task } from '@/Interfaces/Task'
+
 export function useFormatTime() {
     function formatTimeHoursMinutes (timeSpend: number): string {
         let hours: number = 0
@@ -17,7 +19,21 @@ export function useFormatTime() {
         return hours + 'h' + ((minutes < 10) ? '0' : '') + minutes + 'm'
     }
 
+    function getTotalTimeSpendOnATask (task: Task): number {
+        let total = 0
+        for (const timeSpend of task.task_time_spends) {
+            total += timeSpend.time;
+        }
+        return total
+    }
+
+    function getTotalTimeSpendOnATaskFormatTimeHoursMinutes (task: Task): string {
+        return formatTimeHoursMinutes(getTotalTimeSpendOnATask(task))
+    }
+
     return {
         formatTimeHoursMinutes,
+        getTotalTimeSpendOnATask,
+        getTotalTimeSpendOnATaskFormatTimeHoursMinutes,
     }
 }

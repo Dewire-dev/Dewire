@@ -78,7 +78,7 @@ function convertLinksToAnchorTags(text: string) {
                     </div>
                 <div class="flex">
                     <i-carbon-time class="mr-2 dark:text-white" />
-                    total time spent
+                    {{ useFormatTime().getTotalTimeSpendOnATaskFormatTimeHoursMinutes(task) }}
                 </div>
             </section>
             <!-- DESCRIPTION -->
@@ -100,11 +100,11 @@ function convertLinksToAnchorTags(text: string) {
                     </div>
                 </div>
 
-                <div class="mt-2">
+                <div class="my-3">
                     <div class="grid">
                         <textarea class="dark:bg-gray-700 resize-none border rounded-md dark:text-white" v-model="commentToAdd" placeholder="Ajouter un commentaire..."/>
                     </div>
-                    <Button class="mt-2 bg-white float-right">Envoyer</Button>
+                    <Button class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md">Envoyer</Button>
                 </div>
             </section>
         </template>
