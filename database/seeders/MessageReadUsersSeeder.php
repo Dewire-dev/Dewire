@@ -20,7 +20,7 @@ class MessageReadUsersSeeder extends Seeder
         foreach ($messages as $message) {
             $users = User::inRandomOrder()->take(rand(1,3))->get();
             foreach ($users as $user) {
-                MessageReadUser::create([
+                MessageReadUser::updateOrCreate([
                     'message_id' => $message->id,
                     'user_id' => $user->id,
                 ]);
