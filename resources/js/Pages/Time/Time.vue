@@ -36,7 +36,6 @@ onBeforeMount(() => {
     firstDayOfWeek.value = props.firstDayOfWeek
     lastDayOfWeek.value = props.lastDayOfWeek
     users.value = props.users
-    console.log(props)
     states.value = props.states
 })
 

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
-import { Task } from '@/Interfaces/Task'
 import { useFormatTime } from '@/Composables/time'
 import { useDate } from '@/Composables/date'
 
@@ -85,6 +83,13 @@ function convertLinksToAnchorTags(text: string) {
             <section class="grid">
                 <textarea class="dark:bg-gray-700 h-[350px] resize-none border rounded-md dark:text-white" v-model="task.description"/>
             </section>
+
+            <section class="grid">
+                <div>
+                    <Button class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md">Sauvegarder</Button>
+                </div>
+            </section>
+
             <!-- COMMENTS -->
             <section class="mt-5">
                 <div v-for="task_comment in task.task_comments" class="grid grid-cols-12 mb-3">
@@ -104,7 +109,12 @@ function convertLinksToAnchorTags(text: string) {
                     <div class="grid">
                         <textarea class="dark:bg-gray-700 resize-none border rounded-md dark:text-white" v-model="commentToAdd" placeholder="Ajouter un commentaire..."/>
                     </div>
-                    <Button class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md">Envoyer</Button>
+                    <Button
+                        class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md"
+                        @click="emit('sendComment', commentToAdd);commentToAdd=''"
+                    >
+                        Envoyer
+                    </Button>
                 </div>
             </section>
         </template>

@@ -51,7 +51,6 @@ async function openTask(item: Item) {
 }
 
 async function openTime(item: Item) {
-    console.log(props.currentUserSelected)
     const response = await axios.get(
         route('tasks.taskTimeSpends', {
             task: (item.id as number),
@@ -63,6 +62,17 @@ async function openTime(item: Item) {
     taskSelected.value = response.data.task;
     taskTimeSpends.value = response.data.taskTimeSpends;
     showModalTaskTimeSpend.value = true
+}
+
+async function sendComment(comment: string) {
+    const response = await axios.post(
+        route('tasks.addComment', {
+            task: (taskSelected.value as Task).id,
+            comment: comment,
+        })
+    )
+
+    taskSelected.value = response.data.task
 }
 
 </script>
@@ -87,6 +97,7 @@ async function openTime(item: Item) {
         :show="showModalTask"
         :states="states"
         @close="showModalTask = false"
+        @sendComment="sendComment"
     />
 
     <ModalTaskTimeSpent

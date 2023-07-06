@@ -11,7 +11,9 @@ class TaskComment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'log',
+        'user_id',
+        'task_id',
+        'comment',
     ];
 
     public function user(): BelongsTo

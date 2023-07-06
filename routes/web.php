@@ -50,6 +50,8 @@ Route::middleware([
     Route::get('/time/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');
 
     Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
+    Route::get('/time/task-time-spends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
+    Route::post('/time/{task}/add-comment', [\App\Http\Controllers\TaskController::class, 'addComment'])->name('tasks.addComment');
     Route::get('/time/taskTimeSpends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
 
     Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);

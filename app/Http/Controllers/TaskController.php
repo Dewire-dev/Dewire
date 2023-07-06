@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -81,5 +82,17 @@ class TaskController extends Controller
                 ->where('user_id', $user->id)
                 ->get(),
         ]);
+    }
+
+    public function addComment(Request $request, Task $task)
+    {
+        $user = Auth::user();
+        $task->taskComments()->create([
+            'user_id' => $user->id,
+            'task_id' => $task->id,
+            'comment' => $request->get('comment'),
+        ]);
+
+        return $this->show($task);
     }
 }
