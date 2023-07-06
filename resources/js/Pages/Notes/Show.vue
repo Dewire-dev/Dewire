@@ -21,9 +21,25 @@ const breadcrumb = [
     },
     {
         label: note.name,
-        route: route('projects.notes.show', { project, note }),
+        route: route("projects.notes.show", { project, note }),
     },
 ];
+
+Echo.join(`note.${note.id}`)
+    .here((users) => {
+        // ...
+        console.log(users);
+
+    })
+    .joining((user) => {
+        console.log(user.name);
+    })
+    .leaving((user) => {
+        console.log(user.name);
+    })
+    .error((error) => {
+        console.error(error);
+    });
 
 const content = useDebouncedRef(JSON.parse(note.content), 1000);
 
