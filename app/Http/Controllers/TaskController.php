@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -59,9 +60,14 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(TaskRequest $request, Task $task)
     {
-        //
+        $task->update([
+            'state' => $request->get('state'),
+            'description' => $request->get('description')
+        ]);
+
+        return $this->show($task);
     }
 
     /**

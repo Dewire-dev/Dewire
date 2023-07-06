@@ -68,11 +68,26 @@ async function sendComment(comment: string) {
     const response = await axios.post(
         route('tasks.addComment', {
             task: (taskSelected.value as Task).id,
+        }), {
             comment: comment,
-        })
+        },
     )
 
     taskSelected.value = response.data.task
+}
+
+async function saveTask() {
+    const response = await axios.put(
+        route('tasks.update', {
+            id: (taskSelected.value as Task).id as number,
+        }),
+        {
+            state: (taskSelected.value as Task).state,
+            description: (taskSelected.value as Task).description as string,
+        },
+    )
+
+    taskSelected.value = response.data.task;
 }
 
 </script>
@@ -98,6 +113,7 @@ async function sendComment(comment: string) {
         :states="states"
         @close="showModalTask = false"
         @sendComment="sendComment"
+        @saveTask="saveTask"
     />
 
     <ModalTaskTimeSpent

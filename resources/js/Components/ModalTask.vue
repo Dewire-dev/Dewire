@@ -51,7 +51,7 @@ function convertLinksToAnchorTags(text: string) {
             <section class="grid grid-cols-12">
                 <div class="col-span-3 mr-3">
                     <Select
-                        v-model:value="task.state"
+                        v-model="task.state"
                         :items="states"
                     />
                 </div>
@@ -73,7 +73,7 @@ function convertLinksToAnchorTags(text: string) {
                         {{ useDate().formatDate(task.start_at, 'DD/MM/YYYY')}} - {{ useDate().formatDate(task.end_at, 'DD/MM/YYYY') }}
                     </template>
                     ({{ useFormatTime().formatTimeHoursMinutes(task.scheduled_time) }})
-                    </div>
+                </div>
                 <div class="flex">
                     <i-carbon-time class="mr-2 dark:text-white" />
                     {{ useFormatTime().getTotalTimeSpendOnATaskFormatTimeHoursMinutes(task) }}
@@ -86,7 +86,12 @@ function convertLinksToAnchorTags(text: string) {
 
             <section class="grid">
                 <div>
-                    <Button class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md">Sauvegarder</Button>
+                    <Button
+                        class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md"
+                        @click="emit('saveTask')"
+                    >
+                        Sauvegarder
+                    </Button>
                 </div>
             </section>
 
