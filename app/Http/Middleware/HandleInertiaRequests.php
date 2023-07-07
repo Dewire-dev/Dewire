@@ -38,8 +38,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'layout' => [
-                // TODO : filtrer les projets de l'utilisateur
-                'projects' => \App\Models\Project::query()->with('modules')->get(),
+                'projects' => $request->user()?->currentTeam?->projects()->with('modules')->get(),
             ],
         ]);
     }
