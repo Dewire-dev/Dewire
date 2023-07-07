@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\ChatRepository;
 use App\Models\Chat;
+use App\Models\ChatsUser;
 use App\Models\Message;
 use App\Models\MessageReadUser;
 use App\Models\Project;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,6 +34,7 @@ class ChatController extends Controller
         if (Project::canAccessModule($project, 'Chat')) {
             $chats = $this->chatRepo->getChat($project->id);
             $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
+            $users = User::all();
         } else {
             $chats = null;
         }
@@ -44,7 +47,26 @@ class ChatController extends Controller
             }
         }
 
-        return Inertia::render('Chats/ChatsProject', compact('project', 'chats'));
+        return Inertia::render('Chats/ChatsProject', compact('project', 'chats', 'users'));
+    }
+
+    public function createChats(Project $project, Request $request): RedirectResponse
+    {
+
+        $chat = Chat::create([
+           'subject' => $request->get('chatSubject'),
+            'name' => $request->get('chatName'),
+            'project_id' => $request->get('projectId')
+        ]);
+
+        foreach ($request->get('chatUsers') as $chatUsers) {
+            ChatsUser::create([
+                'user_id' => $chatUsers,
+                'chat_id' => $chat['id'],
+            ]);
+        }
+
+        return response()->redirectToRoute('listChats', ['project' => $project]);
     }
 
     public function show(Project $project, Chat $chat, Request $request)

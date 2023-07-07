@@ -39,5 +39,7 @@ Route::middleware([
 
     Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
 
-    Route::get('/projectschats/{project}', [\App\Http\Controllers\ChatController::class, 'showProjects']);
+    Route::get('/projectschats/{project}', [\App\Http\Controllers\ChatController::class, 'showProjects'])->name('listChats');
+
+    Route::post('/projectschats/{project}/create', [\App\Http\Controllers\ChatController::class, 'createChats'])->name('createChats');
 });
