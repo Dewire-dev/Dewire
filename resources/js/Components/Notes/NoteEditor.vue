@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { useEditor, EditorContent, FloatingMenu, type JSONContent } from "@tiptap/vue-3";
+import { useEditor, EditorContent, type JSONContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
-import { Button } from "flowbite-vue";
 
 const props = withDefaults(
     defineProps<{
@@ -30,7 +29,10 @@ const editor = useEditor({
 watch(
     () => props.modelValue,
     (value) => {
-        if (!value || JSON.stringify(editor.value?.getJSON()) === JSON.stringify(value))
+        if (
+            !value ||
+            JSON.stringify(editor.value?.getJSON()) === JSON.stringify(value)
+        )
             return;
         editor.value?.commands.setContent(value, false);
     }
@@ -57,42 +59,8 @@ onBeforeUnmount(() => {
             />
             Editable
         </div>
-        <FloatingMenu
-            v-if="editor"
-            :editor="editor"
-            :tippy-options="{ duration: 100 }"
-            class="flex gap-2"
-        >
-            <Button
-                color="light"
-                @click="
-                    editor?.chain().focus().toggleHeading({ level: 1 }).run()
-                "
-                :class="{
-                    'is-active': editor.isActive('heading', { level: 1 }),
-                }"
-            >
-                H1
-            </Button>
-            <Button
-                color="light"
-                @click="
-                    editor?.chain().focus().toggleHeading({ level: 2 }).run()
-                "
-                :class="{
-                    'is-active': editor.isActive('heading', { level: 2 }),
-                }"
-            >
-                H2
-            </Button>
-            <Button
-                color="light"
-                @click="editor?.chain().focus().toggleBulletList().run()"
-                :class="{ 'is-active': editor.isActive('bulletList') }"
-            >
-                Bullet List
-            </Button>
-        </FloatingMenu>
+        <EditorBubbleMenu :editor="editor" />
+        <EditorFloatingMenu :editor="editor" />
         <editor-content :editor="editor" />
     </div>
 </template>
