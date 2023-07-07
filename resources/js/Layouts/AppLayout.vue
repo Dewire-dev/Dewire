@@ -197,7 +197,13 @@ const collapseToggle = (event) => {
                             </div>
                             <ul class="hidden p-5" :id="'collapse-'+index" data-te-collapse-item>
                                 <li v-for="module in project.modules">
-                                    <span class="text-gray-900 dark:text-white">{{ module.name }}</span>
+                                    <template v-if="module.name === 'Chat'">
+                                        <a class="text-gray-900 dark:text-white" :href="/projectschats/ + project.id">{{ module.name }}</a>
+                                    </template>
+<!--                                    Todo : faire un v-if et :href pour les autres modules -->
+                                    <template v-else>
+                                        <a class="text-gray-900 dark:text-white">{{ module.name }}</a>
+                                    </template>
                                 </li>
                             </ul>
                         </li>
