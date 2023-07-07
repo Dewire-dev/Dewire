@@ -3,7 +3,7 @@ import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import route from "ziggy-js";
 
-const { can } = usePermissions();
+const { can } = useRole();
 
 const props = defineProps<{
     project: {
