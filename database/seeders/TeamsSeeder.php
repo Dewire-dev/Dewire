@@ -29,13 +29,19 @@ class TeamsSeeder extends Seeder
 
         foreach ($teams as $team) {
             $team = Team::updateOrCreate(['name' => $team['name']], $team);
+
+            $team->users()->detach();
+
+            $admins = User::where('id', '=', $team['user_id'])->get();
+            $team->users()->attach($admins, ['role'=> 'admin']);
+
+            $editors = User::where('id', '<>', $team['user_id'])->get();
+            $team->users()->attach($editors, ['role'=> 'editor']);
         }
 
-        $team->users()->detach();
-        $team->users()->attach(User::all(), ['role'=> 'editor']);
 
         foreach (User::all() as $user) {
-            $user->switchTeam($team);
+            $user->switchTeam($user->allTeams()->random());
         }
     }
 }
