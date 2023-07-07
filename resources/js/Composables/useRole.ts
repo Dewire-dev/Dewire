@@ -1,4 +1,8 @@
-export const usePermissions = () => {
+export const useRole = () => {
+    const is = (role: string): boolean => {
+        return usePage().props.role === role;
+    };
+
     const can = (permission: string): boolean => {
         return (
             usePage().props.permissions.includes("*") ||
@@ -6,5 +10,5 @@ export const usePermissions = () => {
         );
     };
 
-    return { can };
+    return { is, can };
 };
