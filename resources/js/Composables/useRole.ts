@@ -1,12 +1,12 @@
 export const useRole = () => {
     const is = (role: string): boolean => {
-        return usePage().props.role === role;
+        return usePage().props.currentRole === role;
     };
 
     const can = (permission: string): boolean => {
         return (
-            usePage().props.permissions.includes("*") ||
-            usePage().props.permissions.includes(permission)
+            usePage().props.currentPermissions.includes("*") ||
+            usePage().props.currentPermissions.includes(permission)
         );
     };
 
