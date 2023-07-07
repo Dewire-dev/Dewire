@@ -13,6 +13,19 @@ class Project extends Model
     use HasUlids;
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'title',
+        'subtitle',
+        'description',
+        'color',
+        'team_id',
+    ];
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);
