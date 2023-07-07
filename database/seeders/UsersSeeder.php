@@ -47,7 +47,13 @@ class UsersSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
-            User::updateOrCreate(['email' => $user['email']], $user);
+            $newUser = User::updateOrCreate(['email' => $user['email']], $user);
+            $personalTeam = Team::updateOrCreate(['name' => $newUser['firstname'].'\'s Team'], [
+                'user_id' => $newUser['id'],
+                'name' => $newUser['firstname'].'\'s Team',
+                'personal_team' => true,
+            ]);
+            $newUser->teams()->attach($personalTeam);
         }
 
     }
