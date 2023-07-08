@@ -46,7 +46,7 @@ const breadcrumb = [
             <p>{{ project.description }}</p>
         </div>
 
-        <div v-if="can('modules.add')" class="mt-10">
+        <div v-if="can('add:modules')" class="mt-10">
             <button>Ajouter un module</button>
         </div>
 
