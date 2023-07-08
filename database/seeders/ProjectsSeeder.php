@@ -16,10 +16,19 @@ class ProjectsSeeder extends Seeder
      */
     public function run(): void
     {
+        $elgoneTeam = Team::where('name', 'ElGone\'s Team')->first();
         $maltdevTeam = Team::where('name', 'MALTdev')->first();
+        $milokiaTeam = Team::where('name', 'Milokia\'s Team')->first();
         $cybermindTeam = Team::where('name', 'CyberMind\'s Team')->first();
 
         $projects = [
+            [
+                'title' => 'ElGone',
+                'subtitle' => "Sous-titre de ElGone",
+                'description' => "Description du magnifique projet ElGone",
+                'color' => '#F4F4F4',
+                'team_id' => $elgoneTeam->id,
+            ],
             [
                 'title' => 'Test',
                 'subtitle' => "Sous-titre de Test",
@@ -40,6 +49,13 @@ class ProjectsSeeder extends Seeder
                 'description' => "Description du magnifique projet de Malton",
                 'color' => '#E8B668',
                 'team_id' => $maltdevTeam->id,
+            ],
+            [
+                'title' => 'Milokia',
+                'subtitle' => 'Sous-titre de Milokia',
+                'description' => "Description du magnifique projet de Milokia",
+                'color' => '#Af97DE',
+                'team_id' => $milokiaTeam->id,
             ],
             [
                 'title' => 'CyberMind',

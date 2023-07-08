@@ -16,8 +16,18 @@ class TeamsSeeder extends Seeder
     {
         $teams = [
           [
+              'user_id' => User::where('name', 'MathieuN')->first()->id,
+              'name' => 'ElGone\'s Team',
+              'personal_team' => false,
+          ],
+          [
               'user_id' => User::where('name', 'AnaelB')->first()->id,
               'name' => 'MALTdev',
+              'personal_team' => false,
+          ],
+          [
+              'user_id' => User::where('name', 'LoganLS')->first()->id,
+              'name' => 'Milokia\'s Team',
               'personal_team' => false,
           ],
           [
