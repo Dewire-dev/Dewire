@@ -53,7 +53,7 @@ class UsersSeeder extends Seeder
                 'name' => $newUser['firstname'].'\'s Team',
                 'personal_team' => true,
             ]);
-            $newUser->teams()->attach($personalTeam);
+            $newUser->teams()->attach($personalTeam, ['role'=> 'admin']);
         }
 
     }
