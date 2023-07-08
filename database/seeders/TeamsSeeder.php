@@ -51,7 +51,7 @@ class TeamsSeeder extends Seeder
 
 
         foreach (User::all() as $user) {
-            $user->switchTeam($user->allTeams()->where('personal_team', false)->random());
+            $user->switchTeam($user->allTeams()->where('name', 'MALTdev')->first());
         }
     }
 }
