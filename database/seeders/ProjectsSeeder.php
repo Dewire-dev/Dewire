@@ -68,7 +68,7 @@ class ProjectsSeeder extends Seeder
 
         foreach ($projects as $project) {
             $project = Project::updateOrCreate($project);
-            $project->modules()->sync(Module::all()->random(2), ['created_at' => Carbon::now(),'updated_at' => Carbon::now()]);
+            $project->modules()->sync(Module::all()->random($project['title'] === 'Test' ? Module::count() : 4), ['created_at' => Carbon::now(),'updated_at' => Carbon::now()]);
         }
     }
 }
