@@ -19,5 +19,10 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('note.{id}', function (User $user, string $id) {
-    return ['id' => $user->id, 'name' => $user->name];
+    return [
+        'id' => $user->id,
+        'name' => $user->name,
+        'firstname' => $user->firstname,
+        'lastname' => $user->lastname,
+    ];
 });

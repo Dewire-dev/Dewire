@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import route from "ziggy-js";
+import { Avatar, StackedAvatars, StackedAvatarsCounter } from "flowbite-vue";
 
 const { project, note } = defineProps<{
     project: any;
@@ -25,21 +26,27 @@ const breadcrumb = [
     },
 ];
 
-Echo.join(`note.${note.id}`)
-    .here((users) => {
-        // ...
-        console.log(users);
+const roomUsers = ref<object[]>([]);
+const MAX_DISPLAY_USERS = 3;
 
-    })
-    .joining((user) => {
-        console.log(user.name);
-    })
-    .leaving((user) => {
-        console.log(user.name);
-    })
-    .error((error) => {
-        console.error(error);
-    });
+onMounted(() => {
+    Echo.join(`note.${note.id}`)
+        .here((users) => {
+            roomUsers.value = [...users];
+        })
+        .joining((user) => {
+            roomUsers.value.push(user);
+        })
+        .leaving((user) => {
+            roomUsers.value = [
+                ...roomUsers.value.filter(({ id }) => id !== user.id),
+            ];
+        });
+});
+
+onUnmounted(() => {
+    Echo.leave(`note.${note.id}`);
+});
 
 const content = useDebouncedRef(JSON.parse(note.content), 1000);
 
@@ -62,6 +69,20 @@ watch(content, (value) => {
                 </h2>
             </div>
         </template>
+
+        <StackedAvatars class="mt-2.5">
+            <Avatar
+                v-for="user in [...roomUsers].slice(0, MAX_DISPLAY_USERS)"
+                stacked
+                :initials="user.firstname.charAt(0) + user.lastname.charAt(0)"
+                rounded
+            />
+            <StackedAvatarsCounter
+                v-if="roomUsers.length > MAX_DISPLAY_USERS"
+                :total="roomUsers.length - MAX_DISPLAY_USERS"
+                href="#"
+            />
+        </StackedAvatars>
 
         <NoteEditor v-model="content" />
     </AppLayout>
