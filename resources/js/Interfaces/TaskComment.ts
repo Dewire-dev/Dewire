@@ -1,6 +1,6 @@
 export interface TaskComment {
     id: number,
-    tast_id: number,
+    task_id: number,
     user_id: string,
     comment: string,
 }

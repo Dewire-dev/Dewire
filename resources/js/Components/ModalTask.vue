@@ -104,7 +104,7 @@ function convertLinksToAnchorTags(text: string) {
                         </div>
                         <span v-html="convertLinksToAnchorTags(task_comment.comment)" />
                     </div>
-                    <i-carbon-close class="hidden cursor-pointer close-icon absolute right-0 dark:text-white" @click="emit('deleteComment', task_comment)" />
+                    <i-carbon-trash-can class="hidden cursor-pointer close-icon absolute right-0 dark:text-white" @click="emit('deleteComment', task_comment)" />
                 </div>
 
                 <div class="my-3">

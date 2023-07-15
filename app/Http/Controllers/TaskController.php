@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
 use App\Models\TaskComment;
+use App\Models\TaskTimeSpend;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -65,10 +66,41 @@ class TaskController extends Controller
     {
         $task->update([
             'state' => $request->get('state'),
-            'description' => $request->get('description')
+            'description' => $request->get('description'),
         ]);
 
         return $this->show($task);
+    }
+
+    public function updateTaskTimeSpends(Request $request, Task $task)
+    {
+        $taskTimeSpends = $request->get('taskTimeSpends');
+        $user = Auth::user();
+
+        foreach ($taskTimeSpends as $taskTimeSpendData) {
+            $taskTimeSpendId = $taskTimeSpendData['id'] ?? null;
+            $taskTimeSpend = TaskTimeSpend::updateOrCreate([
+                'id' => $taskTimeSpendId,
+            ], [
+                'user_id' => $user->id,
+                'task_id' => $task->id,
+                'date' => new \DateTime(),
+                'time' => $taskTimeSpendData['time'],
+                'description' => $taskTimeSpendData['description'],
+            ]);
+            $task->taskTimeSpends()->save($taskTimeSpend);
+        }
+    }
+
+    public function deleteTaskTimeSpend(Task $task, TaskTimeSpend $taskTimeSpend)
+    {
+        $user = Auth::user();
+
+        TaskTimeSpend::where('id', $taskTimeSpend->id)
+            ->where('user_id', $user->id)
+            ->where('task_id', $task->id)
+            ->delete()
+        ;
     }
 
     /**

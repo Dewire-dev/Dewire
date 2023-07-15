@@ -7,6 +7,8 @@ import axios from "axios"
 import route from "ziggy-js";
 import {TaskComment} from "@/Interfaces/TaskComment";
 
+const emit = defineEmits(['reloadTasks']);
+
 const showModalTask = ref(false)
 const showModalTaskTimeSpend = ref(false)
 
@@ -38,6 +40,10 @@ const props = defineProps({
         type: Object,
         required: true,
     },
+    userConnected: {
+        type: Object,
+        required: true,
+    },
 });
 
 async function openTask(item: Item) {
@@ -61,7 +67,17 @@ async function openTime(item: Item) {
     )
 
     taskSelected.value = response.data.task;
-    taskTimeSpends.value = response.data.taskTimeSpends;
+    const taskTimeSpendsFormatted: Array<TaskTimeSpend> = []
+    response.data.taskTimeSpends.forEach((taskTimeSpend: TaskTimeSpend) => {
+        taskTimeSpendsFormatted.push({
+            id: taskTimeSpend.id,
+            task_id: (taskSelected.value as Task).id,
+            time: useFormatTime().formatTimeHoursMinutes(taskTimeSpend.time as number),
+            description: taskTimeSpend.description,
+            date: taskTimeSpend.date,
+        })
+    })
+    taskTimeSpends.value = taskTimeSpendsFormatted
     showModalTaskTimeSpend.value = true
 }
 
@@ -133,9 +149,12 @@ async function saveTask() {
     />
 
     <ModalTaskTimeSpent
+        v-if="taskSelected"
         :task-time-spends="taskTimeSpends"
         :task="taskSelected"
         :show="showModalTaskTimeSpend"
+        :readonly="userConnected.id !== currentUserSelected.id"
+        @reload="emit('reloadTasks')"
         @close="showModalTaskTimeSpend = false"
     />
 </template>

@@ -29,6 +29,7 @@ class TimeController extends Controller
             'Time/Time',
             [
                 'currentUserSelected' => $user,
+                'userConnected' => Auth::user(),
                 'tasks' => $tasks,
                 'states' => array_column(TaskState::cases(), 'value'),
                 'users' => $users,

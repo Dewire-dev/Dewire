@@ -31,9 +31,58 @@ export function useFormatTime() {
         return formatTimeHoursMinutes(getTotalTimeSpendOnATask(task))
     }
 
+    function validateTime (tempsStr: string) {
+        tempsStr = tempsStr.toLowerCase();
+
+        const pattern = /^(?:(\d+)h)?(?:(\d+)m?)?$/;
+        const match = tempsStr.match(pattern);
+
+        if (!match) {
+            return false; // Format incorrect
+        }
+
+        const hoursStr = match[1];
+        const minutesStr = match[2];
+
+        let hours = 0;
+        if (hoursStr) {
+            hours = parseInt(hoursStr);
+            if (isNaN(hours)) {
+                return false; // Heure invalide
+            }
+        }
+
+        let minutes = 0;
+        if (minutesStr) {
+            minutes = parseInt(minutesStr);
+            if (isNaN(minutes)) {
+                return false; // Minute invalide
+            }
+        } else if (!hoursStr && minutesStr === '') {
+            return false; // Minute invalide
+        } else if (!hoursStr && minutesStr === undefined) {
+            minutes = parseInt(tempsStr);
+            if (isNaN(minutes)) {
+                return false; // Temps invalide
+            }
+        }
+
+        if (minutes >= 60) {
+            hours+= Math.floor(minutes / 60);
+            minutes = minutes % 60
+        }
+
+        if (hours >= 24) {
+            return false;
+        }
+
+        return hours * 60 + minutes;
+    }
+
     return {
         formatTimeHoursMinutes,
         getTotalTimeSpendOnATask,
         getTotalTimeSpendOnATaskFormatTimeHoursMinutes,
+        validateTime,
     }
 }

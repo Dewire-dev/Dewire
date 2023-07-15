@@ -12,6 +12,7 @@ import TableTime from "@/Components/TableTime.vue";
 import {useFormatTime} from "@/Composables/time";
 
 const currentUserSelected = ref<User>();
+const userConnected = ref<User>();
 const tasks = ref<Array<Task>>([]);
 const firstDayOfWeek = ref();
 const lastDayOfWeek = ref();
@@ -23,6 +24,7 @@ const waitingChangingUserBeforeSendingRequest = ref(false)
 
 const props = defineProps<{
     currentUserSelected: User,
+    userConnected: User,
     firstDayOfWeek: string,
     lastDayOfWeek: string,
     tasks: Array<Task>;
@@ -32,6 +34,7 @@ const props = defineProps<{
 
 onBeforeMount(() => {
     currentUserSelected.value = props.currentUserSelected
+    userConnected.value = props.userConnected
     tasks.value = props.tasks
     firstDayOfWeek.value = props.firstDayOfWeek
     lastDayOfWeek.value = props.lastDayOfWeek
@@ -280,6 +283,19 @@ async function changeUser (userSelected: User) {
     tasks.value = response.data.tasks
     waitingChangingUserBeforeSendingRequest.value = false
 }
+
+async function reloadTasks () {
+    const response = await axios.get(
+        route('time.getTasksByUser', {
+            date: firstDayOfWeek.value,
+            user: currentUserSelected.value ? currentUserSelected.value.id : '',
+            next: true,
+        }),
+    )
+
+    tasks.value = response.data.tasks
+    waitingChangingUserBeforeSendingRequest.value = false
+}
 </script>
 
 <template>
@@ -314,6 +330,8 @@ async function changeUser (userSelected: User) {
                         :tasks="tasks"
                         :states="states"
                         :current-user-selected="currentUserSelected"
+                        :user-connected="userConnected"
+                        @reloadTasks="reloadTasks"
                     />
                 </template>
                 <Loader v-else/>

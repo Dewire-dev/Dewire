@@ -14,6 +14,8 @@ class TaskTimeSpend extends Model
         'time',
         'description',
         'date',
+        'user_id',
+        'task_id',
     ];
 
     public function user(): BelongsTo
