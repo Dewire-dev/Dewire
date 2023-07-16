@@ -82,12 +82,12 @@ function convertLinksToAnchorTags(text: string) {
 
             <section class="grid">
                 <div>
-                    <Button
-                        class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md"
+                    <SecondaryButton
+                        class="mt-2 float-right"
                         @click="emit('saveTask')"
                     >
                         Sauvegarder
-                    </Button>
+                    </SecondaryButton>
                 </div>
             </section>
 
@@ -111,12 +111,12 @@ function convertLinksToAnchorTags(text: string) {
                     <div class="grid">
                         <textarea class="dark:bg-gray-700 resize-none border rounded-md dark:text-white" v-model="commentToAdd" placeholder="Ajouter un commentaire..."/>
                     </div>
-                    <Button
-                        class="mt-2 float-right px-8 py-3 hover:bg-gray-200 hover:text-black hover:dark-bg-gray-700 border rounded-md"
+                    <SecondaryButton
+                        class="mt-2 float-right"
                         @click="emit('sendComment', commentToAdd);commentToAdd=''"
                     >
                         Envoyer
-                    </Button>
+                    </SecondaryButton>
                 </div>
             </section>
         </template>

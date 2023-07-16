@@ -122,10 +122,15 @@ async function deleteTaskTimeSpend (id: number, index: number) {
                         <i-carbon-trash-can class="cursor-pointer" @click="deleteTaskTimeSpend(taskTimeSpend?.id, index)" />
                     </div>
                 </div>
-                <div v-if="!readonly">
-                    <button @click="addTaskTimeSpend()">Ajouter un temps...</button>
-                    <button @click="saveTaskTimeSpends">Sauvegarder les temps ajoutés</button>
-                </div>
+                <section v-if="!readonly" class="grid grid-cols-12 column">
+                    <div class="col-span-5">
+                        <SecondaryButton class="primary" @click="addTaskTimeSpend()">Ajouter un temps...</SecondaryButton>
+                    </div>
+                    <div class="col-span-2"></div> <!-- Espace vide -->
+                    <div class="col-span-5">
+                        <SecondaryButton v-if="taskTimeSpends.length > 0" @click="saveTaskTimeSpends">Sauvegarder les temps ajoutés</SecondaryButton>
+                    </div>
+                </section>
             </section>
         </template>
 
