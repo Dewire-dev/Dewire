@@ -301,13 +301,13 @@ async function reloadTasks () {
 <template>
     <AppLayout title="Time">
         <template #header>
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">
+            <h2 class="text-3xl font-semibold text-gray-800 dark:text-gray-200">
                 Time
             </h2>
         </template>
 
         <div class="py-12 mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <h3 class="text-lg text-gray-800 dark:text-gray-200">
+            <h3 class="text-2xl font-semibold text-gray-800 dark:text-gray-200">
                 Mes tâches et temps saisis
             </h3>
             <div class="mx-6 mt-12">
