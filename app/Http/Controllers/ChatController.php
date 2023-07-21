@@ -8,6 +8,7 @@ use App\Models\ChatsUser;
 use App\Models\Message;
 use App\Models\MessageReadUser;
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -27,8 +28,10 @@ class ChatController extends Controller
         return to_route('dashboard');
     }
 
-    public function show(Project $project, Chat $chat)
+    public function show(Project $project, Chat $chat, Request $request)
     {
+        abort_if(!Project::canAccessModule($project, 'Chat'), 403);
+
         $messages = $this->chatRepo->getMessage($chat->id);
         $messages->load('sender');
 
@@ -42,6 +45,7 @@ class ChatController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        abort_if(!Project::canAccessModule(Project::find($request->get('chat')['project_id']), 'Chat'), 403);
 
         $message = Message::create([
             'sender_id' => auth()->user()->id,
@@ -63,4 +67,30 @@ class ChatController extends Controller
 
         return response()->redirectToRoute('chats.show', ['project' => $request->get('chat')['project_id'], 'chat' => $request->get('chat')['id']]);
     }
+
+    public function markReadMessages(Request $request)
+    {
+
+        foreach ($request->get('unReadMessages') as $MessagesRead)
+        {
+            MessageReadUser::whereId($MessagesRead['id'])->update([
+                'read_at' => Carbon::now()
+            ]);
+        }
+
+        $chat = $request->get('chat');
+        $project = $request->get('project');
+
+        $messages = $this->chatRepo->getMessage($chat['id']);
+        $messages->load('sender');
+
+        $unReadMessages = $this->chatRepo->getUnreadMessagesChat(auth()->user()->id, $chat['id']);
+        $countUnreadMessages = count($unReadMessages);
+
+        $chatsUsers = $this->chatRepo->getUserInChat($chat['id']);
+
+        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages'));
+
+    }
+
 }

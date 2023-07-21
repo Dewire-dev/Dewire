@@ -38,4 +38,9 @@ Route::middleware([
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
+
+    Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
+    Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
+        ->except(['update', 'destroy'])
+        ->names('chats');
 });

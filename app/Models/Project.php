@@ -27,4 +27,16 @@ class Project extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    public static function canAccessModule(Project $project, $module): bool
+    {
+        $module = \App\Models\Module::where('name', $module)->first();
+        $response = true;
+
+        if($project->modules()->where('module_id', $module->id)->count() == 0) {
+            $response = false;
+        }
+
+        return $response;
+    }
 }
