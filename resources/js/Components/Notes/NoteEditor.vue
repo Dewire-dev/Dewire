@@ -50,15 +50,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <div class="p-5 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-        <div>
+        <!-- <div>
             <input
                 type="checkbox"
                 :checked="isEditable"
                 @change="() => (isEditable = !isEditable)"
             />
             Editable
-        </div>
+        </div> -->
         <EditorBubbleMenu :editor="editor" />
         <EditorFloatingMenu :editor="editor" />
         <editor-content :editor="editor" />
