@@ -50,6 +50,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+    <div
+        class="p-5 bg-gray-100 border-2 border-gray-600 rounded-md dark:bg-gray-900 text-gray-900 dark:text-white"
+    >
         <!-- <div>
             <input
                 type="checkbox"
