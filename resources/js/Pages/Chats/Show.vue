@@ -2,17 +2,38 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 import route from "ziggy-js";
 import { useForm } from '@inertiajs/vue3';
+import Banner from "../../Components/Banner.vue";
+import axios from "axios";
 
-const {chat, project} = defineProps<{
-    chat: App.Models.Chat;
-    messages: Array<App.Models.Message>;
-    unReadMessages: Array<App.Models.Message>;
-    project: App.Models.Project,
-    chatsUsers: Array<App.Models.ChatsUser>;
+const {chat, project, unReadMessages} = defineProps<{
+    chat: {
+        id: number;
+        subject: string;
+        name: string;
+    };
+    messages: Array<{
+        id: number;
+        content: string;
+    }>;
+    unReadMessages: Array<{
+        id: number;
+        message_id: number;
+        content: string;
+        user_id: string;
+    }>;
+    project: {
+        id: number;
+        title: string;
+        subtitle: string;
+        description: string;
+    },
+    chatsUsers: Array<{
+        id: number;
+        user_id: string;
+        chat_id: number;
+    }>;
     countUnreadMessages: number;
 }>();
-
-let firstUnreadMessageDisplayed = false;
 
 const breadcrumb = [
     {
@@ -29,10 +50,21 @@ const form = useForm({
     content: "",
 })
 
-function changeValueBoolean() {
-    console.log(firstUnreadMessageDisplayed);
-    firstUnreadMessageDisplayed = true;
-    console.log(firstUnreadMessageDisplayed);
+let markRead = false;
+let firstElementUnRead = unReadMessages[0];
+
+function formMarkRead() {
+    axios.post('/read_messages', {
+        project: project,
+        chat: chat,
+        unReadMessages: unReadMessages
+    })
+    .then(function (response){
+        console.log(response);
+    })
+    .catch(function (error){
+        console.log(error);
+    })
 }
 
 </script>
@@ -44,18 +76,18 @@ function changeValueBoolean() {
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {{ chat.name }}
                 </h2>
-                <div v-if="countUnreadMessages">
-                    <p>{{ countUnreadMessages }} messages non lus</p>
-                </div>
             </div>
         </template>
 
         <ul role="list" class="max-w-none divide-y divide-gray-200 dark:divide-gray-700">
-            <li class="py-3 sm:py-4" v-for="(message, index) in messages" :key="message.id">
-                <div v-if="!firstUnreadMessageDisplayed && unReadMessages.find(value => message.id === value.message_id)">
-                    <p @load="changeValueBoolean()">{{ countUnreadMessages }} messages non lus</p>
+            <li class="py-3 sm:py-4" v-for="(message) in messages" :key="message.id">
+                <div v-if="!markRead && unReadMessages.find(value => message.id === value.message_id) && firstElementUnRead.message_id === message.id">
+                    <p>{{ countUnreadMessages }} messages non lus</p>
+                    <form @submit.prevent="formMarkRead">
+                        <button>Marquer comme lu</button>
+                    </form>
                 </div>
-                <div class="flex items-center space-x-3" v-if="!firstUnreadMessageDisplayed || unReadMessages.find(value => message.id === value.message_id)">
+                <div class="flex items-center space-x-3" v-if="!markRead || unReadMessages.find(value => message.id === value.message_id)">
                     <div class="flex-shrink-0">
                         <img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="Neil image">
                     </div>

@@ -36,4 +36,9 @@ Route::middleware([
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class);
 
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
+
+    Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
+    Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
+        ->except(['update', 'destroy'])
+        ->names('chats');
 });

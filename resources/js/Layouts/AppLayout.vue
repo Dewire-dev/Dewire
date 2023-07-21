@@ -26,6 +26,15 @@ const switchToTeam = (team: App.Models.Team) => {
 const logout = () => {
     router.post(route('logout'));
 };
+
+const collapseToggle = (event) => {
+    var element = document.getElementById(event.currentTarget.dataset.target);
+    if(element.classList.contains('hidden')) {
+        element.classList.remove('hidden');
+    } else {
+        element.classList.add('hidden');
+    }
+}
 </script>
 
 <template>
@@ -172,16 +181,25 @@ const logout = () => {
                     </ul>
                     <hr class="h-px my-8 bg-gray-200 border-0 dark:border-white-018">
                     <ul class="space-y-2 font-medium mt-5">
-                        <li v-for="project in projects">
-                            <Link
+                        <li v-for="(project,index) in projects">
+                            <div
                                 :class="route().current('projects.show', { project }) ? 'dark:nav-item-active nav-item-active' : ''"
-                                :href="route('projects.show', { project })"
                                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
-                                <i-carbon-circle-solid :style='"color:" + project.color +";"'
-                                                       class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-circle-solid>
-                                <span class="flex-1 ml-3 whitespace-nowrap">{{ project.title }}</span>
-                                <i-carbon-chevron-down class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-chevron-down>
-                            </Link>
+                                <Link class="flex" :href="route('projects.show', { project })">
+                                    <i-carbon-circle-solid :style='"color:" + project.color +";"'
+                                                           class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-circle-solid>
+                                    <span class="flex-1 ml-3 whitespace-nowrap">{{ project.title }}</span>
+                                </Link>
+                                <button @click="collapseToggle($event)" :data-target="'collapse-'+index">
+                                    <i-carbon-chevron-down
+                                        class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-chevron-down>
+                                </button>
+                            </div>
+                            <ul class="hidden p-5" :id="'collapse-'+index" data-te-collapse-item>
+                                <li v-for="module in project.modules">
+                                    <span class="text-gray-900 dark:text-white">{{ module.name }}</span>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
