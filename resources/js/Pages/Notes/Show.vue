@@ -25,31 +25,38 @@ const breadcrumb = [
     },
 ];
 
-const roomUsers = ref<object[]>([]);
-const MAX_DISPLAY_USERS = 3;
+const content = useDebouncedRef(JSON.parse(note.content), 1000);
 
-onMounted(() => {
-    Echo.join(`note.${note.id}`)
-        .here((users) => {
-            roomUsers.value = [...users];
-        })
-        .joining((user) => {
-            roomUsers.value.push(user);
-        })
-        .leaving((user) => {
-            roomUsers.value = [
-                ...roomUsers.value.filter(({ id }) => id !== user.id),
-            ];
-        });
-});
+const roomUsers = ref<object[]>([]);
+
+const channel = Echo.join(`note.${note.id}`)
+    .here((users: object[]) => {
+        roomUsers.value = users;
+    })
+    .joining((user: object) => {
+        roomUsers.value.push(user);
+    })
+    .leaving((user: object) => {
+        roomUsers.value = roomUsers.value.filter(({ id }) => id !== user.id);
+    })
+    .listenForWhisper("editing", (e) => {
+        content.value = e.content;
+    });
 
 onUnmounted(() => {
     Echo.leave(`note.${note.id}`);
 });
 
-const content = useDebouncedRef(JSON.parse(note.content), 1000);
+const editingNote = () => {
+    setTimeout(() => {
+        channel.whisper("editing", {
+            content: content.value,
+        });
+    }, 1000);
+};
 
 watch(content, (value) => {
+    // TODO Anaël : optimiser la sauvegarde pour ne pas envoyer une requête par utilisateur
     router.patch(route("notes.save", { project, note }), {
         content: value,
     });
@@ -57,6 +64,7 @@ watch(content, (value) => {
 </script>
 
 <template>
+    // TODO Anaël : empêcher le scroll au sommet de la page à chaque modification
     <AppLayout :title="note.name">
         <template #header>
             <BreadCrumb :breadcrumb="breadcrumb" />
@@ -71,6 +79,6 @@ watch(content, (value) => {
 
         <EditorRoomUsers :users="roomUsers" class="my-4" />
 
-        <NoteEditor v-model="content" />
+        <NoteEditor v-model="content" @update:modelValue="editingNote" />
     </AppLayout>
 </template>
