@@ -64,7 +64,7 @@ watch(content, (value) => {
 </script>
 
 <template>
-    // TODO Anaël : empêcher le scroll au sommet de la page à chaque modification
+    <!-- TODO Anaël : empêcher le scroll au sommet de la page à chaque modification -->
     <AppLayout :title="note.name">
         <template #header>
             <BreadCrumb :breadcrumb="breadcrumb" />
