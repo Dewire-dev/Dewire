@@ -32,5 +32,11 @@ defineProps<{
         >
             <i-carbon-text-strikethrough />
         </Badge>
+        <Badge
+            @click="editor.chain().focus().toggleCode().run()"
+            :type="editor.isActive('code') ? 'default' : 'dark'"
+        >
+            <i-carbon-code />
+        </Badge>
     </BubbleMenu>
 </template>
