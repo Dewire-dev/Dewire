@@ -45,6 +45,24 @@ defineProps<{
             <i-carbon-text-highlight />
         </Badge>
         <Badge
+            @click="
+                editor.chain().focus().unsetSuperscript().run();
+                editor.chain().focus().toggleSubscript().run();
+            "
+            :type="editor.isActive('subscript') ? 'default' : 'dark'"
+        >
+            <i-carbon-text-subscript />
+        </Badge>
+        <Badge
+            @click="
+                editor.chain().focus().unsetSubscript().run();
+                editor.chain().focus().toggleSuperscript().run();
+            "
+            :type="editor.isActive('superscript') ? 'default' : 'dark'"
+        >
+            <i-carbon-text-superscript />
+        </Badge>
+        <Badge
             @click="editor.chain().focus().toggleCode().run()"
             :type="editor.isActive('code') ? 'default' : 'dark'"
         >
