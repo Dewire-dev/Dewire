@@ -39,6 +39,12 @@ defineProps<{
             <i-carbon-text-strikethrough />
         </Badge>
         <Badge
+            @click="editor.chain().focus().toggleHighlight().run()"
+            :type="editor.isActive('highlight') ? 'default' : 'dark'"
+        >
+            <i-carbon-text-highlight />
+        </Badge>
+        <Badge
             @click="editor.chain().focus().toggleCode().run()"
             :type="editor.isActive('code') ? 'default' : 'dark'"
         >

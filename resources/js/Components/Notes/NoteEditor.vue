@@ -2,6 +2,7 @@
 import { useEditor, EditorContent, type JSONContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import Highlight from "@tiptap/extension-highlight";
 
 const props = withDefaults(
     defineProps<{
@@ -15,7 +16,7 @@ const emit = defineEmits<{
 }>();
 
 const editor = useEditor({
-    extensions: [StarterKit, Underline],
+    extensions: [StarterKit, Underline, Highlight],
     editorProps: {
         attributes: {
             class: "prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-5 focus:outline-none",
