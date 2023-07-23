@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { Editor, FloatingMenu } from "@tiptap/vue-3";
-import { Button } from "flowbite-vue";
+import { type Level } from "@tiptap/extension-heading";
+import { Button, Dropdown, ListGroup, ListGroupItem } from "flowbite-vue";
 
-defineProps<{
+const { editor } = defineProps<{
     editor?: Editor;
 }>();
+
+const levels: Level[] = [1, 2, 3, 4, 5, 6];
 </script>
 
 <template>
@@ -14,27 +17,42 @@ defineProps<{
         :tippy-options="{ duration: 100 }"
         class="flex gap-2"
     >
-        <Button
-            @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
-            :color="
-                editor.isActive('heading', { level: 1 }) ? 'default' : 'light'
-            "
-        >
-            H1
-        </Button>
-        <Button
-            @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
-            :color="
-                editor.isActive('heading', { level: 2 }) ? 'default' : 'light'
-            "
-        >
-            H2
-        </Button>
+        <Dropdown>
+            <template #trigger>
+                <Button color="light">
+                    Titre
+                    <template #suffix>
+                        <i-carbon-chevron-down />
+                    </template>
+                </Button>
+            </template>
+            <ListGroup class="grid grid-cols-3">
+                <ListGroupItem
+                    v-for="level in levels"
+                    :key="level"
+                    @click="
+                        editor?.chain().focus().toggleHeading({ level }).run()
+                    "
+                    class="justify-center"
+                    :class="{
+                        'bg-blue-700': editor.isActive('heading', { level }),
+                    }"
+                >
+                    h{{ level }}
+                </ListGroupItem>
+            </ListGroup>
+        </Dropdown>
         <Button
             @click="editor?.chain().focus().toggleBulletList().run()"
             :color="editor.isActive('bulletList') ? 'default' : 'light'"
         >
-            Bullet List
+            <i-carbon-list-bulleted />
+        </Button>
+        <Button
+            @click="editor?.chain().focus().toggleOrderedList().run()"
+            :color="editor.isActive('orderedList') ? 'default' : 'light'"
+        >
+            <i-carbon-list-numbered />
         </Button>
     </FloatingMenu>
 </template>
