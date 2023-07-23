@@ -27,6 +27,12 @@ defineProps<{
             <i-carbon-text-italic />
         </Badge>
         <Badge
+            @click="editor.chain().focus().toggleUnderline().run()"
+            :type="editor.isActive('underline') ? 'default' : 'dark'"
+        >
+            <i-carbon-text-underline />
+        </Badge>
+        <Badge
             @click="editor.chain().focus().toggleStrike().run()"
             :type="editor.isActive('strike') ? 'default' : 'dark'"
         >
