@@ -15,27 +15,24 @@ defineProps<{
         class="flex gap-2"
     >
         <Button
-            color="light"
             @click="editor?.chain().focus().toggleHeading({ level: 1 }).run()"
-            :class="{
-                'is-active': editor.isActive('heading', { level: 1 }),
-            }"
+            :color="
+                editor.isActive('heading', { level: 1 }) ? 'default' : 'light'
+            "
         >
             H1
         </Button>
         <Button
-            color="light"
             @click="editor?.chain().focus().toggleHeading({ level: 2 }).run()"
-            :class="{
-                'is-active': editor.isActive('heading', { level: 2 }),
-            }"
+            :color="
+                editor.isActive('heading', { level: 2 }) ? 'default' : 'light'
+            "
         >
             H2
         </Button>
         <Button
-            color="light"
             @click="editor?.chain().focus().toggleBulletList().run()"
-            :class="{ 'is-active': editor.isActive('bulletList') }"
+            :color="editor.isActive('bulletList') ? 'default' : 'light'"
         >
             Bullet List
         </Button>
