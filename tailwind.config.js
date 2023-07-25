@@ -15,6 +15,10 @@ module.exports = {
     ],
 
     theme: {
+        screens: {
+            'xs': '475px',
+            ...defaultTheme.screens,
+        },
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
@@ -22,5 +26,10 @@ module.exports = {
         },
     },
 
-    plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('flowbite/plugin')],
+    plugins: [
+        require('flowbite/plugin'),
+        require('@tailwindcss/forms'),
+        require('@tailwindcss/line-clamp'),
+        require('@tailwindcss/typography'),
+    ],
 };

@@ -1,24 +1,12 @@
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
+import { Input } from "flowbite-vue";
 import route from "ziggy-js";
 
 const { project } = defineProps<{
     project: any;
     notes: any[];
 }>();
-
-const form = useForm({
-    name: "Note test",
-    content: "Lorem ipsum",
-});
-
-const storeNote = () => {
-    form.post(route("projects.notes.store", project));
-};
-
-const destroyNote = (note: any) => {
-    router.delete(route("projects.notes.destroy", { project, note }));
-};
 
 const breadcrumb = [
     {
@@ -34,6 +22,49 @@ const breadcrumb = [
         route: route("projects.notes.index", { project }),
     },
 ];
+
+const storeNoteForm = useForm({
+    name: "",
+});
+
+const addingNote = ref(false);
+
+const closeStoreNoteModal = () => {
+    addingNote.value = false;
+    storeNoteForm.name = "";
+};
+
+const storeNote = () => {
+    storeNoteForm.post(route("projects.notes.store", project));
+};
+
+const destroyNoteForm = useForm<{
+    id?: number;
+}>({
+    id: undefined,
+});
+
+const deletingNote = ref(false);
+
+const openDestroyNoteModal = (id: number) => {
+    deletingNote.value = true;
+    destroyNoteForm.id = id;
+};
+
+const closeDestroyNoteModal = () => {
+    deletingNote.value = false;
+    destroyNoteForm.id = undefined;
+};
+
+const destroyNote = () => {
+    if (!destroyNoteForm.id) return;
+    destroyNoteForm.delete(
+        route("projects.notes.destroy", { project, note: destroyNoteForm.id }),
+        {
+            onSuccess: closeDestroyNoteModal,
+        }
+    );
+};
 </script>
 
 <template>
@@ -42,70 +73,100 @@ const breadcrumb = [
             <BreadCrumb :breadcrumb="breadcrumb" />
             <div class="">
                 <h2
-                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center"
+                    class="text-xl font-semibold text-center text-gray-800 dark:text-gray-200"
                 >
                     Notes
                 </h2>
             </div>
         </template>
 
-        <div class="grid grid-cols-2 gap-10">
-            <div class="flex flex-col gap-6">
-                <div>
-                    <label
-                        for="name"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                        >Titre</label
+        <div
+            class="grid grid-cols-1 gap-4 mt-8 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
+        >
+            <div
+                @click="addingNote = true"
+                class="flex items-center justify-center bg-gray-300 rounded h-80 dark:bg-gray-900 hover:cursor-pointer"
+            >
+                <i-carbon-document-add class="text-5xl dark:text-white" />
+            </div>
+            <Link
+                v-for="note in notes"
+                :href="route('projects.notes.show', { project, note })"
+                class="flex flex-col justify-between p-6 bg-gray-300 rounded h-80 dark:bg-gray-900"
+            >
+                <span class="mb-4 text-2xl dark:text-white line-clamp-1">{{
+                    note.name
+                }}</span>
+                <p
+                    v-if="note.content"
+                    v-html="note.content"
+                    class="h-full px-2 prose rounded dark:prose-invert line-clamp-4"
+                    :class="{ 'border border-gray-600': note.content }"
+                ></p>
+                <div class="text-center">
+                    <span
+                        @click.prevent="openDestroyNoteModal(note.id)"
+                        class="text-red-600 hover:text-red-700 hover:underline hover:cursor-pointer"
+                        >Supprimer</span
                     >
-                    <input
-                        v-model="form.name"
-                        id="name"
-                        type="text"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Ma note..."
-                        required
-                    />
                 </div>
+            </Link>
+        </div>
 
-                <button
+        <!-- Add note dialog modal -->
+        <DialogModal :show="addingNote" @close="closeStoreNoteModal">
+            <template #title>Nouvelle note</template>
+
+            <template #content>
+                <Input
+                    v-model="storeNoteForm.name"
+                    @keyup.enter="storeNote"
+                    required
+                    label="Nom"
+                    placeholder="Nouvelle note"
+                />
+            </template>
+
+            <template #footer>
+                <SecondaryButton @click="closeStoreNoteModal"
+                    >Annuler</SecondaryButton
+                >
+
+                <PrimaryButton
+                    class="ml-3"
+                    :class="{ 'opacity-25': storeNoteForm.processing }"
+                    :disabled="storeNoteForm.processing"
                     @click="storeNote"
-                    type="button"
-                    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 >
                     Ajouter
-                </button>
-            </div>
+                </PrimaryButton>
+            </template>
+        </DialogModal>
+        <!--  -->
 
-            <div>
-                <h2
-                    class="mb-2 text-lg font-semibold text-gray-900 dark:text-white"
+        <ConfirmationModal :show="deletingNote" @close="closeDestroyNoteModal">
+            <template #title>Supprimer la note</template>
+
+            <template #content>
+                Êtes-vous sûr de vouloir supprimer la note "{{
+                    notes.find((note) => note.id === destroyNoteForm.id)?.name
+                }}" ?
+            </template>
+
+            <template #footer>
+                <SecondaryButton @click="closeDestroyNoteModal">
+                    Annuler
+                </SecondaryButton>
+
+                <DangerButton
+                    class="ml-3"
+                    :class="{ 'opacity-25': destroyNoteForm.processing }"
+                    :disabled="destroyNoteForm.processing"
+                    @click="destroyNote()"
                 >
-                    Mes notes
-                </h2>
-                <ul
-                    v-if="notes.length"
-                    class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400"
-                >
-                    <li v-for="note in notes" class="flex justify-between">
-                        <Link
-                            :href="
-                                route('projects.notes.show', { project, note })
-                            "
-                        >
-                            {{ note.name }}
-                        </Link>
-                        <button
-                            @click="destroyNote(note.id)"
-                            class="text-red-500"
-                        >
-                            X
-                        </button>
-                    </li>
-                </ul>
-                <p v-else class="text-gray-900 dark:text-white">
-                    Aucune note...
-                </p>
-            </div>
-        </div>
+                    Supprimer la note
+                </DangerButton>
+            </template>
+        </ConfirmationModal>
     </AppLayout>
 </template>
