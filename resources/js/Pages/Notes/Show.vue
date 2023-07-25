@@ -25,7 +25,7 @@ const breadcrumb = [
     },
 ];
 
-const content = useDebouncedRef(JSON.parse(note.content), 1000);
+const content = useDebouncedRef(note.content, 1000);
 
 const roomUsers = ref<object[]>([]);
 
@@ -47,10 +47,10 @@ onUnmounted(() => {
     Echo.leave(`note.${note.id}`);
 });
 
-const editingNote = () => {
+const editingNote = (html: string) => {
     setTimeout(() => {
         channel.whisper("editing", {
-            content: content.value,
+            content: html,
         });
     }, 1000);
 };
@@ -70,7 +70,7 @@ watch(content, (value) => {
             <BreadCrumb :breadcrumb="breadcrumb" />
             <div class="">
                 <h2
-                    class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center"
+                    class="text-xl font-semibold text-center text-gray-800 dark:text-gray-200"
                 >
                     {{ note.name }}
                 </h2>

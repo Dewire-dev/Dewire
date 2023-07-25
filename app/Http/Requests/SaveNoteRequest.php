@@ -22,7 +22,7 @@ class SaveNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'content' => 'required|array',
+            'content' => 'required|string',
         ];
     }
 }

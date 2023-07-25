@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEditor, EditorContent, type JSONContent } from "@tiptap/vue-3";
+import { useEditor, EditorContent } from "@tiptap/vue-3";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import Highlight from "@tiptap/extension-highlight";
@@ -8,13 +8,13 @@ import Superscript from "@tiptap/extension-superscript";
 
 const props = withDefaults(
     defineProps<{
-        modelValue?: JSONContent;
+        modelValue?: string;
     }>(),
     { modelValue: undefined }
 );
 
 const emit = defineEmits<{
-    (e: "update:modelValue", json?: JSONContent): void;
+    (e: "update:modelValue", html?: string): void;
 }>();
 
 const editor = useEditor({
@@ -26,18 +26,14 @@ const editor = useEditor({
     },
     content: props.modelValue,
     onUpdate: () => {
-        emit("update:modelValue", editor.value?.getJSON());
+        emit("update:modelValue", editor.value?.getHTML());
     },
 });
 
 watch(
     () => props.modelValue,
     (value) => {
-        if (
-            !value ||
-            JSON.stringify(editor.value?.getJSON()) === JSON.stringify(value)
-        )
-            return;
+        if (!value || editor.value?.getHTML() === value) return;
         editor.value?.commands.setContent(value, false);
     }
 );
@@ -55,7 +51,7 @@ onBeforeUnmount(() => {
 
 <template>
     <div
-        class="p-5 bg-gray-100 border-2 border-gray-600 rounded-md dark:bg-gray-900 text-gray-900 dark:text-white"
+        class="p-5 text-gray-900 bg-gray-100 border-2 border-gray-600 rounded-md dark:bg-gray-900 dark:text-white"
     >
         <!-- <div>
             <input
