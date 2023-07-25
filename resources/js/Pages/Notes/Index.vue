@@ -123,7 +123,6 @@ const destroyNote = () => {
             <template #content>
                 <Input
                     v-model="storeNoteForm.name"
-                    @keyup.enter="storeNote"
                     required
                     label="Nom"
                     placeholder="Nouvelle note"
