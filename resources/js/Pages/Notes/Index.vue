@@ -83,12 +83,15 @@ const destroyNote = () => {
         <div
             class="grid grid-cols-1 gap-4 mt-8 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6"
         >
+            <!-- Add note button -->
             <div
                 @click="addingNote = true"
                 class="flex items-center justify-center bg-gray-300 rounded h-80 dark:bg-gray-900 hover:cursor-pointer"
             >
                 <i-carbon-document-add class="text-5xl dark:text-white" />
             </div>
+
+            <!-- List notes -->
             <Link
                 v-for="note in notes"
                 :href="route('projects.notes.show', { project, note })"
@@ -142,8 +145,8 @@ const destroyNote = () => {
                 </PrimaryButton>
             </template>
         </DialogModal>
-        <!--  -->
 
+        <!-- Delete note dialog modal -->
         <ConfirmationModal :show="deletingNote" @close="closeDestroyNoteModal">
             <template #title>Supprimer la note</template>
 
