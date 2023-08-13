@@ -4,12 +4,7 @@ import route from "ziggy-js";
 import { Button, TheCard } from "flowbite-vue";
 
 const { project } = defineProps<{
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    };
+    project: App.Models.Project;
 }>();
 
 const deleteProject = () => {

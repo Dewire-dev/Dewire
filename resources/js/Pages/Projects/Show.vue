@@ -6,18 +6,8 @@ import route from "ziggy-js";
 const { can } = useRole();
 
 const props = defineProps<{
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    };
-    chats: Array<{
-        id: number;
-        subject: string;
-        name: string;
-        countUnreadMessages: number;
-    }>;
+    project: App.Models.Project;
+    chats: Array<App.Models.Chat>;
 }>();
 
 const breadcrumb = [
