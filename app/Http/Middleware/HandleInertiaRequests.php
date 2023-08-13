@@ -37,9 +37,10 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
+            'currentRole' => $request->user()?->teamRole($request->user()?->currentTeam)?->key,
+            'currentPermissions' => $request->user()?->teamPermissions($request->user()?->currentTeam),
             'layout' => [
-                // TODO : filtrer les projets de l'utilisateur
-                'projects' => \App\Models\Project::query()->with('modules')->get(),
+                'projects' => $request->user()?->currentTeam?->projects()->with('modules')->get(),
             ],
         ]);
     }

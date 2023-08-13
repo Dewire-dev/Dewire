@@ -30,6 +30,8 @@ declare module "@inertiajs/core" {
         layout: {
             projects: Array<App.Models.Project>;
         };
+        currentRole: string;
+        currentPermissions: string[];
     }
 }
 

@@ -3,6 +3,8 @@ import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import route from "ziggy-js";
 
+const { can } = useRole();
+
 const props = defineProps<{
     project: App.Models.Project;
     chats: Array<App.Models.Chat>;
@@ -32,6 +34,10 @@ const breadcrumb = [
         <div class="text-gray-800 dark:text-gray-200">
             <p>{{ project.subtitle }}</p>
             <p>{{ project.description }}</p>
+        </div>
+
+        <div v-if="can('add:modules')" class="mt-10">
+            <button>Ajouter un module</button>
         </div>
 
         <div class="mt-10">

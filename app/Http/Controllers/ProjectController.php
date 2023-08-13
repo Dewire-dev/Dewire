@@ -24,7 +24,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = \App\Models\Project::all();
+        $projects = auth()->user()->currentTeam?->projects()->get();
         return Inertia::render('Projects/Index', compact('projects'));
     }
 
