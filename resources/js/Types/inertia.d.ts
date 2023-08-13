@@ -27,6 +27,8 @@ declare module "@inertiajs/core" {
                 membership?: App.Models.Membership;
             };
         };
+        currentRole: string;
+        currentPermissions: string[];
     }
 }
 
