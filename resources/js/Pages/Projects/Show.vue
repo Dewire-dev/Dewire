@@ -5,19 +5,11 @@ import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
 import { Button } from "flowbite-vue";
 
+const { can } = useRole();
+
 const props = defineProps<{
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    };
-    chats: Array<{
-        id: number;
-        subject: string;
-        name: string;
-        countUnreadMessages: number;
-    }>;
+    project: App.Models.Project;
+    chats: Array<App.Models.Chat>;
 }>();
 
 const breadcrumb = [
@@ -49,6 +41,9 @@ const breadcrumb = [
         <Link :href="route('projects.notes.index', { project })">
             <Button color="yellow">Notes</Button>
         </Link>
+        <div v-if="can('add:modules')" class="mt-10">
+            <button>Ajouter un module</button>
+        </div>
 
         <div class="mt-10">
             <h3 class="text-lg text-gray-800 dark:text-gray-200">

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('subtitle');
             $table->text('description');
             $table->string('color');
+            $table->foreignId('team_id')->index();
             $table->timestamps();
         });
     }

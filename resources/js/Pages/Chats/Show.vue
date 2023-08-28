@@ -47,7 +47,7 @@ const breadcrumb = [
 ];
 
 const form = useForm({
-    content: null,
+    content: "",
 })
 
 let markRead = false;
@@ -93,7 +93,7 @@ function formMarkRead() {
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-1xl font-semibold text-green-500">
-                            {{ message.sender.name }}
+                            {{ message.sender?.name }}
                         </p>
                         <p class="text-2xl text-black-500 dark:text-white">
                             {{ message.content }}

@@ -2,12 +2,7 @@
 import AppLayout from "@/Layouts/AppLayout.vue";
 
 defineProps<{
-    projects: Array<{
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    }>;
+    projects: Array<App.Models.Project>;
 }>();
 
 const breadcrumb = [

@@ -27,6 +27,11 @@ declare module "@inertiajs/core" {
                 membership?: App.Models.Membership;
             };
         };
+        layout: {
+            projects: Array<App.Models.Project>;
+        };
+        currentRole: string;
+        currentPermissions: string[];
     }
 }
 
