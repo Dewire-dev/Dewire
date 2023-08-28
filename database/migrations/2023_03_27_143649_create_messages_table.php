@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('chat_id');
             $table->text('content');
             $table->timestamp('created_at')->useCurrent();
+            $table->dateTime('read_at')->nullable();
             $table->timestamp('updated_at');
         });
     }

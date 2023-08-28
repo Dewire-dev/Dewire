@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import ChatCard from "../../Components/Dashboard/ChatCard.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
+import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
+import { Button } from "flowbite-vue";
 
 const { can } = useRole();
 
@@ -36,6 +38,9 @@ const breadcrumb = [
             <p>{{ project.description }}</p>
         </div>
 
+        <Link :href="route('projects.notes.index', { project })">
+            <Button color="yellow">Notes</Button>
+        </Link>
         <div v-if="can('add:modules')" class="mt-10">
             <button>Ajouter un module</button>
         </div>

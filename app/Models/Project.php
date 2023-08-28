@@ -42,6 +42,11 @@ class Project extends Model
         return $this->belongsToMany(Module::class, 'projects_modules');
     }
 
+    public function notes(): HasMany
+    {
+        return $this->hasMany(Note::class);
+    }
+
     public static function canAccessModule(Project $project, $module): bool
     {
         $module = \App\Models\Module::where('name', $module)->first();
