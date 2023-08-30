@@ -93,7 +93,7 @@ class User extends Authenticatable implements FilamentUser
             ->withTimestamps();
     }
 
-    public function canAccessPanel(Panel $panel): bool
+    public function isAdmin(): bool
     {
         return in_array($this->email, [
             'mathieu.neyret@ynov.com',
@@ -101,5 +101,10 @@ class User extends Authenticatable implements FilamentUser
             'logan.lesaux@ynov.com',
             'theonicolas19@outlook.com',
         ]);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin();
     }
 }
