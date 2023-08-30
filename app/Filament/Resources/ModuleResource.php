@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TeamResource\Pages;
-use App\Filament\Resources\TeamResource\RelationManagers;
-use App\Models\Team;
-use App\Models\User;
+use App\Filament\Resources\ModuleResource\Pages;
+use App\Filament\Resources\ModuleResource\RelationManagers;
+use App\Models\Module;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,28 +13,26 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TeamResource extends Resource
+class ModuleResource extends Resource
 {
-    protected static ?string $model = Team::class;
+    protected static ?string $model = Module::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-cube';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->relationship(name: 'owner', titleAttribute: 'name')
-                    ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} ({$record->email})")
-                    ->searchable(['name', 'email'])
-                    ->required()
-                    ->preload()
-                    ->native(false),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Toggle::make('personal_team')
+                Forms\Components\ColorPicker::make('color')
                     ->required(),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+
             ]);
     }
 
@@ -46,12 +43,11 @@ class TeamResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\ColorColumn::make('color'),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('owner.name')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('personal_team')
-                    ->boolean(),
+                Tables\Columns\TextColumn::make('description')
+                    ->words(15),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -78,20 +74,10 @@ class TeamResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\UsersRelationManager::class,
-            RelationManagers\ProjectsRelationManager::class,
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTeams::route('/'),
-            'create' => Pages\CreateTeam::route('/create'),
-            'edit' => Pages\EditTeam::route('/{record}/edit'),
+            'index' => Pages\ManageModules::route('/'),
         ];
     }
 }
