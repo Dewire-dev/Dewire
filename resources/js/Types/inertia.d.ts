@@ -31,7 +31,7 @@ declare module "@inertiajs/core" {
             projects: Array<App.Models.Project>;
         };
         currentRole: string;
-        currentPermissions: string[];
+        currentPermissions: Array<string>;
     }
 }
 
