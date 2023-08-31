@@ -40,6 +40,7 @@
         "@tiptap/starter-kit": "^2.0.1",
         "@tiptap/vue-3": "^2.0.1",
         "@vueuse/core": "^9.13.0",
+        "class-variance-authority": "^0.7.0",
         "flowbite-vue": "^0.0.10"
     }
 }
