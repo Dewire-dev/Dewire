@@ -2,10 +2,16 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Resources\ModuleResource;
+use App\Filament\Resources\ProjectResource;
+use App\Filament\Resources\TeamResource;
+use App\Filament\Resources\UserResource;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationBuilder;
 use Filament\Navigation\NavigationGroup;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -36,6 +42,25 @@ class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->navigation(function (NavigationBuilder $builder): NavigationBuilder {
+                return $builder->items([
+                        NavigationItem::make('application')
+                            ->label('Application')
+                            ->url(fn (): string => route('dashboard'))
+                            ->icon('heroicon-o-globe-alt'),
+                    ])->groups([
+                        NavigationGroup::make('Projects')
+                            ->items([
+                                ...ProjectResource::getNavigationItems(),
+                                ...TeamResource::getNavigationItems(),
+                                ...UserResource::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('Settings')
+                            ->items([
+                                ...ModuleResource::getNavigationItems(),
+                            ]),
+                    ]);
+            })
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
