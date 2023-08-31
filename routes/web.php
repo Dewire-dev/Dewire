@@ -43,4 +43,8 @@ Route::middleware([
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
         ->except(['update', 'destroy'])
         ->names('chats');
+
+    Route::get('/components', function () {
+        return Inertia::render('Components/Index');
+    });
 });
