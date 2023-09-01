@@ -25,13 +25,13 @@ declare module "@inertiajs/core" {
                 current_team?: App.Models.Team;
                 two_factor_enabled: boolean;
                 membership?: App.Models.Membership;
+                role: string;
+                permissions: string[];
             };
         };
         layout: {
             projects: Array<App.Models.Project>;
         };
-        currentRole: string;
-        currentPermissions: string[];
     }
 }
 
