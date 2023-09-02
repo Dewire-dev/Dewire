@@ -56,8 +56,8 @@ class HandleInertiaRequests extends Middleware
                     ]), [
                         'two_factor_enabled' => Features::enabled(Features::twoFactorAuthentication())
                             && ! is_null($user->two_factor_secret),
-                        'role' => $request->user()?->role()->key,
-                        'permissions' => $request->user()?->role()->permissions,
+                        'role' => $request->user()?->role(),
+                        'permissions' => $request->user()?->permissions(),
                     ]);
                 },
             ],

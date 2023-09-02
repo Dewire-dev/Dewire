@@ -67,7 +67,12 @@ class User extends Authenticatable implements FilamentUser
 
     public function role()
     {
-        return $this->teamRole($this->currentTeam);
+        return $this->teamRole($this->currentTeam)->key;
+    }
+
+    public function permissions()
+    {
+        return $this->teamPermissions($this->currentTeam);
     }
 
     public function taskLogs(): HasMany
