@@ -45,9 +45,6 @@ const breadcrumb = [
         <Link :href="route('projects.notes.index', { project })">
             <Button color="yellow">Notes</Button>
         </Link>
-        <div v-if="can('add:modules')" class="mt-10">
-            <button>Ajouter un module</button>
-        </div>
 
         <div class="mt-10">
             <h3 class="text-lg text-gray-800 dark:text-gray-200">
