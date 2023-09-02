@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Repositories\ChatRepository;
 use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
@@ -10,13 +9,12 @@ use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
-
-    private ChatRepository $chatRepo;
-
-    public function __construct(ChatRepository $chatRepository)
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
     {
         $this->authorizeResource(Project::class, 'project');
-        $this->chatRepo = $chatRepository;
     }
 
     /**
@@ -46,24 +44,9 @@ class ProjectController extends Controller
      */
     public function show(Project $project): \Inertia\Response
     {
-        $project->load('modules');
+        $project->loadMissing('modules');
 
-        if (Project::canAccessModule($project, 'Chat')) {
-            $chats = $this->chatRepo->getChat($project->id);
-            $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
-        } else {
-            $chats = null;
-        }
-        if($chats != null) {
-            foreach ($unReadMessages as $count) {
-                $chats = $chats->map(function ($chat) use ($count) {
-                    $chat->countUnreadMessages = $count->count();
-                    return $chat;
-                });
-            }
-        }
-
-        return Inertia::render('Projects/Show', compact('project', 'chats'));
+        return Inertia::render('Projects/Show', compact('project'));
     }
 
     /**

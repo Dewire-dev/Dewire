@@ -47,8 +47,8 @@ class Project extends Model
         return $this->hasMany(Note::class);
     }
 
-    public function canAccessModule(Project $project, string $slug): bool
+    public function canAccessModule(string $slug): bool
     {
-        return $project->modules()->where('module_slug', $slug)->count() !== 0;
+        return $this->modules()->where('module_slug', $slug)->count() !== 0;
     }
 }
