@@ -39,7 +39,7 @@ class Project extends Model
 
     public function modules(): BelongsToMany
     {
-        return $this->belongsToMany(Module::class, 'projects_modules');
+        return $this->belongsToMany(Module::class, 'projects_modules', 'project_id', 'module_slug');
     }
 
     public function notes(): HasMany
@@ -47,15 +47,8 @@ class Project extends Model
         return $this->hasMany(Note::class);
     }
 
-    public static function canAccessModule(Project $project, $module): bool
+    public function canAccessModule(Project $project, string $slug): bool
     {
-        $module = \App\Models\Module::where('name', $module)->first();
-        $response = true;
-
-        if($project->modules()->where('module_id', $module->id)->count() == 0) {
-            $response = false;
-        }
-
-        return $response;
+        return $project->modules()->where('module_slug', $slug)->count() !== 0;
     }
 }
