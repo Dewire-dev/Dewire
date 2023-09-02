@@ -16,7 +16,7 @@ defineProps<{
     </Link>
 </template>
 
-<style>
+<style scoped>
 .module-card {
     background-color: v-bind("mod.color");
 }
