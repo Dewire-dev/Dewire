@@ -6,6 +6,8 @@ import { Button } from "flowbite-vue";
 const { project } = defineProps<{
     project: App.Models.Project;
 }>();
+
+const { can } = useRole();
 </script>
 
 <template>
@@ -15,28 +17,32 @@ const { project } = defineProps<{
     >
         <div class="absolute -top-4 right-2 w-full flex justify-end gap-2">
             <!-- TODO : créer une modal unique de modification de projet et l'importer ailleurs -->
-            <ProjectUpdateModal :project="project">
-                <Button
-                    class="dark:bg-body"
-                    color="blue"
-                    size="sm"
-                    outline
-                    square
-                >
-                    <i-carbon-tools />
-                </Button>
-            </ProjectUpdateModal>
-            <ProjectDeleteModal :project="project">
-                <Button
-                    class="dark:bg-body"
-                    color="red"
-                    size="sm"
-                    outline
-                    square
-                >
-                    <i-carbon-trash-can />
-                </Button>
-            </ProjectDeleteModal>
+            <template v-if="can('project:update')">
+                <ProjectUpdateModal :project="project">
+                    <Button
+                        class="dark:bg-body"
+                        color="blue"
+                        size="sm"
+                        outline
+                        square
+                    >
+                        <i-carbon-tools />
+                    </Button>
+                </ProjectUpdateModal>
+            </template>
+            <template v-if="can('project:delete')">
+                <ProjectDeleteModal :project="project">
+                    <Button
+                        class="dark:bg-body"
+                        color="red"
+                        size="sm"
+                        outline
+                        square
+                    >
+                        <i-carbon-trash-can />
+                    </Button>
+                </ProjectDeleteModal>
+            </template>
         </div>
         <h5
             class="text-3xl line-clamp-1 font-bold tracking-tight text-gray-900 dark:text-white"

@@ -6,6 +6,8 @@ defineProps<{
     projects: Array<App.Models.Project>;
 }>();
 
+const { can } = useRole();
+
 const breadcrumb = [
     {
         label: "Mes projets",
@@ -20,14 +22,16 @@ const breadcrumb = [
             <BreadCrumb :breadcrumb="breadcrumb" />
         </template>
         <div>
-            <ProjectCreateModal>
-                <Button color="green" class="flex items-center">
-                    <template #prefix>
-                        <i-carbon-add />
-                    </template>
-                    Ajouter
-                </Button>
-            </ProjectCreateModal>
+            <template v-if="can('project:create')">
+                <ProjectCreateModal>
+                    <Button color="green" class="flex items-center">
+                        <template #prefix>
+                            <i-carbon-add />
+                        </template>
+                        Ajouter
+                    </Button>
+                </ProjectCreateModal>
+            </template>
             <div
                 class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
