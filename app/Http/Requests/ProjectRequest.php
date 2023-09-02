@@ -25,6 +25,7 @@ class ProjectRequest extends FormRequest
             'title' => 'required|string|max:255',
             'subtitle' => 'required|string|max:255',
             'description' => 'required|string|max:255',
+            'color' => 'required|string|max:255',
         ];
     }
 }

@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\ChatRepository;
 use App\Http\Requests\ProjectRequest;
-use App\Models\Module;
 use App\Models\Project;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -16,13 +15,14 @@ class ProjectController extends Controller
 
     public function __construct(ChatRepository $chatRepository)
     {
+        $this->authorizeResource(Project::class, 'project');
         $this->chatRepo = $chatRepository;
     }
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $projects = auth()->user()->currentTeam?->projects()->get();
         return Inertia::render('Projects/Index', compact('projects'));
@@ -31,15 +31,20 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ProjectRequest $request)
+    public function store(ProjectRequest $request): \Illuminate\Http\RedirectResponse
     {
-        //
+        $project = Project::create([
+            ...$request->validated(),
+            'team_id' => Auth::user()->currentTeam->id,
+        ]);
+
+        return to_route('projects.show', compact('project'));
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Project $project)
+    public function show(Project $project): \Inertia\Response
     {
         $project->load('modules');
 
@@ -64,15 +69,15 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(ProjectRequest $request, Project $project)
+    public function update(ProjectRequest $request, Project $project): void
     {
-        //
+        $project->update($request->validated());
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project)
+    public function destroy(Project $project): void
     {
         $project->delete();
     }
