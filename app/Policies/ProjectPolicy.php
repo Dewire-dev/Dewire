@@ -66,4 +66,22 @@ class ProjectPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can attach a model.
+     */
+    public function attachModule(User $user, Project $project): bool
+    {
+        return $user->belongsToTeam($project->team) &&
+            $user->hasTeamPermission($project->team, 'module:attach');
+    }
+
+    /**
+     * Determine whether the user can detach a model.
+     */
+    public function detachModule(User $user, Project $project): bool
+    {
+        return $user->belongsToTeam($project->team) &&
+            $user->hasTeamPermission($project->team, 'module:detach');
+    }
 }

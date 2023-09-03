@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProjectRequest;
+use App\Models\Module;
 use App\Models\Project;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -46,7 +48,11 @@ class ProjectController extends Controller
     {
         $project->loadMissing('modules');
 
-        return Inertia::render('Projects/Show', compact('project'));
+        $availableModules = Module::query()->whereDoesntHave('projects', function ($query) use ($project) {
+            $query->where('project_id', $project->id);
+        })->get();
+
+        return Inertia::render('Projects/Show', compact('project', 'availableModules'));
     }
 
     /**
@@ -63,5 +69,25 @@ class ProjectController extends Controller
     public function destroy(Project $project): void
     {
         $project->delete();
+    }
+
+    /**
+     * Attach the specified resource.
+     */
+    public function attachModule(Project $project, Module $module): void
+    {
+        Gate::authorize('attachModule', $project);
+
+        $project->modules()->attach($module);
+    }
+
+    /**
+     * Detach the specified resource.
+     */
+    public function detachModule(Project $project, Module $module): void
+    {
+        Gate::authorize('detachModule', $project);
+
+        $project->modules()->detach($module);
     }
 }

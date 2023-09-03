@@ -34,6 +34,8 @@ Route::middleware([
     })->name('dashboard');
 
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class);
+    Route::post('/projects/{project}/attach/{module}', [\App\Http\Controllers\ProjectController::class, 'attachModule'])->name('modules.attach');
+    Route::post('/projects/{project}/detach/{module}', [\App\Http\Controllers\ProjectController::class, 'detachModule'])->name('modules.detach');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');

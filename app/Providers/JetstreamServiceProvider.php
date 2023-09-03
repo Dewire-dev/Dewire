@@ -51,6 +51,8 @@ class JetstreamServiceProvider extends ServiceProvider
             'project:create',
             'project:update',
             'project:delete',
+            'module:attach',
+            'module:detach',
         ])->description('Les administrateurs peuvent effectuer n\'importe quelle action.');
 
         Jetstream::role('editor', 'Éditeur', [
