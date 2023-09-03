@@ -25,9 +25,9 @@ const createProject = () => {
 </script>
 
 <template>
-    <div @click.prevent="confirmProjectCreation">
+    <span @click.prevent="confirmProjectCreation">
         <slot />
-    </div>
+    </span>
 
     <DialogModal
         :show="confirmingProjectCreation"

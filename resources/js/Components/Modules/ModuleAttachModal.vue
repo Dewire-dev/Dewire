@@ -27,9 +27,9 @@ const attachModule = () => {
 </script>
 
 <template>
-    <div @click.prevent="confirmModuleAttachment">
+    <span @click.prevent="confirmModuleAttachment">
         <slot />
-    </div>
+    </span>
 
     <DialogModal
         :show="confirmingModuleAttachment"
