@@ -13,7 +13,7 @@ const { can } = useRole();
 <template>
     <Link
         :href="route('projects.show', { project })"
-        class="project-card block max-w-sm p-6 bg-white border rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 relative"
+        class="project-card relative h-48 p-4 bg-white border rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700"
     >
         <div class="absolute -top-4 right-2 w-full flex justify-end gap-2">
             <!-- TODO : créer une modal unique de modification de projet et l'importer ailleurs -->

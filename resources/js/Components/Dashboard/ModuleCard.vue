@@ -13,7 +13,7 @@ const { can } = useRole();
 <template>
     <Link
         :href="`/projects/${project.id}/${mod.slug}`"
-        class="module-card relative flex justify-center items-center py-16 rounded-xl text-white text-4xl font-bold"
+        class="module-card relative h-48 p-4 flex justify-center items-center py-16 rounded-xl text-white text-4xl font-bold"
     >
         <div class="absolute -top-5 -right-3 w-full flex justify-end">
             <template v-if="can('module:detach')">
