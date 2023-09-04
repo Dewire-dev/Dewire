@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -102,7 +103,7 @@ class User extends Authenticatable implements FilamentUser
             ->withTimestamps();
     }
 
-    public function canAccessFilament(): bool
+    public function isAdmin(): bool
     {
         return in_array($this->email, [
             'mathieu.neyret@ynov.com',
@@ -110,5 +111,10 @@ class User extends Authenticatable implements FilamentUser
             'logan.lesaux@ynov.com',
             'theonicolas19@outlook.com',
         ]);
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin();
     }
 }

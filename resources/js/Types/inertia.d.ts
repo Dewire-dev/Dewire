@@ -32,6 +32,7 @@ declare module "@inertiajs/core" {
         layout: {
             projects: Array<App.Models.Project>;
         };
+        isAdmin: boolean;
     }
 }
 

@@ -1,6 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -46,3 +49,15 @@ Route::middleware([
         ->except(['update', 'destroy'])
         ->names('chats');
 });
+
+Route::get('/connect/{name}', function (Request $request, string $name) {
+    if (config('app.env') !== 'local') return redirect()->back();
+
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+
+    Auth::login(User::where('name', $name)->first());
+
+    return to_route('dashboard');
+})->name('connect');
