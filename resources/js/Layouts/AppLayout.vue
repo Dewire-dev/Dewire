@@ -128,6 +128,18 @@ const collapseToggle = (event) => {
                    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-sidebar dark:border-white-018"
                    aria-label="Sidebar">
                 <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-sidebar">
+                    <template v-if="$page.props.isAdmin">
+                        <ul class="space-y-2 font-medium">
+                            <li>
+                                <a href="/admin"
+                                  class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
+                                    <i-carbon-tools class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-tools>
+                                    <span class="flex-1 ml-3 whitespace-nowrap">Backoffice</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <hr class="h-px my-8 bg-gray-200 border-0 dark:border-white-018">
+                    </template>
                     <ul class="space-y-2 font-medium">
                         <li>
                             <Link :class="route().current('dashboard') ? 'dark:nav-item-active nav-item-active' : ''" :href="route('dashboard')"

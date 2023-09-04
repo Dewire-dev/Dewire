@@ -42,6 +42,7 @@ class HandleInertiaRequests extends Middleware
             'layout' => [
                 'projects' => $request->user()?->currentTeam?->projects()->with('modules')->get(),
             ],
+            'isAdmin' => $request->user()?->isAdmin(),
         ]);
     }
 }

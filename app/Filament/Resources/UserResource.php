@@ -6,10 +6,10 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Hash;
@@ -20,24 +20,35 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
-    protected static ?string $navigationLabel = 'Utilisateurs';
-
-    protected static ?int $navigationSort = 3;
-
-    protected static function getNavigationBadge(): ?string
-    {
-        return static::getModel()::count();
-    }
-
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
-                Forms\Components\TextInput::make('firstname'),
-                Forms\Components\TextInput::make('lastname'),
-                Forms\Components\TextInput::make('email')->email()->required(),
-                Forms\Components\TextInput::make('password')->password()->required(),
+                Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('firstname')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('lastname')
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('email')
+                    ->email()
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('password')
+                    ->password()
+                    ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                    ->dehydrated(fn ($state) => filled($state))
+                    ->required(fn (string $context): bool => $context === 'create')
+                    ->maxLength(255),
+                Forms\Components\Select::make('currentTeam')
+                    ->relationship(name: 'currentTeam', titleAttribute: 'id')
+                    ->options($form->getRecord()?->allTeams()->pluck('name', 'id'))
+                    ->hidden(fn (string $context): bool => $context === 'create')
+                    ->native(false),
+                Forms\Components\TextInput::make('profile_photo_path')
+                    ->maxLength(2048)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -45,32 +56,69 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('name')->sortable(),
-                Tables\Columns\TextColumn::make('email')->sortable(),
+                Tables\Columns\TextColumn::make('id')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('firstname')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('lastname')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('currentTeam.name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email_verified_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('two_factor_confirmed_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('profile_photo_path')
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('id')
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
-                    ->mutateFormDataUsing(function (array $data): array {
-                        $data['password'] = Hash::make($data['password']);
-
-                        return $data;
-                    }),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\OwnedTeamsRelationManager::class,
+            RelationManagers\TeamsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageUsers::route('/'),
+            'index' => Pages\ListUsers::route('/'),
+            'create' => Pages\CreateUser::route('/create'),
+            'edit' => Pages\EditUser::route('/{record}/edit'),
         ];
     }
 }

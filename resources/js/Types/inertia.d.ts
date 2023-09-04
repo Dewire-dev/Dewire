@@ -32,6 +32,7 @@ declare module "@inertiajs/core" {
         };
         currentRole: string;
         currentPermissions: string[];
+        isAdmin: boolean;
     }
 }
 
