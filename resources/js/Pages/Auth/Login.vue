@@ -8,6 +8,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 
+const env = import.meta.env.VITE_APP_ENV;
+
 defineProps({
     canResetPassword: Boolean,
     status: String,
@@ -27,6 +29,10 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
+
+const connect = (name) => {
+    router.get(route('connect', { name }));
+};
 </script>
 
 <template>
@@ -35,6 +41,19 @@ const submit = () => {
     <AuthenticationCard>
         <template #logo>
             <AuthenticationCardLogo />
+        </template>
+
+        <template v-if="env === 'local'">
+            <div class="grid grid-cols-3 items-center">
+                <span class="text-right text-white font-semibold pr-2">by</span>
+                <div class="flex gap-1">
+                    <button @click="connect('MathieuN')" class="bg-blue-700 text-white rounded w-8 h-8">M</button>
+                    <button @click="connect('AnaelB')" class="bg-green-500 text-white rounded w-8 h-8">A</button>
+                    <button @click="connect('LoganLS')" class="bg-yellow-400 text-white rounded w-8 h-8">L</button>
+                    <button @click="connect('TheoN')" class="bg-red-600 text-white rounded w-8 h-8">T</button>
+                </div>
+                <span class="text-left text-white font-semibold pl-1">team</span>
+            </div>
         </template>
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
