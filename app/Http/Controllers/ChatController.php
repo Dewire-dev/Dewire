@@ -8,6 +8,7 @@ use App\Models\ChatsUser;
 use App\Models\Message;
 use App\Models\MessageReadUser;
 use App\Models\Project;
+use App\Models\User;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\RedirectResponse;
@@ -24,11 +25,11 @@ class ChatController extends Controller
      */
     public function __construct(ChatRepository $chatRepository)
     {
-        $this->middleware(function (Request $request, Closure $next)  {
-            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
-
-            return $next($request);
-        });
+//        $this->middleware(function (Request $request, Closure $next)  {
+//            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
+//
+//            return $next($request);
+//        });
 
         $this->chatRepo = $chatRepository;
     }
@@ -37,6 +38,7 @@ class ChatController extends Controller
     {
         $chats = $this->chatRepo->getChat($project->id);
         $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
+        $users = User::all();
 
         foreach ($unReadMessages as $count) {
             $chats = $chats->map(function ($chat) use ($count) {
@@ -45,7 +47,7 @@ class ChatController extends Controller
             });
         }
 
-        return Inertia::render('Chats/Index', compact('project', 'chats'));
+        return Inertia::render('Chats/Index', compact('project', 'chats', 'users'));
     }
 
     public function show(Project $project, Chat $chat, Request $request)
@@ -107,6 +109,25 @@ class ChatController extends Controller
 
         return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages'));
 
+    }
+
+    public function createChats(Project $project, Request $request): RedirectResponse
+    {
+
+        $chat = Chat::create([
+            'subject' => $request->get('chatSubject'),
+            'name' => $request->get('chatName'),
+            'project_id' => $request->get('projectId')
+        ]);
+
+        foreach ($request->get('chatUsers') as $chatUsers) {
+            ChatsUser::create([
+                'user_id' => $chatUsers,
+                'chat_id' => $chat['id'],
+            ]);
+        }
+
+        return response()->redirectToRoute('chats.index', ['project' => $request->get('chat')['project_id']]);
     }
 
 }
