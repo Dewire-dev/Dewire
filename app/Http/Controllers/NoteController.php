@@ -7,10 +7,24 @@ use App\Http\Requests\StoreNoteRequest;
 use App\Http\Requests\UpdateNoteRequest;
 use App\Models\Note;
 use App\Models\Project;
+use Closure;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class NoteController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     */
+    public function __construct()
+    {
+        $this->middleware(function (Request $request, Closure $next)  {
+            abort_if(! $request->route()->project->canAccessModule('notes'), 403);
+
+            return $next($request);
+        });
+    }
+
     /**
      * Display a listing of the resource.
      */

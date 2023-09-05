@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('projects_modules', function (Blueprint $table) {
             $table->id();
             $table->foreignUlid('project_id');
-            $table->foreignUlid('module_id');
+            $table->string('module_slug')->references('slug')->on('modules');
         });
     }
 

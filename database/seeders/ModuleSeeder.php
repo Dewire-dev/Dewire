@@ -15,41 +15,49 @@ class ModuleSeeder extends Seeder
     {
         $modules = [
             [
+                'slug' => 'chats',
                 'name' => 'Chat',
                 'description' => 'Envoi de messages en temps réel via un salon de discussion.',
                 'color' => '#e91e63',
             ],
             [
+                'slug' => 'mails',
                 'name' => 'Email',
                 'description' => 'Envoi et lecture de messages via E-mail interne et SMTP.',
                 'color' => '#2196f3',
             ],
             [
+                'slug' => 'files',
                 'name' => 'File',
                 'description' => 'Stockage et gestion de fichiers.',
                 'color' => '#795548',
             ],
             [
+                'slug' => 'kanbans',
                 'name' => 'Kanban',
                 'description' => 'Gestion de projet via un tableau kanban avec drag and drop.',
                 'color' => '#ffc107',
             ],
             [
+                'slug' => 'lists',
                 'name' => 'List',
                 'description' => 'Listes de choses à acheter.',
                 'color' => '#9c27b0',
             ],
             [
+                'slug' => 'notes',
                 'name' => 'Note',
                 'description' => 'Prise de note en temps réel via éditeur de texte.',
                 'color' => '#4caf50',
             ],
             [
+                'slug' => 'plannings',
                 'name' => 'Planning',
                 'description' => 'Calendrier pour afficher des évènements.',
                 'color' => '#3f51b5',
             ],
             [
+                'slug' => 'times',
                 'name' => 'Time',
                 'description' => 'Estimation de temps de travail avec compteur.',
                 'color' => '#f44336',

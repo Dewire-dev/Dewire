@@ -9,6 +9,7 @@ use App\Models\Message;
 use App\Models\MessageReadUser;
 use App\Models\Project;
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,20 +19,37 @@ class ChatController extends Controller
 
     private ChatRepository $chatRepo;
 
+    /**
+     * Create a new controller instance.
+     */
     public function __construct(ChatRepository $chatRepository)
     {
+        $this->middleware(function (Request $request, Closure $next)  {
+            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
+
+            return $next($request);
+        });
+
         $this->chatRepo = $chatRepository;
     }
 
-    public function index()
+    public function index(Project $project)
     {
-        return to_route('dashboard');
+        $chats = $this->chatRepo->getChat($project->id);
+        $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
+
+        foreach ($unReadMessages as $count) {
+            $chats = $chats->map(function ($chat) use ($count) {
+                $chat->countUnreadMessages = $count->count();
+                return $chat;
+            });
+        }
+
+        return Inertia::render('Chats/Index', compact('project', 'chats'));
     }
 
     public function show(Project $project, Chat $chat, Request $request)
     {
-        abort_if(!Project::canAccessModule($project, 'Chat'), 403);
-
         $messages = $this->chatRepo->getMessage($chat->id);
         $messages->load('sender');
 
@@ -45,8 +63,6 @@ class ChatController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        abort_if(!Project::canAccessModule(Project::find($request->get('chat')['project_id']), 'Chat'), 403);
-
         $message = Message::create([
             'sender_id' => auth()->user()->id,
             'chat_id' => $request->get('chat')['id'],

@@ -126,7 +126,7 @@ declare namespace App.Models {
     }
 
     export interface Module {
-        id: string;
+        slug: string;
         name: string;
         description: string;
         color: string;

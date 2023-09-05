@@ -66,6 +66,16 @@ class User extends Authenticatable implements FilamentUser
         'profile_photo_url',
     ];
 
+    public function role()
+    {
+        return $this->teamRole($this->currentTeam)->key;
+    }
+
+    public function permissions()
+    {
+        return $this->teamPermissions($this->currentTeam);
+    }
+
     public function taskLogs(): HasMany
     {
         return $this->hasMany(TaskLog::class);

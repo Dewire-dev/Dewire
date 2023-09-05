@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Laravel\Fortify\Features;
+use Laravel\Jetstream\Jetstream;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,8 +39,28 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'currentRole' => $request->user()?->teamRole($request->user()?->currentTeam)?->key,
-            'currentPermissions' => $request->user()?->teamPermissions($request->user()?->currentTeam),
+            'auth' => [
+                'user' => function () use ($request) {
+                    if (! $user = $request->user()) {
+                        return;
+                    }
+
+                    $userHasTeamFeatures = Jetstream::userHasTeamFeatures($user);
+
+                    if ($user && $userHasTeamFeatures) {
+                        $user->currentTeam;
+                    }
+
+                    return array_merge($user->toArray(), array_filter([
+                        'all_teams' => $userHasTeamFeatures ? $user->allTeams()->values() : null,
+                    ]), [
+                        'two_factor_enabled' => Features::enabled(Features::twoFactorAuthentication())
+                            && ! is_null($user->two_factor_secret),
+                        'role' => $request->user()?->role(),
+                        'permissions' => $request->user()?->permissions(),
+                    ]);
+                },
+            ],
             'layout' => [
                 'projects' => $request->user()?->currentTeam?->projects()->with('modules')->get(),
             ],
