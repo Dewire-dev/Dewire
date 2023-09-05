@@ -37,8 +37,7 @@ const breadcrumb = [
 ];
 
 function createChat() {
-    axios.post('/create_chat', {
-        projectId: project.id,
+    axios.post(route('chats.store', { project }), {
         chatName: chatName.value,
         chatSubject: chatSubject.value,
         chatUsers: chatUsers.filter(user => user.checked).map(user => user.value)

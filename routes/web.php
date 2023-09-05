@@ -43,8 +43,8 @@ Route::middleware([
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
 
-    Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
-    Route::post('/create_chat', [\App\Http\Controllers\ChatController::class, 'createChats'])->name('createChats');
+    Route::post('/projects/{project}/chats/{chat}/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages'])->name('messages.read');
+    Route::post('/projects/{project}/chats/{chat}/create_message', [\App\Http\Controllers\ChatController::class, 'createMessage'])->name('messages.store');
 });
 
 Route::get('/connect/{name}', function (Request $request, string $name) {
