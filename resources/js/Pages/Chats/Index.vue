@@ -4,6 +4,7 @@ import route from "ziggy-js";
 import DialogModal from "@/Components/DialogModal.vue";
 import {Link} from "@inertiajs/vue3";
 import axios from "axios";
+import {Button, Input} from "flowbite-vue";
 
 const modalChatCreate = ref(false);
 const chatName = ref('');
@@ -43,10 +44,10 @@ function createChat() {
         chatUsers: chatUsers.filter(user => user.checked).map(user => user.value)
     })
     .then(function (response){
-        console.log(response);
+        location.reload();
     })
     .catch(function (error){
-        console.log(error);
+        alert(error);
     })
 }
 
@@ -72,41 +73,58 @@ function createChat() {
 
             <template #content>
                 <div class="name-chat">
-                    <label for="name-chat">Nom</label>
-                    <input type="text" v-model="chatName" name="name-chat">
+                    <Input
+                        v-model="chatName"
+                        required
+                        label="Nom"
+                        placeholder="Nom de la conversation"
+                        class="mb-3"
+                    />
                 </div>
                 <div class="subject-chat">
-                    <label for="subject-chat">Objet</label>
-                    <input type="text" v-model="chatSubject" name="subject-chat">
+                    <Input
+                        v-model="chatSubject"
+                        required
+                        label="Objet"
+                        placeholder="Objet de la conversation"
+                        class="mb-3"
+                    />
                 </div>
                 <div class="users-chat">
-                    <label for="users-chat">Utilisateurs</label>
-                    <!--                        <input type="text" list="datalist-users" v-model="chatUsers" name="users-chat">-->
-                    <div v-for="user in chatUsers">
-                        <input type="checkbox" :value="user.value" :name="user.name" v-model="user.checked">
-                        <label :for="user.name">{{ user.name }}</label>
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Utilisateurs</label>
+                    <div v-for="user in chatUsers" class="flex">
+                        <checkbox
+                            value="dfsf"
+                            :value="user.value"
+                            :name="user.name"
+                            v-model="user.checked"
+                        />
+                        <input-label :value="user.name" class="ml-2" />
                     </div>
-
-                    <!--                        <datalist id="datalist-users">-->
-                    <!--                            <option v-for="user in users" :value="user.email"></option>-->
-                    <!--                        </datalist>-->
                 </div>
             </template>
 
             <template #footer>
 
-                <button @click="createChat">
-                    Envoyer
-                </button>
+                <SecondaryButton @click="modalChatCreate = false"
+                    >Annuler</SecondaryButton
+                >
+
+                <PrimaryButton
+                    class="ml-3"
+                    @click="createChat"
+                >
+                    Ajouter
+                </PrimaryButton>
 
             </template>
         </DialogModal>
-        <button
-            @click="modalChatCreate = true"
-            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-            Créer une conversation
-        </button>
-
+        <Button color="green" class="flex items-center mb-3" @click="modalChatCreate = true">
+            <template #prefix>
+                <i-carbon-add />
+            </template>
+            Ajouter
+        </Button>
         <div class="grid grid-cols-3 gap-6">
             <ChatCard v-for="chat in chats" :chat="chat" :project="project" />
         </div>

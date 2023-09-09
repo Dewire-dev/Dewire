@@ -4,6 +4,7 @@ import route from "ziggy-js";
 import { useForm } from '@inertiajs/vue3';
 import Banner from "../../Components/Banner.vue";
 import axios from "axios";
+import {Button} from "flowbite-vue";
 
 const {chat, project, unReadMessages} = defineProps<{
     chat: {
@@ -58,7 +59,7 @@ function formMarkRead() {
         unReadMessages: unReadMessages
     })
     .then(function (response){
-        console.log(response);
+        location.reload();
     })
     .catch(function (error){
         console.log(error);
@@ -79,10 +80,12 @@ function formMarkRead() {
 
         <ul role="list" class="max-w-none divide-y divide-gray-200 dark:divide-gray-700">
             <li class="py-3 sm:py-4" v-for="(message) in messages" :key="message.id">
-                <div v-if="!markRead && unReadMessages.find(value => message.id === value.message_id) && firstElementUnRead.message_id === message.id">
-                    <p>{{ countUnreadMessages }} messages non lus</p>
+                <div class="mb-3" v-if="!markRead && unReadMessages.find(value => message.id === value.message_id) && firstElementUnRead.message_id === message.id">
+                    <InputLabel>{{ countUnreadMessages }} messages non lus</InputLabel>
                     <form @submit.prevent="formMarkRead">
-                        <button>Marquer comme lu</button>
+                        <Button color="green" class="flex items-center">
+                            Marquer comme lu
+                        </Button>
                     </form>
                 </div>
                 <div class="flex items-center space-x-3" v-if="!markRead || unReadMessages.find(value => message.id === value.message_id)">

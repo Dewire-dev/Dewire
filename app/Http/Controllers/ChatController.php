@@ -8,11 +8,13 @@ use App\Models\ChatsUser;
 use App\Models\Message;
 use App\Models\MessageReadUser;
 use App\Models\Project;
+use App\Models\Team;
 use App\Models\User;
 use Carbon\Carbon;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ChatController extends Controller
@@ -38,7 +40,7 @@ class ChatController extends Controller
     {
         $chats = $this->chatRepo->getChat($project->id);
         $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
-        $users = User::all();
+        $users = Auth::user()->currentTeam->users;
 
         foreach ($unReadMessages as $count) {
             $chats = $chats->map(function ($chat) use ($count) {
