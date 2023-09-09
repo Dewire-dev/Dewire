@@ -16,8 +16,8 @@ class Task extends Model
         'label',
         'description',
         'scheduled_time',
-        'startAt',
-        'endAt',
+        'start_at',
+        'end_at',
         'state',
         'type',
     ];
