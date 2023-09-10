@@ -31,18 +31,24 @@ class TaskFactory extends Factory
             'description' => $this->faker->text(),
             'scheduled_time' => $this->faker->numberBetween(30, 90),
             'start_at' => $this->faker->dateTime()->setTime(9, 0),
-            'end_at' => $this->faker->dateTime()->add(new \DateInterval('PT7H')),
+            'end_at' => $this->faker->dateTime()->add(new \DateInterval('PT24H')),
             'state' => TaskState::TO_DO,
             'type' => TaskType::CLIENT_PROJECT,
             'user_creator_id' => User::factory(),
-            'project_id' => Project::factory(),
         ];
+    }
+
+    public function assignToProject(Project $project): static
+    {
+        return $this->state([
+            'project_id' => $project->id,
+        ]);
     }
 
     public function assignToOneUser(User $user): static
     {
         return $this->afterCreating(function (Task $task) use ($user) {
-            return $task->users()->attach($user);
+            $task->users()->attach($user);
         });
     }
 }

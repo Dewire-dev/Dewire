@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class TaskController extends Controller
 {
@@ -95,6 +96,10 @@ class TaskController extends Controller
     public function deleteTaskTimeSpend(Task $task, TaskTimeSpend $taskTimeSpend)
     {
         $user = Auth::user();
+
+        if ($taskTimeSpend->user->id !== $user->id) {
+            throw new AccessDeniedHttpException('Vous ne pouvez pas supprimer la saisie d\'une autre personne');
+        }
 
         TaskTimeSpend::where('id', $taskTimeSpend->id)
             ->where('user_id', $user->id)
