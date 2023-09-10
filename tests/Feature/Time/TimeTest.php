@@ -28,10 +28,12 @@ test('user can add two times with a commentary for each time entered', function 
             [
                 'time' => 30,
                 'description' => 'Intégration CTA',
+                'date' => (new \DateTime('now'))->format('Y-m-d'),
             ],
             [
                 'time' => 45,
                 'description' => 'Brief avec le client pour l\'évol sur la navbar',
+                'date' => (new \DateTime('now'))->format('Y-m-d'),
             ],
         ],
     ]);
