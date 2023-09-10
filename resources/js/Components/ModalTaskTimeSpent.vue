@@ -8,6 +8,10 @@ import {Task} from "@/Interfaces/Task";
 const emit = defineEmits(['close', 'reload']);
 
 const props = defineProps({
+    date: {
+        type: Date,
+        required: true,
+    },
     taskTimeSpends: {
         type: Array,
         required: true,
@@ -54,6 +58,7 @@ async function saveTaskTimeSpends () {
                 time: useFormatTime().validateTime(taskTimeSpend.time.toString()) as number,
                 task_id: props.task.id,
                 description: taskTimeSpend.description,
+                date: taskTimeSpend.date ?? props.date,
             })
         }
     }

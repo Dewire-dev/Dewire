@@ -77,6 +77,7 @@ class TaskController extends Controller
     {
         $taskTimeSpends = $request->get('taskTimeSpends');
         $user = Auth::user();
+        $dateNow = new \DateTime();
 
         foreach ($taskTimeSpends as $taskTimeSpendData) {
             $taskTimeSpendId = $taskTimeSpendData['id'] ?? null;
@@ -85,7 +86,13 @@ class TaskController extends Controller
             ], [
                 'user_id' => $user->id,
                 'task_id' => $task->id,
-                'date' => new \DateTime(),
+                'date' => $taskTimeSpendId
+                    ? new \DateTime($taskTimeSpendData['date'])
+                    : (new \DateTime($taskTimeSpendData['date']))
+                        ->setTime(
+                            $dateNow->format('H'),
+                            $dateNow->format('i')
+                        ),
                 'time' => $taskTimeSpendData['time'],
                 'description' => $taskTimeSpendData['description'],
             ]);

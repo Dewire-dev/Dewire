@@ -14,6 +14,7 @@ const showModalTaskTimeSpend = ref(false)
 
 const taskSelected = ref<Task|null>(null);
 const taskTimeSpends = ref<Array<TaskTimeSpend>>([]);
+const dateTaskTimeSpend = ref(null);
 
 const props = defineProps({
     headers: {
@@ -78,6 +79,7 @@ async function openTime(item: Item) {
         })
     })
     taskTimeSpends.value = taskTimeSpendsFormatted
+    dateTaskTimeSpend.value = item.date
     showModalTaskTimeSpend.value = true
 }
 
@@ -150,6 +152,7 @@ async function saveTask() {
 
     <ModalTaskTimeSpent
         v-if="taskSelected"
+        :date="dateTaskTimeSpend"
         :task-time-spends="taskTimeSpends"
         :task="taskSelected"
         :show="showModalTaskTimeSpend"
