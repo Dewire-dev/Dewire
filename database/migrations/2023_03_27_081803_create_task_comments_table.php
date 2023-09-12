@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_logs', function (Blueprint $table) {
+        Schema::create('task_comments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->index();
-            $table->foreignId('user_id')->index();
-            $table->text('log');
+            $table->foreignUlid('user_id')->index();
+            $table->text('comment');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_logs');
+        Schema::dropIfExists('task_comments');
     }
 };
