@@ -42,7 +42,6 @@ Route::middleware([
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
-    Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
 
     Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
 
@@ -59,11 +58,13 @@ Route::middleware([
         Route::delete('/{task}/delete-task-time-spend/{taskTimeSpend}', [\App\Http\Controllers\TaskController::class, 'deleteTaskTimeSpend'])->name('tasks.deleteTaskTimeSpends');
     });
 
-    Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
+    Route::post('/projects/{project}/chats/{chat}/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages'])->name('messages.read');
+    Route::post('/projects/{project}/chats/{chat}/create_message', [\App\Http\Controllers\ChatController::class, 'createMessage'])->name('messages.store');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
         ->except(['update', 'destroy'])
         ->names('chats');
     Route::apiResource('time', \App\Http\Controllers\TimeController::class);
+
 });
 
 Route::get('/connect/{name}', function (Request $request, string $name) {
