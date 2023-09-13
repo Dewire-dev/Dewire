@@ -61,8 +61,9 @@ class ChatController extends Controller
         $countUnreadMessages = count($unReadMessages);
 
         $chatsUsers = $this->chatRepo->getUserInChat($chat->id);
+        $usersTeam = Auth::user()->currentTeam->users;
 
-        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages'));
+        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages', 'usersTeam'));
     }
 
     public function store(Project $project, Request $request): RedirectResponse

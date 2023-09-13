@@ -6,7 +6,7 @@ import Banner from "../../Components/Banner.vue";
 import axios from "axios";
 import {Button} from "flowbite-vue";
 
-const {chat, project, unReadMessages} = defineProps<{
+const {chat, project, unReadMessages, chatsUsers, usersTeam} = defineProps<{
     chat: {
         id: number;
         subject: string;
@@ -32,8 +32,14 @@ const {chat, project, unReadMessages} = defineProps<{
         id: number;
         user_id: string;
         chat_id: number;
+        user_name: string;
     }>;
     countUnreadMessages: number;
+    usersTeam: Array<{
+        id: number;
+        name: string;
+        email: string;
+    }>;
 }>();
 
 const breadcrumb = [
@@ -44,7 +50,11 @@ const breadcrumb = [
     {
         label: project.title,
         route: route('projects.show', {project})
-    }
+    },
+    {
+        label: "Chats",
+        route: route("chats.index", { project }),
+    },
 ];
 
 const form = useForm({
@@ -62,9 +72,11 @@ function formMarkRead() {
         location.reload();
     })
     .catch(function (error){
-        console.log(error);
+        alert(error);
     })
 }
+
+console.log(usersTeam);
 
 </script>
 <template>
@@ -75,6 +87,70 @@ function formMarkRead() {
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 text-center">
                     {{ chat.name }}
                 </h2>
+                <Dropdown
+                    align="right"
+                    width="60"
+                    class="text-right"
+                >
+                    <template #trigger>
+                        <span class="inline-flex rounded-md">
+                            <button
+                                type="button"
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150"
+                            >
+                                Paramètres
+
+                                <svg
+                                    class="ml-2 -mr-0.5 h-4 w-4"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                                    />
+                                </svg>
+                            </button>
+                        </span>
+                    </template>
+                    <template #content>
+                        <div class="w-60 text-left">
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                Membres de la conversation
+                            </div>
+                            <template
+                                v-for="user in chatsUsers"
+                                :key="user.id"
+                            >
+                                <DropdownLink as="button">
+                                    <div class="flex items-center">
+                                        <div>{{ user.user_name }}</div>
+                                    </div>
+                                </DropdownLink>
+
+                            </template>
+
+                            <div
+                                class="border-t border-gray-200 dark:border-gray-600"
+                            />
+
+                            <div class="block px-4 py-2 text-xs text-gray-400">
+                                Paramètres de la conversation
+                            </div>
+
+                            <DropdownLink as="button">
+                                <template #prefix>
+                                    <i-carbon-add />
+                                </template>
+                                Ajouter des utilisateurs
+                            </DropdownLink>
+                        </div>
+                    </template>
+                </Dropdown>
             </div>
         </template>
 

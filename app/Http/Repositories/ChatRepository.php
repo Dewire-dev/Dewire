@@ -28,7 +28,10 @@ class ChatRepository {
 
     public function getUserInChat(int $chatId): \Illuminate\Database\Eloquent\Collection|array
     {
-        return ChatsUser::where('chat_id', $chatId)->get();
+        return ChatsUser::where('chat_id', $chatId)
+            ->join('users', 'chats_users.user_id', '=', 'users.id')
+            ->select('chats_users.*', 'users.name as user_name')
+            ->get();
     }
 
     public function getUnreadMessagesAllChatsProject($projectId, $userId)
