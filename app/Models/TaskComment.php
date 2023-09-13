@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TaskLog extends Model
+class TaskComment extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'log',
+        'user_id',
+        'task_id',
+        'comment',
     ];
 
     public function user(): BelongsTo

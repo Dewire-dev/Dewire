@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('task_time_spends', function (Blueprint $table) {
-            $table->id();
+        Schema::create('tasks_users', function (Blueprint $table) {
             $table->foreignId('task_id')->index();
             $table->foreignUlid('user_id')->index();
-            $table->integer('time');
-            $table->text('description');
-            $table->dateTime('date');
-            $table->timestamps();
         });
     }
 
@@ -27,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('task_time_spends');
+        Schema::dropIfExists('tasks_users');
     }
 };
