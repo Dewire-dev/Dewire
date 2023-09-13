@@ -4,8 +4,8 @@ import { Input } from "flowbite-vue";
 import route from "ziggy-js";
 
 const { project } = defineProps<{
-    project: any;
-    notes: any[];
+    project: App.Models.Project;
+    notes: Array<App.Models.Note>;
 }>();
 
 const breadcrumb = [
@@ -39,14 +39,14 @@ const storeNote = () => {
 };
 
 const destroyNoteForm = useForm<{
-    id?: number;
+    id?: string;
 }>({
     id: undefined,
 });
 
 const deletingNote = ref(false);
 
-const openDestroyNoteModal = (id: number) => {
+const openDestroyNoteModal = (id: string) => {
     deletingNote.value = true;
     destroyNoteForm.id = id;
 };

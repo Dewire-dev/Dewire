@@ -2,8 +2,8 @@
 import route from "ziggy-js";
 
 const { project, note } = defineProps<{
-    project: any;
-    note: any;
+    project: App.Models.Project;
+    note: App.Models.Note;
 }>();
 
 const breadcrumb = [
@@ -27,19 +27,22 @@ const breadcrumb = [
 
 const content = useDebouncedRef(note.content, 1000);
 
-const roomUsers = ref<object[]>([]);
+const roomUsers = ref<Array<App.Models.User>>([]);
 
 const channel = Echo.join(`note.${note.id}`)
-    .here((users: object[]) => {
+    .here((users: Array<App.Models.User>) => {
         roomUsers.value = users;
     })
-    .joining((user: object) => {
+    .joining((user: App.Models.User) => {
         roomUsers.value.push(user);
     })
-    .leaving((user: object) => {
+    .leaving((user: App.Models.User) => {
         roomUsers.value = roomUsers.value.filter(({ id }) => id !== user.id);
     })
-    .listenForWhisper("editing", (e) => {
+    .listenForWhisper("editing", (e: any) => {
+        console.log("e");
+        console.log(e);
+
         content.value = e.content;
     });
 
@@ -47,7 +50,8 @@ onUnmounted(() => {
     Echo.leave(`note.${note.id}`);
 });
 
-const editingNote = (html: string) => {
+const editingNote = (html?: string) => {
+    if (!html) return;
     setTimeout(() => {
         channel.whisper("editing", {
             content: html,

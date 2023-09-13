@@ -44,11 +44,23 @@ declare namespace App.Models {
         created_at: string | null;
         updated_at: string | null;
         creator?: App.Models.User | null;
+        projects?: Array<App.Models.Project> | null;
         owner?: App.Models.User | null;
         users?: Array<App.Models.User> | null;
         team_invitations?: Array<App.Models.TeamInvitation> | null;
+        projects_count?: number | null;
         users_count?: number | null;
         team_invitations_count?: number | null;
+    }
+
+    export interface Note {
+        id: string;
+        name: string;
+        content: string | null;
+        created_at: string | null;
+        updated_at: string | null;
+        project_id: string;
+        project?: App.Models.Project | null;
     }
 
     export interface TaskLog {
@@ -108,6 +120,7 @@ declare namespace App.Models {
         chat_id: number;
         content: string;
         created_at: string;
+        read_at: string | null;
         updated_at: string;
         chats?: Array<App.Models.Chat> | null;
         sender?: App.Models.User | null;
@@ -160,12 +173,16 @@ declare namespace App.Models {
         subtitle: string;
         description: string;
         color: string;
+        team_id: number;
         created_at: string | null;
         updated_at: string | null;
+        team?: App.Models.Team | null;
         tasks?: Array<App.Models.Task> | null;
         modules?: Array<App.Models.Module> | null;
+        notes?: Array<App.Models.Note> | null;
         tasks_count?: number | null;
         modules_count?: number | null;
+        notes_count?: number | null;
     }
 
     export interface Chat {

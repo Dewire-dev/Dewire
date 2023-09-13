@@ -7,32 +7,16 @@ import axios from "axios";
 import {Button} from "flowbite-vue";
 
 const {chat, project, unReadMessages} = defineProps<{
-    chat: {
-        id: number;
-        subject: string;
-        name: string;
-    };
-    messages: Array<{
-        id: number;
-        content: string;
-    }>;
+    chat: App.Models.Chat;
+    messages: Array<App.Models.Message>;
     unReadMessages: Array<{
         id: number;
         message_id: number;
         content: string;
         user_id: string;
     }>;
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    },
-    chatsUsers: Array<{
-        id: number;
-        user_id: string;
-        chat_id: number;
-    }>;
+    project: App.Models.Project,
+    chatsUsers: Array<App.Models.ChatsUser>;
     countUnreadMessages: number;
 }>();
 

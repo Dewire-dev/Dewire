@@ -2,7 +2,7 @@
 import { Avatar, StackedAvatars, StackedAvatarsCounter } from "flowbite-vue";
 
 defineProps<{
-    users?: object[];
+    users: Array<App.Models.User>;
 }>();
 
 const MAX_DISPLAY_USERS = 3;
@@ -13,7 +13,7 @@ const MAX_DISPLAY_USERS = 3;
         <Avatar
             v-for="user in [...users].slice(0, MAX_DISPLAY_USERS)"
             stacked
-            :initials="user.firstname.charAt(0) + user.lastname.charAt(0)"
+            :initials="user?.firstname?.charAt(0) + '' + user?.lastname?.charAt(0)"
             rounded
             class="border-2 rounded-full border-gray-600 dark:border-transparent"
         />
