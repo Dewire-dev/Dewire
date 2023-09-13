@@ -9,6 +9,8 @@ use App\Models\Note;
 use App\Models\Project;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class NoteController extends Controller
@@ -23,6 +25,8 @@ class NoteController extends Controller
 
             return $next($request);
         });
+
+        $this->authorizeResource(Note::class, 'note');
     }
 
     /**
@@ -30,7 +34,10 @@ class NoteController extends Controller
      */
     public function index(Project $project)
     {
-        $notes = Note::where('project_id', $project->id)->get();
+        $notes = Note::where('project_id', $project->id)->with(['user' => function ($query) {
+            $query->select('id', 'name');
+        }])->get();
+
         return Inertia::render('Notes/Index')->with(compact('project', 'notes'));
     }
 
@@ -39,11 +46,13 @@ class NoteController extends Controller
      */
     public function store(StoreNoteRequest $request, Project $project)
     {
-        $note = Note::create(
-            array_merge($request->validated(),
-            [ 'project_id' => $project->id ],
+        Note::create(array_merge(
+            $request->validated(),
+            [
+                'project_id' => $project->id,
+                'user_id' => Auth::id(),
+            ],
         ));
-        return to_route('projects.notes.show', compact('project', 'note'));
     }
 
     /**
@@ -57,10 +66,9 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNoteRequest $request, Note $note)
+    public function update(UpdateNoteRequest $request, Project $project, Note $note)
     {
         $note->update($request->validated());
-        return back();
     }
 
     /**
@@ -74,8 +82,10 @@ class NoteController extends Controller
     /**
      * Save the specified resource.
      */
-    public function save(SaveNoteRequest $request, Note $note)
+    public function save(SaveNoteRequest $request, Project $project, Note $note)
     {
+        Gate::authorize('save', $note);
+
         $note->content = $request->input('content');
         $note->save();
     }
