@@ -173,7 +173,7 @@ function formMarkRead() {
                     <template #title>Ajouter des utilisateurs</template>
 
                     <template #content>
-                        <div v-for="user in checkedUsersTeamNotChat" class="flex">
+                        <div v-for="user in checkedUsersTeamNotChat" v-if="checkedUsersTeamNotChat.length" class="flex">
                             <checkbox
                                 :value="user.id"
                                 :name="user.name"
@@ -183,6 +183,9 @@ function formMarkRead() {
                                 :false-value="null"
                             />
                             <input-label :value="user.name" class="ml-2" />
+                        </div>
+                        <div v-else>
+                            Tous les utilisateurs du projet sont déjà dans la conversation.
                         </div>
                     </template>
 
