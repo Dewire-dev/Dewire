@@ -7,7 +7,7 @@ const { editor } = defineProps<{
     editor?: Editor;
 }>();
 
-const levels: Level[] = [1, 2, 3, 4, 5, 6];
+const levels: Array<Level> = [1, 2, 3, 4, 5, 6];
 </script>
 
 <template>
