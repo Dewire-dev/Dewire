@@ -204,9 +204,6 @@ function formMarkRead() {
                         </PrimaryButton>
                     </template>
                 </DialogModal>
-                <DialogModal>
-
-                </DialogModal>
             </div>
         </template>
 
