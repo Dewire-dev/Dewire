@@ -137,4 +137,12 @@ class ChatController extends Controller
         return to_route('chats.show', compact('project', 'chat'));
     }
 
+    public function deleteUser(Request $request, Project $project)
+    {
+        ChatsUser::where('user_id', auth()->user()->id)
+            ->where('chat_id', $request->get('chatId'))
+            ->delete();
+        return to_route('chats.index', compact('project'));
+    }
+
 }

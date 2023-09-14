@@ -60,6 +60,7 @@ Route::middleware([
     Route::post('/projects/{project}/chats/{chat}/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages'])->name('messages.read');
     Route::post('/projects/{project}/chats/{chat}/create_message', [\App\Http\Controllers\ChatController::class, 'createMessage'])->name('messages.store');
     Route::post('/projects/{project}/chats/{chat}/add_user', [\App\Http\Controllers\ChatController::class, 'addUser'])->name('messages.addUser');
+    Route::post('/projects/{project}/chats/{chat}/delete_user', [\App\Http\Controllers\ChatController::class, 'deleteUser'])->name('messages.deleteUser');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
         ->except(['update', 'destroy'])
         ->names('chats');

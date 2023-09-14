@@ -160,6 +160,12 @@ function formMarkRead() {
                             <DropdownLink as="button" @click="addingUser = true">
                                 Ajouter des utilisateurs
                             </DropdownLink>
+
+                            <UserChatDeleteModal :project="project" :chat="chat">
+                                <DropdownLink as="button">
+                                    Quitter la conversation
+                                </DropdownLink>
+                            </UserChatDeleteModal>
                         </div>
                     </template>
                 </Dropdown>
@@ -194,6 +200,9 @@ function formMarkRead() {
                             Ajouter
                         </PrimaryButton>
                     </template>
+                </DialogModal>
+                <DialogModal>
+
                 </DialogModal>
             </div>
         </template>
