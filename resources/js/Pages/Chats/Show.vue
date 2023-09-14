@@ -6,7 +6,7 @@ import Banner from "../../Components/Banner.vue";
 import axios from "axios";
 import {Button} from "flowbite-vue";
 
-const {chat, project, unReadMessages, chatsUsers, usersTeam} = defineProps<{
+const {chat, project, unReadMessages, chatsUsers, checkedUsersTeamNotChat} = defineProps<{
     chat: {
         id: number;
         subject: string;
@@ -35,10 +35,11 @@ const {chat, project, unReadMessages, chatsUsers, usersTeam} = defineProps<{
         user_name: string;
     }>;
     countUnreadMessages: number;
-    usersTeam: Array<{
+    checkedUsersTeamNotChat: Array<{
         id: number;
         name: string;
         email: string;
+        checked: false;
     }>;
 }>();
 
@@ -64,6 +65,22 @@ const form = useForm({
 let markRead = false;
 let firstElementUnRead = unReadMessages[0];
 
+const addingUser = ref(false);
+
+const storeUserForm = useForm({
+   users: []
+});
+
+const closeStoreUserModal = () => {
+  addingUser.value = false;
+  storeUserForm.users = [];
+};
+
+const storeUser = () => {
+    storeUserForm.users = checkedUsersTeamNotChat.filter(user => user.checked).map(user => user.id);
+    storeUserForm.post(route("messages.addUser", {project: project, chat: chat}));
+};
+
 function formMarkRead() {
     axios.post(route('messages.read', { project, chat }), {
         unReadMessages: unReadMessages
@@ -75,8 +92,6 @@ function formMarkRead() {
         alert(error);
     })
 }
-
-console.log(usersTeam);
 
 </script>
 <template>
@@ -142,15 +157,44 @@ console.log(usersTeam);
                                 Paramètres de la conversation
                             </div>
 
-                            <DropdownLink as="button">
-                                <template #prefix>
-                                    <i-carbon-add />
-                                </template>
+                            <DropdownLink as="button" @click="addingUser = true">
                                 Ajouter des utilisateurs
                             </DropdownLink>
                         </div>
                     </template>
                 </Dropdown>
+                <DialogModal :show="addingUser" @close="closeStoreUserModal">
+                    <template #title>Ajouter des utilisateurs</template>
+
+                    <template #content>
+                        <div v-for="user in checkedUsersTeamNotChat" class="flex">
+                            <checkbox
+                                :value="user.id"
+                                :name="user.name"
+                                :id="user.id"
+                                v-model="user.checked"
+                                :true-value="user.id"
+                                :false-value="null"
+                            />
+                            <input-label :value="user.name" class="ml-2" />
+                        </div>
+                    </template>
+
+                    <template #footer>
+                        <SecondaryButton @click="closeStoreUserModal"
+                        >Annuler</SecondaryButton
+                        >
+
+                        <PrimaryButton
+                            class="ml-3"
+                            :class="{ 'opacity-25': storeUserForm.processing }"
+                            :disabled="storeUserForm.processing"
+                            @click="storeUser"
+                        >
+                            Ajouter
+                        </PrimaryButton>
+                    </template>
+                </DialogModal>
             </div>
         </template>
 

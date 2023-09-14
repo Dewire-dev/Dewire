@@ -4,6 +4,8 @@ namespace App\Http\Repositories;
 use App\Models\Chat;
 use App\Models\ChatsUser;
 use App\Models\Message;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ChatRepository {
 
@@ -69,6 +71,16 @@ class ChatRepository {
         return $unreadMessages;
     }
 
+    public function getUsersTeamNotChat($chatId): \Illuminate\Support\Collection
+    {
+        $chatsUsers = $this->getUserInChat($chatId)->pluck('user_id');
+        $usersTeam = Auth::user()->currentTeam->users->pluck('id');
 
+        return DB::table('users')
+            ->whereIn('id', $usersTeam)
+            ->whereNotIn('id', $chatsUsers)
+            ->get();
+
+    }
 
 }

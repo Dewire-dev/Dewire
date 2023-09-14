@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\ChatRepository;
+use App\Http\Requests\StoreUserChatRequest;
 use App\Models\Chat;
 use App\Models\ChatsUser;
 use App\Models\Message;
@@ -61,9 +62,15 @@ class ChatController extends Controller
         $countUnreadMessages = count($unReadMessages);
 
         $chatsUsers = $this->chatRepo->getUserInChat($chat->id);
-        $usersTeam = Auth::user()->currentTeam->users;
+        $usersTeamNotChat = $this->chatRepo->getUsersTeamNotChat($chat->id);
+        $checkedUsersTeamNotChat = [];
+        foreach ($usersTeamNotChat as $user) {
+            $userArray = (array) $user;
+            $userArray['checked'] = false;
+            $checkedUsersTeamNotChat[] = $userArray;
+        }
 
-        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages', 'usersTeam'));
+        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages', 'checkedUsersTeamNotChat'));
     }
 
     public function store(Project $project, Request $request): RedirectResponse
@@ -116,6 +123,17 @@ class ChatController extends Controller
             }
         }
 
+        return to_route('chats.show', compact('project', 'chat'));
+    }
+
+    public function addUser(Request $request, Project $project, Chat $chat)
+    {
+        foreach ($request->get('users') as $user) {
+            ChatsUser::create([
+                'user_id' => $user,
+                'chat_id' => $chat->id
+            ]);
+        }
         return to_route('chats.show', compact('project', 'chat'));
     }
 
