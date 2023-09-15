@@ -24,15 +24,19 @@ class ModuleResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Nom')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\ColorPicker::make('color')
+                    ->label('Couleur')
                     ->required(),
                 Forms\Components\Textarea::make('description')
                     ->required()
                     ->maxLength(65535)
                     ->columnSpanFull(),
-
+                Forms\Components\Toggle::make('is_generic')
+                    ->label('Est un module générique')
+                    ->required()
             ]);
     }
 
@@ -43,8 +47,11 @@ class ModuleResource extends Resource
                 Tables\Columns\TextColumn::make('id')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\ColorColumn::make('color'),
+                Tables\Columns\ColorColumn::make('color')
+                    ->label('Couleur')
+                ,
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nom')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->words(15),

@@ -44,8 +44,8 @@ Route::middleware([
 
     Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
 
-    Route::prefix('time')->controller(\App\Http\Controllers\TimeController::class)->group(function () {
-        Route::get('/', [\App\Http\Controllers\TimeController::class, 'index'])->name('time');
+    Route::prefix('times')->controller(\App\Http\Controllers\TimeController::class)->group(function () {
+        Route::get('/', [\App\Http\Controllers\TimeController::class, 'index'])->name('times');
         Route::get('/get-previous-week', [\App\Http\Controllers\TimeController::class, 'getPreviousWeek'])->name('time.getPreviousWeek');
         Route::get('/get-next-week', [\App\Http\Controllers\TimeController::class, 'getNextWeek'])->name('time.getNextWeek');
         Route::get('/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');

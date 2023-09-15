@@ -15,6 +15,7 @@ class Module extends Model
         'name',
         'description',
         'color',
+        'is_generic',
     ];
 
     /**
