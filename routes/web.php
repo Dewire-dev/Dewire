@@ -40,7 +40,7 @@ Route::middleware([
     Route::post('/projects/{project}/attach/{module}', [\App\Http\Controllers\ProjectController::class, 'attachModule'])->name('modules.attach');
     Route::post('/projects/{project}/detach/{module}', [\App\Http\Controllers\ProjectController::class, 'detachModule'])->name('modules.detach');
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
-    Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
+    Route::patch('/projects/{project}/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
 
     Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
 
