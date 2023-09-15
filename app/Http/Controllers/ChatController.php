@@ -28,11 +28,11 @@ class ChatController extends Controller
      */
     public function __construct(ChatRepository $chatRepository)
     {
-//        $this->middleware(function (Request $request, Closure $next)  {
-//            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
-//
-//            return $next($request);
-//        });
+        $this->middleware(function (Request $request, Closure $next)  {
+            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
+
+            return $next($request);
+        });
 
         $this->chatRepo = $chatRepository;
     }

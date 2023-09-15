@@ -10,9 +10,8 @@ use Illuminate\Support\Str;
 
 test('user can add a conversation and link up with another user', function () {
     // Arrange
-    $user = User::factory()->create();
+    [$user, $project] = initProject(['chats']);
     $user2 = User::factory()->create();
-    $project = Project::factory()->create();
     $chat = Chat::factory()
         ->assignToProject($project)
         ->create()
