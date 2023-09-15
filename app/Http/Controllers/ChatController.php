@@ -134,7 +134,8 @@ class ChatController extends Controller
 
     public function addUser(Request $request, Project $project, Chat $chat)
     {
-        foreach ($request->get('users') as $user) {
+        $users = $request->get('users');
+        foreach ($users as $user) {
             ChatsUser::create([
                 'user_id' => $user,
                 'chat_id' => $chat->id
@@ -145,8 +146,10 @@ class ChatController extends Controller
 
     public function deleteUser(Request $request, Project $project)
     {
+        $chatId = $request->get('chatId');
+
         ChatsUser::where('user_id', auth()->user()->id)
-            ->where('chat_id', $request->get('chatId'))
+            ->where('chat_id', $chatId)
             ->delete();
         return to_route('chats.index', compact('project'));
     }
