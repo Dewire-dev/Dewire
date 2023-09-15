@@ -42,7 +42,14 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function initProject(array $moduleSlugs = [])
 {
-    // ..
+    $user = App\Models\User::factory()->withPersonalTeam()->create();
+    $project = App\Models\Project::factory(['team_id' => $user->currentTeam->id])->create();
+
+    Pest\Laravel\seed(ModuleSeeder::class);
+    $modules = App\Models\Module::whereIn('slug', $moduleSlugs)->get();
+    $project->modules()->sync($modules);
+
+    return [$user, $project];
 }

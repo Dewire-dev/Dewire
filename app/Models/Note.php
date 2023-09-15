@@ -18,11 +18,19 @@ class Note extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name', 'content', 'project_id',
+        'name',
+        'content',
+        'project_id',
+        'user_id',
     ];
 
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
