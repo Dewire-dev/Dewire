@@ -28,11 +28,11 @@ class ChatController extends Controller
      */
     public function __construct(ChatRepository $chatRepository)
     {
-        $this->middleware(function (Request $request, Closure $next)  {
-            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
-
-            return $next($request);
-        });
+//        $this->middleware(function (Request $request, Closure $next)  {
+//            abort_if(! $request->route()->project->canAccessModule('chats'), 403);
+//
+//            return $next($request);
+//        });
 
         $this->chatRepo = $chatRepository;
     }
@@ -75,13 +75,17 @@ class ChatController extends Controller
 
     public function store(Project $project, Request $request): RedirectResponse
     {
+        $chatSubject = $request->input('chatSubject');
+        $chatName = $request->input('chatName');
+        $chatUsers = $request->input('chatUsers');
+
         $chat = Chat::create([
-            'name' => $request->input('chatName'),
-            'subject' => $request->input('chatSubject'),
+            'subject' => $chatSubject,
+            'name' => $chatName,
             'project_id' => $project->id,
         ]);
 
-        foreach ($request->input('chatUsers') as $user) {
+        foreach ($chatUsers as $user) {
             ChatsUser::create([
                 'user_id' => $user,
                 'chat_id' => $chat->id,

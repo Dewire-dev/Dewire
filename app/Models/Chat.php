@@ -16,8 +16,6 @@ class Chat extends Model
       'subject',
       'name',
       'project_id',
-      'created_at',
-      'updated_at'
     ];
 
     public  function users(): BelongsToMany

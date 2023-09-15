@@ -15,8 +15,7 @@ return new class extends Migration
             $table->increments('id');
             $table->foreignUlid('user_id');
             $table->foreignId('chat_id');
-            $table->timestamp('created_at');
-            $table->timestamp('updated_at');
+            $table->timestamps();
         });
     }
 

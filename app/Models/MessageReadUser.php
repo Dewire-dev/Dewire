@@ -14,7 +14,5 @@ class MessageReadUser extends Model
         'message_id',
         'user_id',
         'read_at',
-        'created_at',
-        'updated_at'
     ];
 }

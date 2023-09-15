@@ -13,7 +13,5 @@ class ChatsUser extends Model
       'id',
       'user_id',
       'chat_id',
-      'created_at',
-      'updated_at'
     ];
 }
