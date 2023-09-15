@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('kanbans', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
-            $table->foreignUlid('project_id');
+            $table->foreignUlid('project_id')->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');;
             $table->timestamps();
         });
     }

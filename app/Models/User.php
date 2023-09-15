@@ -71,6 +71,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->teamRole($this->currentTeam)->key;
     }
 
+    public function team_users(): BelongsToMany
+    {
+        return $this->belongsToMany(Team::class, 'team_user');
+    }
+
     public function permissions()
     {
         return $this->teamPermissions($this->currentTeam);

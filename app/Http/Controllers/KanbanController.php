@@ -27,7 +27,7 @@ class KanbanController extends Controller
 
     public function index(Project $project)
     {
-        $kanbans = Kanban::where('project_id', $project->id)->get();
+        $kanbans = $project->kanbans;
 
         return Inertia::render('Kanban/Index', compact('project', 'kanbans'));
     }
@@ -48,9 +48,10 @@ class KanbanController extends Controller
      */
     public function show(Project $project, Kanban $kanban)
     {
-        $lists = $kanban->kanban_lists;
+        $lists = $kanban->kanban_lists()->with('tasks')->get();
+        $members = $project->team->team_users;
 
-        return Inertia::render('Kanban/Show', compact('project', 'kanban', 'lists'));
+        return Inertia::render('Kanban/Show', compact('project', 'kanban', 'lists', 'members'));
     }
 
     /**

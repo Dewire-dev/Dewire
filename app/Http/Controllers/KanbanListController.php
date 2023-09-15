@@ -18,8 +18,7 @@ class KanbanListController extends Controller
     public function __construct()
     {
         $this->middleware(function (Request $request, Closure $next)  {
-            $project = Project::find($request->route()->project)->first();
-            abort_if(! $project->canAccessModule('kanbans'), 403);
+            abort_if(! $request->route()->project->canAccessModule('kanbans'), 403);
 
             return $next($request);
         });
@@ -27,16 +26,35 @@ class KanbanListController extends Controller
 
     public function store(Project $project, Kanban $kanban, Request $request): RedirectResponse
     {
-        KanbanList::create($request->all());
+        $values = $request->all();
+        $values['position'] = $kanban->kanban_lists()->count() == 0
+            ? 0
+            : $kanban->kanban_lists->last()->position + 1;
+
+        KanbanList::create($values);
 
         return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanban]);
     }
 
+    public function updateNameKanbanList(Project $project, KanbanList $kanbanList, Request $request) {
+        $kanbanList->update(['name' => $request->get('name')]);
+
+        return back()->banner('Success');
+    }
+
+    public function updatePositionKanbanList(Project $project, Kanban $kanban, Request $request) {
+        foreach ($request->get('list') as $index => $element) {
+            $kanbanList = KanbanList::where('id', $element['id'])->first();
+            $kanbanList->update(['position' => $index]);
+        }
+
+        return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanban]);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project,Kanban $kanban, KanbanList $kanbanList)
+    public function destroy(Project $project, Kanban $kanban, KanbanList $kanbanList)
     {
         $kanbanList->delete();
 

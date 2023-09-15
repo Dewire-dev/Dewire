@@ -15,7 +15,10 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name')->nullable();
             $table->string('color')->nullable();
-            $table->foreignUlid('kanban_id');
+            $table->integer('position')->nullable();
+            $table->foreignUlid('kanban_id')->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');;
             $table->timestamps();
         });
     }

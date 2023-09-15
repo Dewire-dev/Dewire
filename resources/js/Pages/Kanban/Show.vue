@@ -6,6 +6,7 @@ export default {
         project: Object,
         kanban: Object,
         lists: Object,
+        members: Object,
     },
     data() {
         return {
@@ -63,7 +64,11 @@ export default {
                 </div>
                 <div class="flex-1 overflow-x-auto">
                     <div class="inline-flex h-full items-start px-4 pb-4 space-x-4">
-                        <List :lists="lists" :kanban="kanban" :project="project"></List>
+                        <List :lists="lists"
+                              :kanban="kanban"
+                              :project="project"
+                              :members="members"
+                        ></List>
                     </div>
                 </div>
             </div>

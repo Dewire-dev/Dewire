@@ -67,6 +67,20 @@ Route::middleware([
         ->names('chats');
     Route::apiResource('time', \App\Http\Controllers\TimeController::class);
 
+
+    //Module Kanban
+    Route::apiResource('projects.kanbans', \App\Http\Controllers\KanbanController::class)->except(['update'])->names('kanbans');
+    Route::apiResource('projects.kanbans.kanban-lists', \App\Http\Controllers\KanbanListController::class)->except(['show'])->names('kanban_lists');
+    Route::apiResource('projects.kanbans.kanban-tasks', \App\Http\Controllers\KanbanTaskController::class)->except(['show'])->names('kanban_tasks');
+
+    Route::controller(\App\Http\Controllers\KanbanListController::class)->group(function () {
+        Route::post('projects/{project}/{kanban_list}/kanban-lists-update-name', 'updateNameKanbanList')->name('kanban-lists-update-name');
+        Route::post('projects/{project}/{kanban}/kanban-lists-update-position', 'updatePositionKanbanList')->name('kanban-lists-update-position');
+    });
+
+    Route::controller(\App\Http\Controllers\KanbanTaskController::class)->group(function () {
+        Route::post('projects/{project}/{kanban_task}/kanban-tasks-update-position', 'updateTaskPosition')->name('kanban-tasks-update-position');
+    });
 });
 
 Route::get('/connect/{name}', function (Request $request, string $name) {

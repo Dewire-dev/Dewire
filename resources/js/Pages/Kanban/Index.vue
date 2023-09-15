@@ -14,6 +14,14 @@ const storeKanbanForm = useForm({
     name: "",
 });
 
+const destroyKanbanForm = useForm<{
+  id?: number;
+}>({
+  id: undefined,
+});
+
+const deletingKanban = ref(false);
+
 const closeStoreKanbanModal = () => {
     addingKanbanBoard.value = false;
     storeKanbanForm.name = "";
@@ -24,14 +32,6 @@ const storeKanban = () => {
       onSuccess: closeStoreKanbanModal,
     });
 };
-
-const destroyKanbanForm = useForm<{
-    id?: number;
-}>({
-    id: undefined,
-});
-
-const deletingKanban = ref(false);
 
 const openDestroyKanbanModal = (id: number) => {
     deletingKanban.value = true;

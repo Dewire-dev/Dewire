@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Jetstream\Events\TeamCreated;
 use Laravel\Jetstream\Events\TeamDeleted;
@@ -52,5 +53,10 @@ class Team extends JetstreamTeam
     public function projects(): HasMany
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function team_users(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'team_user');
     }
 }

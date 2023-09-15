@@ -26,6 +26,6 @@ class Kanban extends Model
 
     public function kanban_lists(): HasMany
     {
-        return $this->hasMany(KanbanList::class);
+        return $this->hasMany(KanbanList::class)->orderBy('position');
     }
 }
