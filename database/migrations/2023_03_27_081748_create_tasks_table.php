@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignUlid('project_id')->index();
-            $table->foreignUlid('user_creator_id')->nullable()->index();
+            $table->foreignUlid('project_id')->nullable()->index();
+            $table->foreignUlid('user_creator_id')->index();
             $table->string('label');
             $table->text('description')->nullable();
-            $table->dateTime('start_at');
-            $table->dateTime('end_at');
+            $table->integer('scheduled_time')->nullable();
+            $table->dateTime('start_at')->nullable();
+            $table->dateTime('end_at')->nullable();
             $table->enum('state', array_column(TaskState::cases(), 'value'));
             $table->enum('type', array_column(TaskType::cases(), 'value'));
             $table->timestamps();

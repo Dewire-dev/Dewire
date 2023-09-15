@@ -4,34 +4,19 @@ import route from "ziggy-js";
 import { useForm } from '@inertiajs/vue3';
 import Banner from "../../Components/Banner.vue";
 import axios from "axios";
+import {Button} from "flowbite-vue";
 
 const {chat, project, unReadMessages} = defineProps<{
-    chat: {
-        id: number;
-        subject: string;
-        name: string;
-    };
-    messages: Array<{
-        id: number;
-        content: string;
-    }>;
+    chat: App.Models.Chat;
+    messages: Array<App.Models.Message>;
     unReadMessages: Array<{
         id: number;
         message_id: number;
         content: string;
         user_id: string;
     }>;
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    },
-    chatsUsers: Array<{
-        id: number;
-        user_id: string;
-        chat_id: number;
-    }>;
+    project: App.Models.Project,
+    chatsUsers: Array<App.Models.ChatsUser>;
     countUnreadMessages: number;
 }>();
 
@@ -54,13 +39,11 @@ let markRead = false;
 let firstElementUnRead = unReadMessages[0];
 
 function formMarkRead() {
-    axios.post('/read_messages', {
-        project: project,
-        chat: chat,
+    axios.post(route('messages.read', { project, chat }), {
         unReadMessages: unReadMessages
     })
     .then(function (response){
-        console.log(response);
+        location.reload();
     })
     .catch(function (error){
         console.log(error);
@@ -81,10 +64,12 @@ function formMarkRead() {
 
         <ul role="list" class="max-w-none divide-y divide-gray-200 dark:divide-gray-700">
             <li class="py-3 sm:py-4" v-for="(message) in messages" :key="message.id">
-                <div v-if="!markRead && unReadMessages.find(value => message.id === value.message_id) && firstElementUnRead.message_id === message.id">
-                    <p>{{ countUnreadMessages }} messages non lus</p>
+                <div class="mb-3" v-if="!markRead && unReadMessages.find(value => message.id === value.message_id) && firstElementUnRead.message_id === message.id">
+                    <InputLabel>{{ countUnreadMessages }} messages non lus</InputLabel>
                     <form @submit.prevent="formMarkRead">
-                        <button>Marquer comme lu</button>
+                        <Button color="green" class="flex items-center">
+                            Marquer comme lu
+                        </Button>
                     </form>
                 </div>
                 <div class="flex items-center space-x-3" v-if="!markRead || unReadMessages.find(value => message.id === value.message_id)">
@@ -105,7 +90,7 @@ function formMarkRead() {
 
 
         <div class="bottom-0 z-50 max-w-none divide-y divide-gray-200 dark:divide-gray-700">
-            <form @submit.prevent="form.post(route('chats.store', {project, chat, form, chatsUsers}))">
+            <form @submit.prevent="form.post(route('messages.store', { project, chat }))">
                 <div class="flex items-center px-3 py-2 rounded-lg">
                     <textarea id="content" v-model="form.content" rows="4" class="block mx-4 p-2.5 w-full text-2xl text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ton message..."></textarea>
                     <button type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">

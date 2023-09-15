@@ -44,12 +44,29 @@ Route::middleware([
     Route::apiResource('projects.kanbans.kanban-lists', \App\Http\Controllers\KanbanListController::class)->except(['show'])->names('kanban_lists');
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
-    Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
 
-    Route::post('/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages']);
+    Route::apiResource('tasks', \App\Http\Controllers\TaskController::class);
+
+    Route::prefix('time')->controller(\App\Http\Controllers\TimeController::class)->group(function () {
+        Route::get('/', [\App\Http\Controllers\TimeController::class, 'index'])->name('time');
+        Route::get('/get-previous-week', [\App\Http\Controllers\TimeController::class, 'getPreviousWeek'])->name('time.getPreviousWeek');
+        Route::get('/get-next-week', [\App\Http\Controllers\TimeController::class, 'getNextWeek'])->name('time.getNextWeek');
+        Route::get('/get-tasks-by-user', [\App\Http\Controllers\TimeController::class, 'getTasksByUser'])->name('time.getTasksByUser');
+
+        Route::get('/task-time-spends/{task}/{date}/{user}', [\App\Http\Controllers\TaskController::class, 'taskTimeSpends'])->name('tasks.taskTimeSpends');
+        Route::post('/{task}/add-comment', [\App\Http\Controllers\TaskController::class, 'addComment'])->name('tasks.addComment');
+        Route::delete('/{task}/delete-comment/{taskComment}', [\App\Http\Controllers\TaskController::class, 'deleteComment'])->name('tasks.deleteComment');
+        Route::put('/{task}/update-task-time-spends', [\App\Http\Controllers\TaskController::class, 'updateTaskTimeSpends'])->name('tasks.updateTaskTimeSpends');
+        Route::delete('/{task}/delete-task-time-spend/{taskTimeSpend}', [\App\Http\Controllers\TaskController::class, 'deleteTaskTimeSpend'])->name('tasks.deleteTaskTimeSpends');
+    });
+
+    Route::post('/projects/{project}/chats/{chat}/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages'])->name('messages.read');
+    Route::post('/projects/{project}/chats/{chat}/create_message', [\App\Http\Controllers\ChatController::class, 'createMessage'])->name('messages.store');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
         ->except(['update', 'destroy'])
         ->names('chats');
+    Route::apiResource('time', \App\Http\Controllers\TimeController::class);
+
 });
 
 Route::get('/connect/{name}', function (Request $request, string $name) {

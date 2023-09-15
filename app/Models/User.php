@@ -76,9 +76,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->teamPermissions($this->currentTeam);
     }
 
-    public function taskLogs(): HasMany
+    public function taskComments(): HasMany
     {
-        return $this->hasMany(TaskLog::class);
+        return $this->hasMany(TaskComment::class);
     }
 
     public function taskTimeSpends(): HasMany
@@ -86,9 +86,9 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(TaskTimeSpend::class);
     }
 
-    public function tasks(): HasMany
+    public function tasks(): BelongsToMany
     {
-        return $this->hasMany(Task::class);
+        return $this->belongsToMany(Task::class, 'tasks_users');
     }
 
     public  function chats(): BelongsToMany
