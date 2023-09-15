@@ -109,10 +109,12 @@ class ChatController extends Controller
 
     public function createMessage(Project $project, Chat $chat, Request $request): RedirectResponse
     {
+        $content = $request->input('content');
+
         $message = Message::create([
             'sender_id' => auth()->user()->id,
             'chat_id' => $chat->id,
-            'content' => $request->input('content'),
+            'content' => $content,
         ]);
 
         foreach ($chat->users as $user)
