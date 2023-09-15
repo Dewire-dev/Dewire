@@ -39,7 +39,6 @@ Route::middleware([
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class);
     Route::post('/projects/{project}/attach/{module}', [\App\Http\Controllers\ProjectController::class, 'attachModule'])->name('modules.attach');
     Route::post('/projects/{project}/detach/{module}', [\App\Http\Controllers\ProjectController::class, 'detachModule'])->name('modules.detach');
-    Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)->except(['update', 'destroy'])->names('chats');
     Route::apiResource('projects.notes', \App\Http\Controllers\NoteController::class);
     Route::patch('/notes/{note}/save', [\App\Http\Controllers\NoteController::class, 'save'])->name('notes.save');
 
@@ -60,6 +59,8 @@ Route::middleware([
 
     Route::post('/projects/{project}/chats/{chat}/read_messages', [\App\Http\Controllers\ChatController::class, 'markReadMessages'])->name('messages.read');
     Route::post('/projects/{project}/chats/{chat}/create_message', [\App\Http\Controllers\ChatController::class, 'createMessage'])->name('messages.store');
+    Route::post('/projects/{project}/chats/{chat}/add_user', [\App\Http\Controllers\ChatController::class, 'addUser'])->name('messages.addUser');
+    Route::post('/projects/{project}/chats/{chat}/delete_user', [\App\Http\Controllers\ChatController::class, 'deleteUser'])->name('messages.deleteUser');
     Route::apiResource('projects.chats', \App\Http\Controllers\ChatController::class)
         ->except(['update', 'destroy'])
         ->names('chats');

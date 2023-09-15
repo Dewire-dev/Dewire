@@ -94,7 +94,6 @@ function createChat() {
                     <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Utilisateurs</label>
                     <div v-for="user in chatUsers" class="flex">
                         <checkbox
-                            value="dfsf"
                             :value="user.value"
                             :name="user.name"
                             v-model="user.checked"
