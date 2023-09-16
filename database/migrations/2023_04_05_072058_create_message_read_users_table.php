@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('message_id');
             $table->foreignUlid('user_id');
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
             $table->unique(['message_id', 'user_id']);
         });

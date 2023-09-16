@@ -18,7 +18,6 @@ return new class extends Migration
                 ->on('users');
             $table->foreignId('chat_id');
             $table->text('content');
-            $table->dateTime('read_at')->nullable();
             $table->timestamps();
         });
     }
