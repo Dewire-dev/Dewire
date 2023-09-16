@@ -235,7 +235,7 @@ function formMarkRead() {
 
 
         <div class="bottom-0 z-50 max-w-none divide-y divide-gray-200 dark:divide-gray-700">
-            <form @submit.prevent="form.post(route('messages.store', { project, chat }))">
+            <form @submit.prevent="form.post(route('messages.store', { project, chat })); form.content='' ">
                 <div class="flex items-center px-3 py-2 rounded-lg">
                     <textarea id="content" v-model="form.content" rows="4" class="block mx-4 p-2.5 w-full text-2xl text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ton message..."></textarea>
                     <button type="submit" class="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
