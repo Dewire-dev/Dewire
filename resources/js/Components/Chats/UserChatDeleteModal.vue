@@ -17,7 +17,7 @@ const confirmUserChatDeletion = () => {
 };
 
 const deleteUserChat = () => {
-    form.post(route("messages.deleteUser", {project: project, chat: chat}), {
+    form.delete(route("messages.deleteUser", {project: project, chat: chat}), {
         errorBag: "deleteUserChat",
     });
 };
