@@ -4,23 +4,17 @@ use App\Models\Chat;
 use App\Models\ChatsUser;
 use App\Models\Message;
 use App\Models\MessageReadUser;
+use App\Models\Project;
 use App\Models\User;
 use Illuminate\Support\Str;
 
-test('user can add a conversation and link up with 2 another user', function () {
+use function PHPUnit\Framework\{assertEquals, assertInstanceOf, assertSame, assertTrue};
+
+test('user can add a conversation and join two other users in the conversation', function () {
     // Arrange
     [$user, $project] = initProject(['chats']);
     $user2 = User::factory()->create();
     $user3 = User::factory()->create();
-    $chat = Chat::factory()
-        ->assignToProject($project)
-        ->create()
-    ;
-    $chatsUser = ChatsUser::factory()
-        ->assignToChat($chat)
-        ->assignToUser($user)
-        ->create()
-    ;
 
     // Act
     $this->post('/login', [
@@ -32,16 +26,24 @@ test('user can add a conversation and link up with 2 another user', function () 
         'chatSubject' => Str::random(20),
         'chatName' => Str::random(10),
         'chatUsers' => [
+            $user->id,
             $user2->id,
             $user3->id,
         ]
     ]);
 
+    $chat = Chat::first();
+
     // Assert
-    $response->assertRedirect(route('chats.index', ['project' => $project]));
+    $response->assertStatus(200);
+    assertInstanceOf(Project::class, $chat->project);
+    assertSame($project->id, $chat->project->id);
+    assertEquals(1, $project->chats->count());
+    assertTrue($project->chats->contains($chat));
+
 });
 
-test('user can send a message and mark not read for another user', function() {
+test('user can send a message and mark not read for two another user in chat', function() {
     // Arrange
     [$user, $project] = initProject(['chats']);
     $user2 = User::factory()->create();
@@ -49,13 +51,13 @@ test('user can send a message and mark not read for another user', function() {
         ->assignToProject($project)
         ->create()
     ;
-    $message = Message::factory()
+    $chatsUser = ChatsUser::factory()
         ->assignToChat($chat)
         ->assignToUser($user)
         ->create()
     ;
-    $messageReadUser = MessageReadUser::factory()
-        ->assignToMessage($message)
+    $chatsUser2 = ChatsUser::factory()
+        ->assignToChat($chat)
         ->assignToUser($user2)
         ->create()
     ;
@@ -71,40 +73,18 @@ test('user can send a message and mark not read for another user', function() {
         'content' => Str::random(100),
     ]);
 
-    // Assert
-    $response->assertRedirect(route('chats.show', ['project' => $project, 'chat' => $chat]));
-});
-
-test('user can adding 2 another user in chat', function() {
-    // Arrange
-    [$user, $project] = initProject(['chats']);
-    $user2 = User::factory()->create();
-    $user3 = User::factory()->create();
-    $chat = Chat::factory()
-        ->assignToProject($project)
-        ->create()
-    ;
-    $chatsUser = ChatsUser::factory()
-        ->assignToChat($chat)
-        ->assignToUser($user)
-        ->create()
-    ;
-
-    // Act
-    $this->post('/login', [
-        'email' => $user->email,
-        'password' => 'password',
-    ]);
-
-    $response = $this->post('/projects/' . $project->id . '/chats/' . $chat->id . '/add_user', [
-        'users' => [
-            $user2->id,
-            $user3->id,
-        ]
-    ]);
+    $message = Message::first();
 
     // Assert
-    $response->assertRedirect(route('chats.show', ['project' => $project, 'chat' => $chat]));
+    $response->assertStatus(200);
+    $this->assertDatabaseHas('messages', [
+        'sender_id' => $user->id,
+        'chat_id' => $chat->id
+    ]);
+    $this->assertDatabaseHas('message_read_users', [
+        'user_id' => $user2->id,
+        'message_id' => $message->id
+    ]);
 });
 
 test('user can exit a chat', function () {
@@ -115,12 +95,10 @@ test('user can exit a chat', function () {
         ->create()
     ;
     $chatsUser = ChatsUser::factory()
-        ->count(3)
         ->assignToChat($chat)
         ->assignToUser($user)
         ->create()
     ;
-    $chatsUserTryToDelete = $chatsUser[0];
 
     // Act
     $this->post('/login', [
@@ -128,10 +106,15 @@ test('user can exit a chat', function () {
         'password' => 'password',
     ]);
 
-    $response = $this->delete('/projects/' . $project->id . '/chats/' . $chatsUserTryToDelete->id . '/delete_user', [
-        'chatId' => $chatsUserTryToDelete->id
+    $response = $this->delete('/projects/' . $project->id . '/chats/' . $chat->id . '/delete_user', [
+        'chatId' => $chat->id,
+        'userId' => $user->id,
     ]);
 
     // Assert
     $response->assertRedirect(route('chats.index', ['project' => $project]));
+    $this->assertDatabaseMissing('chats_users', [
+        'chat_id' => $chat->id,
+        'user_id' => $user->id,
+    ]);
 });

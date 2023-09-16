@@ -73,7 +73,7 @@ class ChatController extends Controller
         return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages', 'checkedUsersTeamNotChat'));
     }
 
-    public function store(Project $project, Request $request): RedirectResponse
+    public function store(Project $project, Request $request)
     {
         $chatSubject = $request->input('chatSubject');
         $chatName = $request->input('chatName');
@@ -91,7 +91,6 @@ class ChatController extends Controller
                 'chat_id' => $chat->id,
             ]);
         }
-        return to_route('chats.index', compact('project'));
     }
 
     public function markReadMessages(Project $project, Chat $chat, Request $request)
@@ -104,7 +103,7 @@ class ChatController extends Controller
         }
     }
 
-    public function createMessage(Project $project, Chat $chat, Request $request): RedirectResponse
+    public function createMessage(Project $project, Chat $chat, Request $request)
     {
         $content = $request->input('content');
 
@@ -125,7 +124,6 @@ class ChatController extends Controller
                 ]);
             }
         }
-        return to_route('chats.show', compact('project', 'chat'));
     }
 
     public function addUser(Request $request, Project $project, Chat $chat)

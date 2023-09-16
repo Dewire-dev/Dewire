@@ -47,6 +47,11 @@ class Project extends Model
         return $this->hasMany(Note::class);
     }
 
+    public function chats(): HasMany
+    {
+        return $this->hasMany(Chat::class);
+    }
+
     public function canAccessModule(string $slug): bool
     {
         return $this->modules()->where('module_slug', $slug)->count() !== 0;
