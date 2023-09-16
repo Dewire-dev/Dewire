@@ -12,7 +12,6 @@ use Inertia\Inertia;
 
 class KanbanController extends Controller
 {
-
     /**
      * Create a new controller instance.
      */
@@ -49,7 +48,9 @@ class KanbanController extends Controller
     public function show(Project $project, Kanban $kanban)
     {
         $lists = $kanban->kanban_lists()->with('tasks')->get();
-        $members = $project->team->team_users;
+        $lists->load('tasks.task.users');
+
+        $members = $project->team->team_users->pluck('name', 'id');
 
         return Inertia::render('Kanban/Show', compact('project', 'kanban', 'lists', 'members'));
     }

@@ -11,15 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kanban_tasks', function (Blueprint $table) {
-            $table->ulid('id')->primary();
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-            $table->double('position')->nullable();
-            $table->foreignUlid('kanban_list_id')->constrained()
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->foreignUlid('kanban_task_id')->nullable()->after('type')->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->timestamps();
         });
     }
 
@@ -28,6 +23,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kanban_tasks');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropForeign('tasks_kanban_task_id_foreign');
+            $table->dropColumn('kanban_task_id');
+        });
     }
 };

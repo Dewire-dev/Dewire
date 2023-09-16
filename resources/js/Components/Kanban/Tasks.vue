@@ -3,7 +3,9 @@ import draggable from "vuedraggable";
 import {Input} from "flowbite-vue";
 import route from "ziggy-js";
 import axios from "axios";
-
+import Multiselect from '@vueform/multiselect'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const {project, kanban_list, kanban} = defineProps<{
     project: App.Models.Project;
@@ -15,6 +17,7 @@ const {project, kanban_list, kanban} = defineProps<{
 const storeKanbanTaskForm = useForm({
     item: {
         name: "",
+        members: [],
         description: "",
         kanban_list_id: kanban_list.id,
     },
@@ -74,8 +77,18 @@ const closeTaskModal = (isUpdate = false) => {
         ? addingTask.value = false
         : createNewTask.value = false;
 };
-const updateKanbanTaskModal = (element) => {
+const updateKanbanTaskModal = async (element) => {
     updateKanbanTaskForm.item = element;
+    const response = await axios.get(
+        route('kanban-tasks-get-members', {
+            kanban_task: element,
+            project: project,
+        })
+    )
+    var membersTest = Object.keys(response.data.members).map(function (key) {
+        return key;
+    });
+    updateKanbanTaskForm.item.members = membersTest;
     addingTask.value = true;
 };
 const createNewKanbanTaskModal = () => {
@@ -83,6 +96,7 @@ const createNewKanbanTaskModal = () => {
 };
 
 watch(() => tasks, (newTasks) => tasks.value = newTasks);
+
 async function updateMoveCard(e) {
     let item = e.added || e.moved;
 
@@ -132,6 +146,11 @@ const destroyKanbanTask = (element) => {
         }));
 };
 
+const textInputOptions = {
+    format: 'MM.dd.yyyy HH:mm',
+    enterSubmit: true,
+}
+
 </script>
 
 <template>
@@ -159,11 +178,17 @@ const destroyKanbanTask = (element) => {
                 <div @click="updateKanbanTaskModal(element)">
                     {{ element.name }}
                 </div>
+                <div class="flex space-x-1">
+                    <template v-for="member in element.task.users">
+                        <img  :title="member.firstname+ ' ' + member.lastname" class="w-5 h-5 rounded-full object-cover"
+                             :src="'https://ui-avatars.com/api/?name='+member.firstname.slice(0, 1)+member.lastname.slice(0, 1)+'&color=FFFFFF&amp;background=1f2937'" alt="Théo">
+                    </template>
+                </div>
             </li>
         </template>
     </draggable>
     <!--  Update Task-->
-    <DialogModal :show="addingTask" @close="closeTaskModal(true)">
+    <DialogModal :isOverFlow="false" :show="addingTask" @close="closeTaskModal(true)">
         <template #title>Modifier la tâche</template>
 
         <template #content>
@@ -191,6 +216,28 @@ const destroyKanbanTask = (element) => {
           />
                 </div>
             </div>
+            <div class="mt-2">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Responsable(s)</label>
+                <div class="flex relative">
+                    <Multiselect
+                        :classes="{
+                            dropdown: 'max-h-60 multiselect-dropdown absolute -left-px -right-px bottom-0 transform translate-y-full -mt-px overflow-y-scroll z-50 dark:bg-gray-700 flex flex-col rounded-b',
+                        }"
+                        class="border w-full text-sm bg-gray-50 rounded-lg border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        v-model="updateKanbanTaskForm.item.members"
+                        :options="members"
+                        mode="tags"
+                        :create-option="false"
+                    ></Multiselect>
+                </div>
+            </div>
+<!--            <VueDatePicker-->
+<!--                v-model="updateKanbanTaskForm.item"-->
+<!--                locale="fr"-->
+<!--                format="MM/dd/yyyy HH:mm"-->
+<!--                :space-confirm="false"-->
+<!--                :text-input="textInputOptions"-->
+<!--            ></VueDatePicker>-->
         </template>
 
         <template #footer>
@@ -207,9 +254,8 @@ const destroyKanbanTask = (element) => {
         </template>
     </DialogModal>
     <!--  Store new Task-->
-    <DialogModal :show="createNewTask" @close="closeTaskModal(false)">
+    <DialogModal :isOverFlow="false" :show="createNewTask" @close="closeTaskModal(false)">
         <template #title>Créer une tâche</template>
-
         <template #content>
             <Input
                 v-model="storeKanbanTaskForm.item.name"
@@ -233,6 +279,21 @@ const destroyKanbanTask = (element) => {
               required
               placeholder="Description de la tâche"
           />
+                </div>
+            </div>
+            <div class="mt-2">
+                <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Responsable(s)</label>
+                <div class="flex relative">
+                    <Multiselect
+                        :classes="{
+                            dropdown: 'max-h-60 multiselect-dropdown absolute -left-px -right-px bottom-0 transform translate-y-full -mt-px overflow-y-scroll z-50 dark:bg-gray-700 flex flex-col rounded-b',
+                        }"
+                        class="border w-full text-sm bg-gray-50 rounded-lg border-gray-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        v-model="storeKanbanTaskForm.item.members"
+                        :options="members"
+                        mode="tags"
+                        :create-option="false"
+                    ></Multiselect>
                 </div>
             </div>
         </template>
@@ -288,4 +349,5 @@ const destroyKanbanTask = (element) => {
 .list-group-item i {
     cursor: pointer;
 }
+
 </style>

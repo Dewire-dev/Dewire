@@ -39,10 +39,13 @@
         "@tiptap/pm": "^2.0.1",
         "@tiptap/starter-kit": "^2.0.1",
         "@tiptap/vue-3": "^2.0.1",
+        "@vueform/multiselect": "^2.6.2",
+        "@vuepic/vue-datepicker": "^6.1.0",
         "@vueuse/components": "^10.4.1",
         "@vueuse/core": "^9.13.0",
         "dayjs": "^1.11.7",
         "flowbite-vue": "^0.0.10",
+        "mini-svg-data-uri": "^1.4.4",
         "vuedraggable": "^4.1.0"
     }
 }

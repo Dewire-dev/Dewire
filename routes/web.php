@@ -80,6 +80,7 @@ Route::middleware([
 
     Route::controller(\App\Http\Controllers\KanbanTaskController::class)->group(function () {
         Route::post('projects/{project}/{kanban_task}/kanban-tasks-update-position', 'updateTaskPosition')->name('kanban-tasks-update-position');
+        Route::get('projects/{project}/{kanban_task}/kanban-tasks-get-members', 'getMembersTask')->name('kanban-tasks-get-members');
     });
 });
 
