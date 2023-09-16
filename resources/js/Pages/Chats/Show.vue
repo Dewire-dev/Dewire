@@ -67,19 +67,22 @@ let firstElementUnRead = unReadMessages[0];
 
 const addingUser = ref(false);
 
-const storeUserForm = useForm({
-   users: []
-});
-
 const closeStoreUserModal = () => {
-  addingUser.value = false;
-  storeUserForm.users = [];
+    addingUser.value = false;
 };
 
-const storeUser = () => {
-    storeUserForm.users = checkedUsersTeamNotChat.filter(user => user.checked).map(user => user.id);
-    storeUserForm.post(route("messages.addUser", {project: project, chat: chat}));
-};
+function storeUser() {
+    axios.post(route('messages.addUser', { project, chat }), {
+        users: checkedUsersTeamNotChat.filter(user => user.checked).map(user => user.id)
+    })
+    .then(function (response){
+        location.reload();
+        closeStoreUserModal();
+    })
+    .catch(function (error){
+        alert(error);
+    })
+}
 
 function formMarkRead() {
     axios.post(route('messages.read', { project, chat }), {
@@ -196,8 +199,6 @@ function formMarkRead() {
 
                         <PrimaryButton
                             class="ml-3"
-                            :class="{ 'opacity-25': storeUserForm.processing }"
-                            :disabled="storeUserForm.processing"
                             @click="storeUser"
                         >
                             Ajouter

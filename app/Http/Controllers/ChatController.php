@@ -91,7 +91,6 @@ class ChatController extends Controller
                 'chat_id' => $chat->id,
             ]);
         }
-
         return to_route('chats.index', compact('project'));
     }
 
@@ -103,8 +102,6 @@ class ChatController extends Controller
                 'read_at' => Carbon::now()
             ]);
         }
-
-        return to_route('chats.show', compact('project', 'chat'));
     }
 
     public function createMessage(Project $project, Chat $chat, Request $request): RedirectResponse
@@ -128,7 +125,6 @@ class ChatController extends Controller
                 ]);
             }
         }
-
         return to_route('chats.show', compact('project', 'chat'));
     }
 
@@ -136,12 +132,11 @@ class ChatController extends Controller
     {
         $users = $request->get('users');
         foreach ($users as $user) {
-            ChatsUser::create([
+            ChatsUser::firstOrCreate([
                 'user_id' => $user,
                 'chat_id' => $chat->id
             ]);
         }
-        return to_route('chats.show', compact('project', 'chat'));
     }
 
     public function deleteUser(Request $request, Project $project)
