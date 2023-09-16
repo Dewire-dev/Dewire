@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Module;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Laravel\Fortify\Features;
@@ -63,6 +64,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'layout' => [
                 'projects' => $request->user()?->currentTeam?->projects()->with('modules')->get(),
+                'genericModules' => Module::where(['is_generic' => true])->get(),
             ],
             'isAdmin' => $request->user()?->isAdmin(),
         ]);

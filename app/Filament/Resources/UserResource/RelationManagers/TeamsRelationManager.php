@@ -14,12 +14,14 @@ use Laravel\Jetstream\Jetstream;
 class TeamsRelationManager extends RelationManager
 {
     protected static string $relationship = 'teams';
+    protected static ?string $title = 'Équipes';
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('role')
+                    ->label('Rôle')
                     ->options(collect(Jetstream::$roles)->pluck('key', 'key'))
                     ->required()
                     ->native(false),
@@ -31,8 +33,8 @@ class TeamsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('role'),
+                Tables\Columns\TextColumn::make('name')->label('Nom d\'équipe'),
+                Tables\Columns\TextColumn::make('role')->label('Rôle'),
             ])
             ->filters([
                 //

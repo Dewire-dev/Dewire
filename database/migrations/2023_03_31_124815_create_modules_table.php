@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description');
             $table->text('color');
+            $table->boolean('is_generic')->default(false);
             $table->timestamps();
         });
     }
