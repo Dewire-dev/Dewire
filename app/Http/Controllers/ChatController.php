@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\ChatRepository;
+use App\Http\Requests\StoreUserChatRequest;
 use App\Models\Chat;
 use App\Models\ChatsUser;
 use App\Models\Message;
@@ -61,26 +62,35 @@ class ChatController extends Controller
         $countUnreadMessages = count($unReadMessages);
 
         $chatsUsers = $this->chatRepo->getUserInChat($chat->id);
+        $usersTeamNotChat = $this->chatRepo->getUsersTeamNotChat($chat->id);
+        $checkedUsersTeamNotChat = [];
+        foreach ($usersTeamNotChat as $user) {
+            $userArray = (array) $user;
+            $userArray['checked'] = false;
+            $checkedUsersTeamNotChat[] = $userArray;
+        }
 
-        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages'));
+        return Inertia::render('Chats/Show', compact('chat', 'messages', 'project', 'chatsUsers', 'unReadMessages', 'countUnreadMessages', 'checkedUsersTeamNotChat'));
     }
 
-    public function store(Project $project, Request $request): RedirectResponse
+    public function store(Project $project, Request $request)
     {
+        $chatSubject = $request->input('chatSubject');
+        $chatName = $request->input('chatName');
+        $chatUsers = $request->input('chatUsers');
+
         $chat = Chat::create([
-            'name' => $request->input('chatName'),
-            'subject' => $request->input('chatSubject'),
+            'subject' => $chatSubject,
+            'name' => $chatName,
             'project_id' => $project->id,
         ]);
 
-        foreach ($request->input('chatUsers') as $user) {
+        foreach ($chatUsers as $user) {
             ChatsUser::create([
                 'user_id' => $user,
                 'chat_id' => $chat->id,
             ]);
         }
-
-        return to_route('chats.index', compact('project'));
     }
 
     public function markReadMessages(Project $project, Chat $chat, Request $request)
@@ -91,16 +101,16 @@ class ChatController extends Controller
                 'read_at' => Carbon::now()
             ]);
         }
-
-        return to_route('chats.show', compact('project', 'chat'));
     }
 
-    public function createMessage(Project $project, Chat $chat, Request $request): RedirectResponse
+    public function createMessage(Project $project, Chat $chat, Request $request)
     {
+        $content = $request->input('content');
+
         $message = Message::create([
             'sender_id' => auth()->user()->id,
             'chat_id' => $chat->id,
-            'content' => $request->input('content'),
+            'content' => $content,
         ]);
 
         foreach ($chat->users as $user)
@@ -114,8 +124,27 @@ class ChatController extends Controller
                 ]);
             }
         }
+    }
 
-        return to_route('chats.show', compact('project', 'chat'));
+    public function addUser(Request $request, Project $project, Chat $chat)
+    {
+        $users = $request->get('users');
+        foreach ($users as $user) {
+            ChatsUser::firstOrCreate([
+                'user_id' => $user,
+                'chat_id' => $chat->id
+            ]);
+        }
+    }
+
+    public function deleteUser(Request $request, Project $project)
+    {
+        $chatId = $request->get('chatId');
+
+        ChatsUser::where('user_id', auth()->user()->id)
+            ->where('chat_id', $chatId)
+            ->delete();
+        return to_route('chats.index', compact('project'));
     }
 
 }

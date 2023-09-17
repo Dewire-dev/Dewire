@@ -47,6 +47,11 @@ class Project extends Model
         return $this->hasMany(Note::class);
     }
 
+    public function chats(): HasMany
+    {
+        return $this->hasMany(Chat::class);
+    }
+
     public function kanbans(): HasMany
     {
         return $this->hasMany(Kanban::class);

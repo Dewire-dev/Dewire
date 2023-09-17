@@ -18,6 +18,8 @@ class TeamResource extends Resource
 {
     protected static ?string $model = Team::class;
 
+    protected static ?string $modelLabel = 'Équipes';
+
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
     public static function form(Form $form): Form
@@ -26,15 +28,18 @@ class TeamResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->relationship(name: 'owner', titleAttribute: 'name')
+                    ->label('Chef d\'équipe')
                     ->getOptionLabelFromRecordUsing(fn (User $record) => "{$record->name} ({$record->email})")
                     ->searchable(['name', 'email'])
                     ->required()
                     ->preload()
                     ->native(false),
                 Forms\Components\TextInput::make('name')
+                    ->label('Nom' )
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Toggle::make('personal_team')
+                    ->label('Équipe personnelle')
                     ->required(),
             ]);
     }
@@ -47,10 +52,13 @@ class TeamResource extends Resource
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('name')
+                    ->label('Nom')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('owner.name')
+                    ->label('Chef d\'équipe')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('personal_team')
+                    ->label('Équipe personnelle')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

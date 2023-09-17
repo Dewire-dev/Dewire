@@ -13,7 +13,7 @@ class NotePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasTeamPermission($user->currentTeam, 'note:list');
     }
 
     /**
@@ -21,7 +21,8 @@ class NotePolicy
      */
     public function view(User $user, Note $note): bool
     {
-        //
+        return $user->belongsToTeam($note->project->team)
+            && $user->hasTeamPermission($note->project->team, 'note:view');
     }
 
     /**
@@ -29,7 +30,7 @@ class NotePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasTeamPermission($user->currentTeam, 'note:create');
     }
 
     /**
@@ -37,7 +38,9 @@ class NotePolicy
      */
     public function update(User $user, Note $note): bool
     {
-        //
+        return $user->belongsToTeam($note->project->team)
+            && $user->hasTeamPermission($note->project->team, 'note:update')
+            && ($user->id === $note->user->id);
     }
 
     /**
@@ -45,7 +48,9 @@ class NotePolicy
      */
     public function delete(User $user, Note $note): bool
     {
-        //
+        return $user->belongsToTeam($note->project->team)
+            && $user->hasTeamPermission($note->project->team, 'note:delete')
+            && ($user->id === $note->user->id);
     }
 
     /**
@@ -62,5 +67,14 @@ class NotePolicy
     public function forceDelete(User $user, Note $note): bool
     {
         //
+    }
+
+    /**
+     * Determine whether the user can save the model.
+     */
+    public function save(User $user, Note $note): bool
+    {
+        return $user->belongsToTeam($note->project->team)
+            && $user->hasTeamPermission($note->project->team, 'note:save');
     }
 }

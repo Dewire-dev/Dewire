@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class OwnedTeamsRelationManager extends RelationManager
 {
     protected static string $relationship = 'ownedTeams';
+    protected static ?string $title = 'Chefs des équipes';
 
     public function table(Table $table): Table
     {
@@ -20,7 +21,7 @@ class OwnedTeamsRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->inverseRelationship('owner')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('name')->label('Nom d\'équipe'),
             ])
             ->filters([
                 //

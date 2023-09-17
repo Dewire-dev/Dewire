@@ -15,8 +15,9 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name');
             $table->longText('content')->nullable();
-            $table->timestamps();
             $table->foreignUlid('project_id');
+            $table->foreignUlid('user_id');
+            $table->timestamps();
         });
     }
 

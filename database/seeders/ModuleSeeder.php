@@ -59,8 +59,9 @@ class ModuleSeeder extends Seeder
             [
                 'slug' => 'times',
                 'name' => 'Time',
-                'description' => 'Estimation de temps de travail avec compteur.',
+                'description' => 'Estimation du temps de travail passé sur différentes tâches par semaine.',
                 'color' => '#f44336',
+                'is_generic' => true,
             ],
         ];
 

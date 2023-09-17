@@ -23,7 +23,7 @@ test('user can add two times with a commentary for each time entered', function 
         'password' => 'password',
     ]);
 
-    $response = $this->put('/time/' . $task->id . '/update-task-time-spends', [
+    $response = $this->put('/times/' . $task->id . '/update-task-time-spends', [
         'taskTimeSpends' => [
             [
                 'time' => 30,
@@ -64,7 +64,7 @@ test('user can delete one time spended', function () {
         'password' => 'password',
     ]);
 
-    $response = $this->delete('/time/' . $task->id . '/delete-task-time-spend/' . $taskTimeSpend->id);
+    $response = $this->delete('/times/' . $task->id . '/delete-task-time-spend/' . $taskTimeSpend->id);
 
     // Assert
     $response->assertStatus(200);
@@ -94,7 +94,7 @@ test('user can not delete one time spended for another person', function () {
         'password' => 'password',
     ]);
 
-    $response = $this->delete('/time/' . $task->id . '/delete-task-time-spend/' . $taskTimeSpendTryToDelete->id);
+    $response = $this->delete('/times/' . $task->id . '/delete-task-time-spend/' . $taskTimeSpendTryToDelete->id);
 
     // Assert
     $response->assertStatus(403);

@@ -13,17 +13,18 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ProjectsRelationManager extends RelationManager
 {
     protected static string $relationship = 'projects';
+    protected static ?string $title = 'Projets';
 
     public function table(Table $table): Table
     {
         return $table
             ->recordTitleAttribute('title')
             ->columns([
-                Tables\Columns\TextColumn::make('title'),
-                Tables\Columns\TextColumn::make('subtitle'),
-                Tables\Columns\TextColumn::make('modules.name')
+                Tables\Columns\TextColumn::make('title')->label('Titre'),
+                Tables\Columns\TextColumn::make('subtitle')->label('Sous-titre'),
+                Tables\Columns\TextColumn::make('modules.name')->label('Modules')
                     ->badge(),
-                Tables\Columns\ColorColumn::make('color'),
+                Tables\Columns\ColorColumn::make('color')->label('Couleur'),
             ])
             ->filters([
                 //

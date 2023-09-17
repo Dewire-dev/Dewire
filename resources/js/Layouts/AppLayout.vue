@@ -17,6 +17,7 @@ defineProps({
 });
 
 const projects = computed(() => usePage().props.layout?.projects)
+const genericModules = computed(() => usePage().props.layout?.genericModules)
 
 const showingNavigationDropdown = ref(false);
 
@@ -205,6 +206,17 @@ const collapseToggle = (event) => {
                                     <span class="text-gray-900 dark:text-white">{{ module.name }}</span>
                                 </li>
                             </ul>
+                        </li>
+                    </ul>
+                    <ul class="space-y-2 font-medium mt-10">
+                        <li v-for="(module,index) in genericModules">
+                            <div class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 tab-projects">
+                                <Link class="flex" :href="route(module.slug)">
+                                    <i-carbon-circle-solid :style='"color:" + module.color +";"'
+                                                           class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"></i-carbon-circle-solid>
+                                    <span class="flex-1 ml-3 whitespace-nowrap">{{ module.name }}</span>
+                                </Link>
+                            </div>
                         </li>
                     </ul>
                 </div>
