@@ -30,13 +30,6 @@ class ProjectsSeeder extends Seeder
                 'team_id' => $elgoneTeam->id,
             ],
             [
-                'title' => 'Test',
-                'subtitle' => "Sous-titre de Test",
-                'description' => "Description du magnifique projet Test",
-                'color' => '#1A80D5',
-                'team_id' => $maltdevTeam->id,
-            ],
-            [
                 'title' => 'Island crossing',
                 'subtitle' => "Sous-titre d'island crossing",
                 'description' => "Description du magnifique projet d'island crossing",
