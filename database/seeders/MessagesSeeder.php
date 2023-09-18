@@ -34,12 +34,12 @@ class MessagesSeeder extends Seeder
             [
                 'sender_id' => User::where('email', 'logan.lesaux@ynov.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Island crossing Retour client')->first()->id,
-                'content' => "Yo Théo, j'ai un client qui me harcèle pour qu'on lui fasse un devis, occupe toi en stp",
+                'content' => "Bonjour Théo, j'ai un client qui m'as envoyé plusieurs mails pour qu'on lui fasse un devis, occupe toi en stp",
             ],
             [
                 'sender_id' => User::where('email', 'theonicolas19@outlook.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Island crossing Retour client')->first()->id,
-                'content' => "Trop la flemme, tu n'as qu'à le faire toi",
+                'content' => "Je suis pas mal occupé avec d'autres clients, je ne pourrais pas répondre favorablement à ta demande",
             ],
             [
                 'sender_id' => User::where('email', 'logan.lesaux@ynov.com')->first()->id,
@@ -49,7 +49,7 @@ class MessagesSeeder extends Seeder
             [
                 'sender_id' => User::where('email', 'mathieu.neyret@ynov.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Malton privé')->first()->id,
-                'content' => 'Yo la team, premier message pour Malton en privé',
+                'content' => 'Salut la team, premier message pour Malton en privé',
             ],
             [
                 'sender_id' => User::where('email', 'anael.bonnafous@ynov.com')->first()->id,
@@ -59,7 +59,7 @@ class MessagesSeeder extends Seeder
             [
                 'sender_id' => User::where('email', 'mathieu.neyret@ynov.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Island crossing privé')->first()->id,
-                'content' => 'Yo la team, premier message pour Island crossing en privé',
+                'content' => 'Salut la team, premier message pour Island crossing en privé',
             ],
             [
                 'sender_id' => User::where('email', 'anael.bonnafous@ynov.com')->first()->id,

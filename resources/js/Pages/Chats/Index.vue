@@ -12,15 +12,23 @@ const chatSubject = ref('');
 
 const { project, users } = defineProps<{
     project: App.Models.Project;
-    chats: Array<App.Models.Chat>;
+    chats: Array<{
+        id: number;
+        subject: string;
+        name: string;
+        project_id: string;
+        countUnreadMessage: number;
+    }>;
     users: Array<{
         id: number;
         name: string;
         email: string;
+        firstname: string;
+        lastname: string;
     }>;
 }>();
 
-const chatUsers = reactive(users.map(user => ({ value: user.id, checked: false, name: user.name })));
+const chatUsers = reactive(users.map(user => ({ value: user.id, checked: false, name: user.name, firstname: user.firstname, lastname: user.lastname })));
 
 const breadcrumb = [
     {
@@ -95,10 +103,10 @@ function createChat() {
                     <div v-for="user in chatUsers" class="flex">
                         <checkbox
                             :value="user.value"
-                            :name="user.name"
+                            :name="user.firstname + ' ' + user.lastname"
                             v-model="user.checked"
                         />
-                        <input-label :value="user.name" class="ml-2" />
+                        <input-label :value="user.firstname + ' ' + user.lastname" class="ml-2" />
                     </div>
                 </div>
             </template>
