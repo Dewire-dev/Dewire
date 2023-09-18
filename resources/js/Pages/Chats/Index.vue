@@ -12,13 +12,9 @@ const chatSubject = ref('');
 
 const { project, users } = defineProps<{
     project: App.Models.Project;
-    chats: Array<{
-        id: number;
-        subject: string;
-        name: string;
-        project_id: string;
+    chats : App.Models.Chat & {
         countUnreadMessage: number;
-    }>;
+    }
     users: Array<{
         id: number;
         name: string;

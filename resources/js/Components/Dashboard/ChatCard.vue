@@ -4,13 +4,9 @@ import route from "ziggy-js";
 import { Button, TheCard } from "flowbite-vue";
 
 defineProps<{
-    chat: Array<{
-        id: number;
-        subject: string;
-        name: string;
-        project_id: string;
+    chat : App.Models.Chat & {
         countUnreadMessage: number;
-    }>;
+    }
     project: App.Models.Project;
 }>();
 </script>
