@@ -50,7 +50,7 @@ class KanbanController extends Controller
         $lists = $kanban->kanban_lists()->with('tasks')->get();
         $lists->load('tasks.task.users');
 
-        $members = $project->team->team_users->pluck('name', 'id');
+        $members = $project->team->team_users->pluck('full_name', 'id');
 
         return Inertia::render('Kanban/Show', compact('project', 'kanban', 'lists', 'members'));
     }

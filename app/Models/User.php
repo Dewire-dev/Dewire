@@ -127,4 +127,9 @@ class User extends Authenticatable implements FilamentUser
     {
         return $this->isAdmin();
     }
+
+    public function getFullNameAttribute()
+    {
+        return $this->firstname.' ' .$this->lastname;
+    }
 }
