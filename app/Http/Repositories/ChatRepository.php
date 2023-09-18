@@ -32,7 +32,7 @@ class ChatRepository {
     {
         return ChatsUser::where('chat_id', $chatId)
             ->join('users', 'chats_users.user_id', '=', 'users.id')
-            ->select('chats_users.*', 'users.name as user_name')
+            ->select('chats_users.*', 'users.name as user_name', 'users.firstname as user_firstname', 'users.lastname as user_lastname')
             ->get();
     }
 

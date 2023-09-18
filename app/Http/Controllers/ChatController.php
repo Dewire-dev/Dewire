@@ -40,14 +40,11 @@ class ChatController extends Controller
     public function index(Project $project)
     {
         $chats = $this->chatRepo->getChat($project->id);
-        $unReadMessages = $this->chatRepo->getUnreadMessagesAllChatsProject($project->id, auth()->user()->id);
         $users = Auth::user()->currentTeam->users;
-
-        foreach ($unReadMessages as $count) {
-            $chats = $chats->map(function ($chat) use ($count) {
-                $chat->countUnreadMessages = $count->count();
-                return $chat;
-            });
+        foreach ($chats as $chat) {
+            $unReadMessage = $this->chatRepo->getUnreadMessagesChat(auth()->user()->id, $chat->id);
+            $countUnreadMessage = count($unReadMessage);
+            $chat->countUnreadMessage = $countUnreadMessage;
         }
 
         return Inertia::render('Chats/Index', compact('project', 'chats', 'users'));

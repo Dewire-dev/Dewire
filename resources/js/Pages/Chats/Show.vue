@@ -7,32 +7,22 @@ import axios from "axios";
 import {Button} from "flowbite-vue";
 
 const {chat, project, unReadMessages, chatsUsers, checkedUsersTeamNotChat} = defineProps<{
-    chat: {
-        id: number;
-        subject: string;
-        name: string;
-    };
-    messages: Array<{
-        id: number;
-        content: string;
-    }>;
+    chat: App.Models.Chat;
+    project: App.Models.Project;
+    messages: App.Models.Message;
     unReadMessages: Array<{
         id: number;
         message_id: number;
         content: string;
         user_id: string;
     }>;
-    project: {
-        id: number;
-        title: string;
-        subtitle: string;
-        description: string;
-    },
     chatsUsers: Array<{
         id: number;
         user_id: string;
         chat_id: number;
         user_name: string;
+        user_firstname: string;
+        user_lastname: string;
     }>;
     countUnreadMessages: number;
     checkedUsersTeamNotChat: Array<{
@@ -40,6 +30,8 @@ const {chat, project, unReadMessages, chatsUsers, checkedUsersTeamNotChat} = def
         name: string;
         email: string;
         checked: false;
+        firstname: string;
+        lastname: string;
     }>;
 }>();
 
@@ -146,7 +138,7 @@ function formMarkRead() {
                             >
                                 <DropdownLink as="button">
                                     <div class="flex items-center">
-                                        <div>{{ user.user_name }}</div>
+                                        <div>{{ user.user_firstname }} {{ user.user_lastname }}</div>
                                     </div>
                                 </DropdownLink>
 
@@ -185,7 +177,7 @@ function formMarkRead() {
                                 :true-value="user.id"
                                 :false-value="null"
                             />
-                            <input-label :value="user.name" class="ml-2" />
+                            <input-label :value="user.firstname + ' ' + user.lastname" class="ml-2" />
                         </div>
                         <div v-else>
                             Tous les utilisateurs du projet sont déjà dans la conversation.
@@ -224,7 +216,7 @@ function formMarkRead() {
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-1xl font-semibold text-green-500">
-                            {{ message.sender?.name }}
+                            {{ message.sender?.firstname }} {{ message.sender?.lastname }}
                         </p>
                         <p class="text-2xl text-black-500 dark:text-white">
                             {{ message.content }}

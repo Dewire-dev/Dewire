@@ -4,7 +4,9 @@ import route from "ziggy-js";
 import { Button, TheCard } from "flowbite-vue";
 
 defineProps<{
-    chat: App.Models.Chat;
+    chat : App.Models.Chat & {
+        countUnreadMessage: number;
+    }
     project: App.Models.Project;
 }>();
 </script>
@@ -16,7 +18,7 @@ defineProps<{
                 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                 {{ chat.name }}
             </h5>
-            <div v-if="chat.countUnreadMessages > 0" class="inline-flex items-center justify-center w-14 h-10 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ chat.countUnreadMessages }}</div>
+            <div v-if="chat.countUnreadMessage > 0" class="inline-flex items-center justify-center w-14 h-10 text-l font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ chat.countUnreadMessage }}</div>
         </Link>
         <p class="my-3 font-normal text-gray-700 dark:text-gray-400">
             {{ chat.subject }}
