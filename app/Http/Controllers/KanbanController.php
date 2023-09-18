@@ -55,6 +55,15 @@ class KanbanController extends Controller
         return Inertia::render('Kanban/Show', compact('project', 'kanban', 'lists', 'members'));
     }
 
+    public function updateNameKanban(Project $project, Kanban $kanban, KanbanRequest $request)
+    {
+        $kanban->update([
+            'name' => $request->get('name'),
+        ]);
+
+        return back()->banner('Nom du tableau modifié avec succès');
+    }
+
     /**
      * Remove the specified resource from storage.
      */

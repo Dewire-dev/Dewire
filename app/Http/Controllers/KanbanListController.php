@@ -39,7 +39,7 @@ class KanbanListController extends Controller
     public function updateNameKanbanList(Project $project, KanbanList $kanbanList, Request $request) {
         $kanbanList->update(['name' => $request->get('name')]);
 
-        return back()->banner('Success');
+        return back()->banner('Nom de liste modifié avec succès');
     }
 
     public function updatePositionKanbanList(Project $project, Kanban $kanban, Request $request) {
@@ -58,6 +58,6 @@ class KanbanListController extends Controller
     {
         $kanbanList->delete();
 
-        return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanban]);
+        return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanban])->banner('Liste supprimée avec succès');
     }
 }

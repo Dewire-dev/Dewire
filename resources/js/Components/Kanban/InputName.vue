@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import route from "ziggy-js";
 import {Input} from "flowbite-vue";
-import {vOnClickOutside} from '@vueuse/components'
 
 const {item, project} = defineProps<{
     item: Object;
@@ -24,13 +23,18 @@ const storeKanbanListName = () => {
 
 <template>
     <input
-        v-on-click-outside="() => item.displayInputName = false"
         v-on:keyup.enter="storeKanbanListName"
         @change="storeKanbanListName"
         v-model="storeKanbanListNameForm.name"
         ref="name"
         required
-        class="cursor-pointer bg-white shadow rounded-md p-1"
+        class="cursor-pointer bg-white dark:bg-gray-800 dark:text-gray-200 shadow rounded-md p-1 placeholder-gray-200"
         placeholder="Nom de la liste"
     />
 </template>
+<style scoped>
+
+input:focus-visible {
+    outline: 1px solid white;
+}
+</style>

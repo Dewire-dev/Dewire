@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->double('position')->nullable();
+            $table->dateTime('date_start')->nullable();
+            $table->dateTime('date_end')->nullable();
+            $table->integer('scheduled_time')->nullable();
+            $table->boolean('is_archived')->default(false);
             $table->foreignUlid('kanban_list_id')->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');

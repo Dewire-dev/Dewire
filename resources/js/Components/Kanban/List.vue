@@ -85,7 +85,7 @@ const dragOptions = () => {
         @change="storePosition"
     >
         <template #item="{ element, index }">
-            <div class="w-80 bg-gray-200 max-h-full flex flex-col rounded-md">
+            <div class="w-80 bg-gray-200 dark:bg-gray-500 max-h-full flex flex-col rounded-md cursor-grab">
                 <div :class="{ 'not-draggable': !enabled }">
                     <div class="flex items-center justify-between px-3 py-2">
                         <InputName :item="element" :project="project"></InputName>
@@ -153,6 +153,9 @@ const dragOptions = () => {
 .ghost {
     opacity: 0.5;
     background: #ffc107;
+}
+.sortable-chosen {
+  cursor: grabbing;
 }
 
 .list-group {

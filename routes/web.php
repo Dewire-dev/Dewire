@@ -73,6 +73,7 @@ Route::middleware([
     Route::apiResource('projects.kanbans.kanban-lists', \App\Http\Controllers\KanbanListController::class)->except(['show'])->names('kanban_lists');
     Route::apiResource('projects.kanbans.kanban-tasks', \App\Http\Controllers\KanbanTaskController::class)->except(['show'])->names('kanban_tasks');
 
+    Route::post('projects/{project}/{kanban}/kanban-update-name', [\App\Http\Controllers\KanbanController::class, 'updateNameKanban'])->name('kanban-update-name');
     Route::controller(\App\Http\Controllers\KanbanListController::class)->group(function () {
         Route::post('projects/{project}/{kanban_list}/kanban-lists-update-name', 'updateNameKanbanList')->name('kanban-lists-update-name');
         Route::post('projects/{project}/{kanban}/kanban-lists-update-position', 'updatePositionKanbanList')->name('kanban-lists-update-position');

@@ -38,9 +38,6 @@ const collapseToggle = (event) => {
 <template>
     <div>
         <Head :title="title"/>
-
-        <Banner/>
-
         <div class="min-h-screen bg-gray-100 dark:bg-body">
             <nav
                 class="fixed top-0 z-50 w-full border-b border-gray-200 dark:bg-sidebar bg-white dark:border-white-018">
@@ -238,6 +235,8 @@ const collapseToggle = (event) => {
                 </div>
             </div>
         </div>
+
+        <Banner/>
     </div>
 </template>
 <style scoped>

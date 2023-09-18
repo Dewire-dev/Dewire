@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import route from "ziggy-js";
 import {Input} from "flowbite-vue";
-import { Link } from "@inertiajs/vue3";
+import {Link} from "@inertiajs/vue3";
 
 const {project} = defineProps<{
     project: App.Models.Project;
@@ -14,10 +14,15 @@ const storeKanbanForm = useForm({
     name: "",
 });
 
+const updateKanbanName = useForm({
+    name: "",
+    kanban_id: "",
+})
+
 const destroyKanbanForm = useForm<{
-  id?: number;
+    id?: number;
 }>({
-  id: undefined,
+    id: undefined,
 });
 
 const deletingKanban = ref(false);
@@ -25,11 +30,15 @@ const deletingKanban = ref(false);
 const closeStoreKanbanModal = () => {
     addingKanbanBoard.value = false;
     storeKanbanForm.name = "";
+    storeKanbanForm.clearErrors();
 };
 
 const storeKanban = () => {
     storeKanbanForm.post(route("kanbans.store", project), {
-      onSuccess: closeStoreKanbanModal,
+        onSuccess: closeStoreKanbanModal,
+        onError: (response) => {
+            updateKanbanName.setError(response);
+        }
     });
 };
 
@@ -46,13 +55,12 @@ const closeDestroyKanbanModal = () => {
 const destroyKanban = () => {
     if (!destroyKanbanForm.id) return;
     destroyKanbanForm.delete(
-        route("kanbans.destroy", { project, kanban: destroyKanbanForm.id }),
+        route("kanbans.destroy", {project, kanban: destroyKanbanForm.id}),
         {
             onSuccess: closeDestroyKanbanModal,
         }
     );
 };
-
 const breadcrumb = [
     {
         label: "Mes projets",
@@ -88,22 +96,24 @@ const breadcrumb = [
             <!-- Add note button -->
             <div
                 @click="addingKanbanBoard = true"
-                class="flex items-center justify-center bg-gray-300 rounded h-80 dark:bg-gray-900 hover:cursor-pointer"
+                class="flex items-center justify-center bg-gray-300 rounded h-80 dark:bg-gray-500 hover:cursor-pointer"
             >
-                <i-carbon-document-add class="text-5xl dark:text-white"/>
+                <i-carbon-document-add class="text-5xl dark:text-gray-200"/>
             </div>
             <Link
                 v-for="kanban in kanbans"
                 :href="route('kanbans.show', { project, kanban })"
-                class="flex flex-col justify-between p-6 bg-gray-300 rounded h-80 dark:bg-gray-900"
+                class="flex flex-col justify-between p-6 bg-gray-300 rounded h-80 dark:bg-gray-500"
             >
-                <span class="mb-4 text-2xl dark:text-white line-clamp-1">{{
-                        kanban.name
-                    }}</span>
+                <InputNameKanban :item="kanban" :project="project"></InputNameKanban>
+                <div class="flex justify-center">
+                    <i-carbon-data-table class="text-5xl dark:text-gray-200"/>
+                </div>
+
                 <div class="text-center">
-                    <span
-                        @click.prevent="openDestroyKanbanModal(kanban.id)"
-                        class="text-red-600 hover:text-red-700 hover:underline hover:cursor-pointer">Supprimer</span>
+                    <danger-button @click.prevent="openDestroyKanbanModal(kanban.id)">
+                        Supprimer
+                    </danger-button>
                 </div>
             </Link>
         </div>
@@ -113,12 +123,23 @@ const breadcrumb = [
             <template #title>Nouveau tableau de bord Kanban</template>
 
             <template #content>
-                <Input
-                    v-model="storeKanbanForm.name"
-                    required
-                    label="Nom"
-                    placeholder="Nom du tableau Kanban"
-                />
+                <div>
+                    <label
+                        class="block mb-2 text-sm font-medium "
+                        :class="storeKanbanForm.errors.name ? 'text-red-500' : 'text-gray-900 dark:text-gray-300'">Nom</label>
+                    <div class="flex relative">
+                        <input placeholder="Nom de la tâche"
+                               v-model="storeKanbanForm.name"
+                               v-on:keyup.enter="storeKanban()"
+                               type="text"
+                               :class="storeKanbanForm.errors.name
+                 ? 'bg-red-50 border border-red-500 placeholder-red-400 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-red-100 dark:border-red-400 text-black'
+                 : 'bg-gray-50 border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 p-2.5'">
+                    </div>
+                    <span v-if="storeKanbanForm.errors.name" class="text-red-600">
+                    {{ storeKanbanForm.errors.name }}
+                </span>
+                </div>
             </template>
 
             <template #footer>

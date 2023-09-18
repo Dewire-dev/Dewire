@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enum\TaskState;
+use App\Http\Requests\KanbanTaskRequest;
 use App\Models\Kanban;
 use App\Models\KanbanList;
 use App\Models\KanbanTask;
@@ -27,9 +28,20 @@ class KanbanTaskController extends Controller
         });
     }
 
-    public function store(Project $project, Kanban $kanban, Request $request): RedirectResponse
+    public function store(Project $project, Kanban $kanban, KanbanTaskRequest $request): RedirectResponse
     {
-        $values = $request->get('item');
+        $values = $request->all();
+
+        if($values['date_start'] !== null) {
+            $values['date_start'] = Carbon::parse($values['date_start']);
+        }
+        if($values['date_end'] !== null) {
+            $values['date_end'] = Carbon::parse($values['date_end']);
+        }
+        if($values['scheduled_time'] !== null) {
+            $values['scheduled_time'] = $values['scheduled_time'] * 60;
+        }
+
         $kanbanTask = KanbanTask::create($values);
 
         $task = Task::create([
@@ -39,7 +51,9 @@ class KanbanTaskController extends Controller
             'description'     => $values['description'],
             'state'           => TaskState::TO_DO,
             'kanban_task_id'  => $kanbanTask->id,
-            'start_at'        => Carbon::now(),
+            'start_at'        => $kanbanTask->date_start,
+            'end_at'          => $kanbanTask->date_end,
+            'scheduled_time'  => $kanbanTask->scheduled_time,
         ]);
 
         if(isset($values['members'])) {
@@ -56,15 +70,29 @@ class KanbanTaskController extends Controller
         ]);
     }
 
-    public function update(Project $project, Kanban $kanban, KanbanTask $kanbanTask, Request $request)
+    public function update(Project $project, Kanban $kanban, KanbanTask $kanbanTask, KanbanTaskRequest $request)
     {
-        $values = $request->get('item');
+        $values = $request->all();
+
+        if($values['date_start'] !== null) {
+            $values['date_start'] = Carbon::parse($values['date_start']);
+        }
+        if($values['date_end'] !== null) {
+            $values['date_end'] = Carbon::parse($values['date_end']);
+        }
+        if($values['scheduled_time'] !== null) {
+            $values['scheduled_time'] = $values['scheduled_time'] * 60;
+        }
+
         $kanbanTask->update($values);
 
         $task = Task::where('kanban_task_id', $kanbanTask->id)->first();
         $task->update([
             'label'           => $values['name'],
             'description'     => $values['description'],
+            'start_at'        => $kanbanTask->date_start,
+            'end_at'          => $kanbanTask->date_end,
+            'scheduled_time'  => $kanbanTask->scheduled_time,
         ]);
 
         if(isset($values['members'])) {
@@ -85,7 +113,7 @@ class KanbanTaskController extends Controller
 
         $kanbanTask->delete();
 
-        return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanban]);
+        return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanban])->banner('Tâche supprimée avec succès');
     }
 
     public function updateTaskPosition(Project $project, KanbanTask $kanbanTask, Request $request)

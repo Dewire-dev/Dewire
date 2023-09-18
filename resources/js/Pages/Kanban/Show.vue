@@ -52,16 +52,6 @@ export default {
         <div class="flex flex-col h-screen">
 
             <div class="flex flex-col h-full">
-                <div class="shrink-0 flex justify-between items-center p-4">
-                    <h1 class="text-2xl text-white font-bold">Board title</h1>
-                    <div>
-                        <button
-                            class="inline-flex items-center bg-white/10 hover:bg-white/20 px-3 py-2 font-medium text-sm text-white rounded-md">
-                            <BeakerIcon class="w-5 h-5"/>
-                            <span class="ml-1">Settings</span>
-                        </button>
-                    </div>
-                </div>
                 <div class="flex-1 overflow-x-auto">
                     <div class="inline-flex h-full items-start px-4 pb-4 space-x-4">
                         <List :lists="lists"
