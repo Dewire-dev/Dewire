@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
         $this->call(ChatsSeeder::class);
         $this->call(ChatsUsersSeeder::class);
         $this->call(MessagesSeeder::class);
+        $this->call(KanbanSeeder::class);
+        $this->call(KanbanListSeeder::class);
+        $this->call(KanbanTaskSeeder::class);
         $this->call(TasksSeeder::class);
         $this->call(TaskTimeSpendsSeeder::class);
         $this->call(NoteSeeder::class);

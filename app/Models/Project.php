@@ -52,6 +52,11 @@ class Project extends Model
         return $this->hasMany(Chat::class);
     }
 
+    public function kanbans(): HasMany
+    {
+        return $this->hasMany(Kanban::class);
+    }
+
     public function canAccessModule(string $slug): bool
     {
         return $this->modules()->where('module_slug', $slug)->count() !== 0;
