@@ -30,13 +30,6 @@ class ProjectsSeeder extends Seeder
                 'team_id' => $elgoneTeam->id,
             ],
             [
-                'title' => 'Test',
-                'subtitle' => "Sous-titre de Test",
-                'description' => "Description du magnifique projet Test",
-                'color' => '#1A80D5',
-                'team_id' => $maltdevTeam->id,
-            ],
-            [
                 'title' => 'Island crossing',
                 'subtitle' => "Sous-titre d'island crossing",
                 'description' => "Description du magnifique projet d'island crossing",
@@ -69,7 +62,7 @@ class ProjectsSeeder extends Seeder
         foreach ($projects as $project) {
             $project = Project::updateOrCreate($project);
             $modules = Module::where(['is_generic' => false])->get();
-            $project->modules()->sync($modules->random($project['title'] === 'Test' ? count($modules) : 4), ['created_at' => Carbon::now(),'updated_at' => Carbon::now()]);
+            $project->modules()->sync($modules, ['created_at' => Carbon::now(),'updated_at' => Carbon::now()]);
         }
     }
 }
