@@ -66,7 +66,7 @@ class KanbanTaskController extends Controller
     public function getMembersTask(Project $project, KanbanTask $kanbanTask)
     {
         return response()->json([
-            'members' => $kanbanTask->task->users->pluck('name', 'id')->toArray(),
+            'members' => $kanbanTask->task->users->pluck('full_name', 'id')->toArray(),
         ]);
     }
 

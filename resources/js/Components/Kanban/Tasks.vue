@@ -109,12 +109,13 @@ const updateKanbanTaskModal = async (element) => {
     var membersTest = Object.keys(response.data.members).map(function (key) {
         return key;
     });
+    var scheduledTime = element.scheduled_time / 60;
     updateKanbanTaskForm.id = element.id;
     updateKanbanTaskForm.name = element.name;
     updateKanbanTaskForm.description = element.description;
     updateKanbanTaskForm.date_start = element.date_start;
     updateKanbanTaskForm.date_end = element.date_end;
-    updateKanbanTaskForm.scheduled_time = element.scheduled_time / 60;
+    updateKanbanTaskForm.scheduled_time = scheduledTime.toFixed(0);
     updateKanbanTaskForm.members = membersTest;
 
     addingTask.value = true;
