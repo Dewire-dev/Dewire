@@ -68,6 +68,9 @@ test('user can delete one time spended', function () {
 
     // Assert
     $response->assertStatus(200);
+    $this->assertDatabaseMissing('task_time_spends', [
+        'id' => $taskTimeSpend->id,
+    ]);
 });
 
 test('user can not delete one time spended for another person', function () {
@@ -98,4 +101,7 @@ test('user can not delete one time spended for another person', function () {
 
     // Assert
     $response->assertStatus(403);
+    $this->assertDatabaseHas('task_time_spends', [
+        'id' => $taskTimeSpendTryToDelete->id,
+    ]);
 });
