@@ -110,6 +110,7 @@ async function deleteTaskTimeSpend (id: number, index: number) {
                     <div class="col-span-2 mx-2">
                         <TextInput
                             v-model="taskTimeSpend.time"
+                            placeholder="30m"
                             name="time"
                             classes="p-1 w-100"
                             :readonly="readonly"
@@ -118,6 +119,7 @@ async function deleteTaskTimeSpend (id: number, index: number) {
                     <div class="col-span-9 mx-2">
                         <TextInput
                             v-model="taskTimeSpend.description"
+                            placeholder="Description..."
                             name="description"
                             classes="p-1 w-100"
                             :readonly="readonly"
