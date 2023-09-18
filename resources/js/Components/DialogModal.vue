@@ -20,6 +20,10 @@ defineProps({
         type: String,
         default: '',
     },
+    isOverFlow: {
+        type: Boolean,
+        default: true,
+    }
 });
 
 const close = () => {
@@ -33,6 +37,7 @@ const close = () => {
         :max-width="maxWidth"
         :closeable="closeable"
         :class="classes"
+        :isOverFlow="isOverFlow"
         @close="close"
     >
         <div class="px-6 py-4">

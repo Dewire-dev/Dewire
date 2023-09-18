@@ -20,11 +20,19 @@ class Task extends Model
         'end_at',
         'state',
         'type',
+        'project_id',
+        'user_creator_id',
+        'kanban_task_id',
     ];
 
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function kanban_task(): BelongsTo
+    {
+        return $this->belongsTo(KanbanTask::class);
     }
 
     public function userCreator(): BelongsTo

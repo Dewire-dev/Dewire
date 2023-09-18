@@ -184,5 +184,8 @@ return [
         'time'                  => 'heure',
         'available'             => 'disponible',
         'size'                  => 'taille',
+        'date_start'            => 'date de début',
+        'date_end'              => 'date de fin',
+        'members'               => 'responsable(s)',
     ],
 ];
