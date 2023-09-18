@@ -34,7 +34,7 @@ class MessagesSeeder extends Seeder
             [
                 'sender_id' => User::where('email', 'logan.lesaux@ynov.com')->first()->id,
                 'chat_id' => Chat::where('name', 'Chat Island crossing Retour client')->first()->id,
-                'content' => "Bonjour Théo, j'ai un client qui m'as envoyé plusieurs mails pour qu'on lui fasse un devis, occupe toi en stp",
+                'content' => "Bonjour Théo, j'ai un client qui m'a envoyé plusieurs mails pour qu'on lui fasse un devis, occupe-toi en stp",
             ],
             [
                 'sender_id' => User::where('email', 'theonicolas19@outlook.com')->first()->id,
