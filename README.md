@@ -185,7 +185,7 @@ Prérequis :
 1. Clonez le dépôt Git du projet dans le dossier de votre choix.
 
 ```bash
-git clone git@github.com:Dewire-dev/Dewire.git nom-du-projet
+git clone git@github.com:Dewire-dev/Dewire.git
 ```
 
 2. Accédez au répertoire du projet cloné en utilisant la commande `cd` :
