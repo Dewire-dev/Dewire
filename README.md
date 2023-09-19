@@ -181,6 +181,7 @@ Prérequis :
 - PHP 8.1+
 - Node 18+
 - MySQL 8+
+- Composer 2.5+
 
 1. Clonez le dépôt Git du projet dans le dossier de votre choix.
 

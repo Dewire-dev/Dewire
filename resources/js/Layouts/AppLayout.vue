@@ -62,7 +62,8 @@ const collapseToggle = (event) => {
                             <div class="flex items-center ml-3">
                                 <div class="flex items-center gap-4">
                                     <div class="flex items-center">
-                                        <i :class="isDark ? 'pi pi-sun text-white' : 'pi pi-moon'" class="mr-2"></i>
+                                        <i-carbon-moon class="mr-2 text-white" v-if="isDark" />
+                                        <i-carbon-sun class="mr-2" v-else />
                                         <label class="relative inline-flex items-center cursor-pointer">
                                             <input @click="isDark = !isDark" type="checkbox" value=""
                                                    class="sr-only peer">

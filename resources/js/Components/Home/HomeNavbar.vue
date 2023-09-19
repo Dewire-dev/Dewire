@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { Link } from "@inertiajs/vue3";
 import route from "ziggy-js";
+import {useDark} from "@vueuse/core";
+
+const isDark = useDark();
 </script>
 
 <template>
@@ -24,6 +27,16 @@ import route from "ziggy-js";
                     />
                 </a>
                 <div class="flex items-center lg:order-2">
+                    <div class="flex items-center mr-2">
+                        <i-carbon-moon class="mr-2 text-white" v-if="isDark" />
+                        <i-carbon-sun class="mr-2" v-else />
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input @click="isDark = !isDark" type="checkbox" value=""
+                                   class="sr-only peer">
+                            <div
+                                class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
+                    </div>
                     <template v-if="$page.props.auth.user">
                         <Link
                             :href="route('dashboard')"
