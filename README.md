@@ -185,7 +185,7 @@ Prérequis :
 1. Clonez le dépôt Git du projet dans le dossier de votre choix.
 
 ```bash
-git clone git@github.com:Dewire-dev/Dewire.git nom-du-projet
+git clone git@github.com:Dewire-dev/Dewire.git
 ```
 
 2. Accédez au répertoire du projet cloné en utilisant la commande `cd` :
@@ -245,7 +245,5 @@ Commandes utiles :
 - Créer les comptes admins pour accéder au back-office : `php artisan db:seed --class=AdminsSeeder`
 
 - Relancer les migrations et rafraîchir les données : `php artisan migrate:fresh --seed`
-
-- Lancer le serveur web via ligne de commande : `php artisan serve`
 
 - Autres commandes artisan : [Documentation](https://laravel.com/docs/10.x/artisan)
