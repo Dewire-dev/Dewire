@@ -3,6 +3,11 @@
     font-display: swap;
     src: url("../../public/fonts/Roboto-Regular.ttf") format("truetype");
 }
+@font-face {
+    font-family: 'GoodTImes';
+    font-display: swap;
+    src: url("../../public/fonts/good_times_rg.otf") format("opentype");
+}
 .dark .dark\:bg-body {
     background-color: #252528;
 }
@@ -14,7 +19,7 @@
     border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 h1,h2,h3,h4,h5,h6 {
-    font-family: "Good Times";
+    font-family: GoodTImes;
 }
 p,span,small,li {
     font-family: Roboto;
