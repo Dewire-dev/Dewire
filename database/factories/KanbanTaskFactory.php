@@ -2,11 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Kanban;
-use App\Models\KanbanList;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Note>
@@ -21,10 +17,8 @@ class KanbanTaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name,
+            'name' => fake()->words(2),
             'description' => fake()->text(50),
-            'date_start' => Carbon::now(),
-            'date_end' => Carbon::now()->addDays(random_int(1, 7)),
             'scheduled_time' => fake()->numberBetween(60, 600),
         ];
     }
