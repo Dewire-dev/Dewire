@@ -246,6 +246,4 @@ Commandes utiles :
 
 - Relancer les migrations et rafraîchir les données : `php artisan migrate:fresh --seed`
 
-- Lancer le serveur web via ligne de commande : `php artisan serve`
-
 - Autres commandes artisan : [Documentation](https://laravel.com/docs/10.x/artisan)
