@@ -174,6 +174,78 @@ Commandes utiles :
 
 - Autres commandes artisan : [Documentation](https://laravel.com/docs/10.x/artisan)
 
-## Mac : Boîte Vagrant avec Homestead ou Valet
+## Mac : Valet
 
-> Prochainement...
+Prérequis :
+- Valet 4.1+
+- PHP 8.1+
+- Node 18+
+- MySQL 8+
+
+1. Clonez le dépôt Git du projet dans le dossier de votre choix.
+
+```bash
+git clone git@github.com:Dewire-dev/Dewire.git nom-du-projet
+```
+
+2. Accédez au répertoire du projet cloné en utilisant la commande `cd` :
+
+```bash
+cd Dewire
+```
+3. Copiez le fichier `.env.example` pour créer un fichier `.env` :
+
+```bash
+cp .env.example .env
+```
+4. Créer une base de données MySQL nommée 'dewire'.
+
+5. Configurez votre fichier `.env` avec les paramètres appropriés, tels que la configuration de la base de données et d'autres paramètres spécifiques à votre projet. Voici un exemple pour illustrer la configuration.
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=dewire
+DB_USERNAME=root
+DB_PASSWORD=motDePasse
+```
+
+6. Installez les dépendances du projet en utilisant Composer et npm pour compiler les assets :
+
+```bash
+composer install
+npm install && npm run dev
+```
+
+7. Générez une clé d'application Laravel en exécutant la commande suivante :
+
+```bash
+php artisan key:generate
+```
+8. Lancer les migrations et ajouter les données de base :
+```bash
+php artisan migrate --seed
+```
+
+9. Utilisez Valet pour créer un lien symbolique vers votre projet en exécutant la commande suivante :
+```bash
+valet link
+```
+10. Assurez-vous que Valet est en cours d'exécution avec `valet start`.
+
+11. Vous devriez maintenant être en mesure d'accéder au projet Dewire en utilisant l'URL générée par Valet dans votre navigateur. Par défaut, cela ressemblera à ceci :
+
+```bash
+http://dewire.test
+```
+
+Commandes utiles :
+
+- Créer les comptes admins pour accéder au back-office : `php artisan db:seed --class=AdminsSeeder`
+
+- Relancer les migrations et rafraîchir les données : `php artisan migrate:fresh --seed`
+
+- Lancer le serveur web via ligne de commande : `php artisan serve`
+
+- Autres commandes artisan : [Documentation](https://laravel.com/docs/10.x/artisan)
