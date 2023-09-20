@@ -107,7 +107,7 @@ const dragOptions = () => {
     </draggable>
     <div class="w-72">
         <button @click="storeKanbanList"
-                class="flex items-center bg-white/10 w-full hover:bg-white/20 text-white p-2 text-sm font-medium rounded-md">
+                class="flex items-center bg-gray-200 hover:bg-gray-300 dark:bg-white/10 w-full dark:hover:bg-white/20 dark:text-white p-2 text-sm font-medium rounded-md">
             <i-carbon-add class="w-5 h-5"/>
             <span class="ml-1">Ajouter une liste</span>
         </button>

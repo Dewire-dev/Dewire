@@ -39,7 +39,7 @@ class KanbanListController extends Controller
     public function updateNameKanbanList(Project $project, KanbanList $kanbanList, Request $request) {
         $kanbanList->update(['name' => $request->get('name')]);
 
-        return back()->banner('Nom de liste modifié avec succès');
+        return to_route('kanbans.show', ['project' => $project, 'kanban' => $kanbanList->kanban])->banner('Nom de liste modifié avec succès');
     }
 
     public function updatePositionKanbanList(Project $project, Kanban $kanban, Request $request) {
